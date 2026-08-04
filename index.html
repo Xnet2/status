@@ -20,8 +20,8 @@ body{height:100%;font-family:'Heebo',sans-serif;-webkit-font-smoothing:antialias
 #bannedScreen { display:flex; flex-direction:column; align-items:center; justify-content:center; position:fixed; inset:0; background:#111; color:white; z-index:9999; text-align:center; padding:20px; }
 
 /* LOGIN */
-#loginScreen{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:1000;}
-.login-card{background:#fff;border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,.12);max-width:320px;width:90%;}
+#loginScreen{position:fixed;inset:0;background:rgba(17,17,17,.55);display:none;align-items:center;justify-content:center;z-index:1000;}
+.login-card{background:#fff;border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,.12);max-width:320px;width:90%;position:relative;}
 .login-logo-img{width:90px;height:90px;border-radius:16px;margin:0 auto 14px;display:block;object-fit:contain;}
 .login-title{font-size:20px;font-weight:900;color:#111;margin-bottom:4px;}
 .login-sub{font-size:13px;color:#888;margin-bottom:24px;}
@@ -67,7 +67,7 @@ body.dark .channel-item:hover { background: #2a2a45; }
 body.dark .channel-item.active { background: #2a2a45; color: #a5b4fc; border-right-color: #a5b4fc; }
 
 /* APP */
-#app{flex:1;min-width:0;height:100%;display:none;flex-direction:column;}
+#app{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;}
 
 /* AD SIDEBAR */
 #rightSidebar{
@@ -711,9 +711,10 @@ body, html { background: #fff !important; }
 
 <div id="loginScreen">
  <div class="login-card">
+    <button onclick="closeLoginScreen()" style="position:absolute;top:10px;left:12px;background:none;border:none;font-size:18px;color:#aaa;cursor:pointer;line-height:1;padding:4px;">✕</button>
     <img class="login-logo-img" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png4" onerror="this.style.display='none'">
     <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים על ידי דוד</div>
-    <div class="login-sub">התחברות באמצעות גוגל</div>
+    <div class="login-sub">התחברות באמצעות גוגל (לא חובה — נדרש רק כדי לשלוח דיווח)</div>
     <div id="googleBtn" style="display:flex; justify-content:center;"></div>
   </div>
 </div>
@@ -1118,20 +1119,6 @@ body, html { background: #fff !important; }
           <div id="adMsg" style="display:none;margin-top:12px;font-size:12px;font-weight:700;text-align:center"></div>
         </div>
 
-        <div class="ap-sec" id="ap-sec-messages" style="display:none;display:flex;flex-direction:column;height:100%;">
-          <div class="admin-msgs-body" id="adminMsgsBody" style="flex:1;overflow-y:auto;margin-bottom:10px;">
-            <div class="ap-empty">אין הודעות</div>
-          </div>
-          <div class="admin-msgs-send" id="adminMsgsSendRow" style="display:flex;gap:8px;align-items:flex-end;flex-shrink:0;">
-            <textarea class="ap-field admin-send-inp" id="adminMsgInput" rows="1" placeholder="שלח הודעה לכל המנהלים..."
-              oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"
-              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAdminMsg();}"></textarea>
-            <button class="ap-btn ap-btn-primary admin-send-btn" onclick="sendAdminMsg()" style="flex-shrink:0;">
-              <i class="fas fa-paper-plane" style="font-size:11px"></i>
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -1161,9 +1148,7 @@ let _writersMap = {}; // email(lower) -> {name}
 let _isSuper = false, _isWriter = false;
 
 let composeImgUrl = '', composeVidUrl = '', composeBtns = [], composeHtmlCode = '';
-let adminMsgsLastId = null, adminMsgsUnread = 0;
 let _updateMode = false, _updateUntil = '';
-let _adminMsgsKnownIds = new Set();
 let _reportTargetMsgId = null;
 let _editMsgId = null;
 
@@ -1370,7 +1355,6 @@ const AP_SECTIONS = [
   { key: 'writers', icon: 'fa-user-group', title: 'מורשי כתיבה', superOnly: true },
   { key: 'blocking', icon: 'fa-user-slash', title: 'חסימת משתמשים', superOnly: true },
   { key: 'ads', icon: 'fa-rectangle-ad', title: 'פרסומות', superOnly: true },
-  { key: 'messages', icon: 'fa-comments', title: 'הודעות צוות', superOnly: true },
 ];
 
 function openAdminPanel() {
@@ -1410,7 +1394,6 @@ function switchAdminSection(sec) {
   else if (sec === 'writers') openManageAdmins();
   else if (sec === 'blocking') openSiteSettings();
   else if (sec === 'ads') openAdPanel();
-  else if (sec === 'messages') openAdminMsgs();
 }
 
 async function loadWritersMap() {
@@ -2049,47 +2032,6 @@ async function deleteAd(type) {
   document.getElementById(imgEl).value = ''; document.getElementById(lnkEl).value = ''; if (type === 'side') hideAdSide(); showAdMsg('הוסרה ✓', 'green');
 }
 function showAdMsg(txt, color) { const el = document.getElementById('adMsg'); el.textContent = txt; el.style.color = color === 'green' ? '#16a34a' : '#dc2626'; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 2000); }
-
-/* ================= הודעות צוות ================= */
-async function loadAdminMsgs() {
-  const d = await api('admin_msgs_get', {});
-  if (d.status !== 'ok') return;
-  const msgs = d.messages || [];
-  const newMsgs = msgs.filter(m => !_adminMsgsKnownIds.has(m.id));
-  if (!newMsgs.length) return;
-  newMsgs.forEach(m => { _adminMsgsKnownIds.add(m.id); adminMsgsUnread++; });
-  const badge = document.getElementById('adminMsgsBadge');
-  if (badge) { badge.textContent = adminMsgsUnread; badge.style.display = adminMsgsUnread > 0 ? 'flex' : 'none'; }
-  if (document.getElementById('adminPanelModal')?.classList.contains('open') && _adminPanelActiveSection === 'messages') renderAdminMsgs(msgs);
-}
-function renderAdminMsgs(msgs) {
-  const body = document.getElementById('adminMsgsBody'); if (!body) return;
-  if (!msgs.length) { body.innerHTML = '<div class="ap-empty">אין הודעות</div>'; return; }
-  body.innerHTML = msgs.map(m => {
-    const isMine = m.email === me?.email;
-    return `<div style="background:${isMine ? '#eef1fd' : '#f8f9fc'};border:1px solid ${isMine ? '#d9deed' : '#eef0f5'};border-radius:12px;padding:10px 12px;margin-bottom:8px;">
-      <div style="font-size:11px;font-weight:800;color:${isMine ? '#4a55c7' : '#5b6072'};margin-bottom:3px;">${esc(m.name || m.email)}</div>
-      <div style="font-size:13px;color:#1f2430;line-height:1.5;">${esc(m.text)}</div>
-      <div style="font-size:10px;color:#a3a8b8;margin-top:4px;">${fmtTime(m.ts)}</div>
-    </div>`;
-  }).join('');
-  body.scrollTop = body.scrollHeight;
-}
-async function openAdminMsgs() {
-  adminMsgsUnread = 0;
-  const badge = document.getElementById('adminMsgsBadge'); if (badge) badge.style.display = 'none';
-  const d = await api('admin_msgs_get', {});
-  if (d.status === 'ok') renderAdminMsgs(d.messages || []);
-  const sendRow = document.getElementById('adminMsgsSendRow'); if (sendRow) sendRow.style.display = isSuperAdmin() ? 'flex' : 'none';
-}
-function closeAdminMsgs() { closeAdminPanel(); }
-async function sendAdminMsg() {
-  if (!isSuperAdmin()) return;
-  const inp = document.getElementById('adminMsgInput'); const text = (inp?.value || '').trim(); if (!text) return;
-  inp.value = ''; inp.style.height = 'auto';
-  const d = await api('admin_msgs_add', { email: me.email, name: getDisplayName(me.email, me.name), text }, 'POST');
-  if (d.status === 'ok') { const d2 = await api('admin_msgs_get', {}); renderAdminMsgs(d2.messages || []); }
-}
 
 /* ================= ניהול מורשי כתיבה ================= */
 async function openManageAdmins() { document.getElementById('adminMsgResult').style.display = 'none'; await renderAdminsList(); }
