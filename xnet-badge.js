@@ -18,7 +18,7 @@
     '.xnet-badge .xnet-logo-wrap{width:44px;height:44px;flex:0 0 44px;' +
     'display:flex;align-items:center;justify-content:center;' +
     'background:#fff;border-radius:50%;}' +
-    '.xnet-badge .xnet-logo-wrap img{width:22px;height:22px;object-fit:contain;}' +
+    '.xnet-badge .xnet-logo-wrap img{width:38px;height:38px;object-fit:cover;border-radius:50%;}' +
     '.xnet-badge .xnet-text{white-space:nowrap;opacity:0;flex:1;min-width:0;' +
     'text-align:center;padding:0 10px;font-family:Assistant,system-ui,sans-serif;' +
     'font-size:12.5px;font-weight:700;color:#fff;' +
@@ -33,10 +33,10 @@
   badge.href = BLOG_URL;
   badge.target = "_blank";
   badge.rel = "noopener";
-  badge.setAttribute("aria-label", "נבנה על ידי Xnet — מעבר לדף הבית");
+  badge.setAttribute("aria-label", "נבנה על ידי Xnet — מעבר לבלוג");
   badge.innerHTML =
     '<span class="xnet-logo-wrap"><img src="' + LOGO_URL + '" alt="Xnet"></span>' +
-    '<span class="xnet-text">נבנה ע״י Xnet<small>לחצו למעבר לדף הבית</small></span>';
+    '<span class="xnet-text">נבנה ע״י Xnet<small>לחצו למעבר לבלוג</small></span>';
 
   function mount() {
     if (!document.body.contains(badge)) {
