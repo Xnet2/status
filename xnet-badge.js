@@ -36,7 +36,7 @@
   badge.setAttribute("aria-label", "פותח על ידי Xnet — מעבר לבלוג");
   badge.innerHTML =
     '<span class="xnet-logo-wrap"><img src="' + LOGO_URL + '" alt="Xnet"></span>' +
-    '<span class="xnet-text">נבנה ע״י Xnet<small>לחצו למעבר לדף הבית</small></span>';
+    '<span class="xnet-text">פותח ע״י Xnet<small>לחצו למעבר לדף הבית</small></span>';
 
 
   function mount() {
