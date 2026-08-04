@@ -14,13 +14,13 @@
     'direction:rtl;background:#17181d;border:1px solid rgba(255,255,255,.1);' +
     'border-radius:100px;text-decoration:none;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);' +
     'transition:width .28s cubic-bezier(.2,.9,.3,1), box-shadow .2s ease, transform .2s ease;}' +
-    '.xnet-badge:hover{width:196px;box-shadow:0 18px 36px -12px rgba(0,0,0,.55);transform:translateY(-2px);}' +
+    '.xnet-badge:hover{width:178px;box-shadow:0 18px 36px -12px rgba(0,0,0,.55);transform:translateY(-2px);}' +
     '.xnet-badge .xnet-logo-wrap{width:44px;height:44px;flex:0 0 44px;' +
     'display:flex;align-items:center;justify-content:center;' +
     'background:#fff;border-radius:50%;}' +
     '.xnet-badge .xnet-logo-wrap img{width:22px;height:22px;object-fit:contain;}' +
     '.xnet-badge .xnet-text{white-space:nowrap;opacity:0;flex:1;min-width:0;' +
-    'padding-left:14px;font-family:Assistant,system-ui,sans-serif;' +
+    'text-align:center;padding:0 10px;font-family:Assistant,system-ui,sans-serif;' +
     'font-size:12.5px;font-weight:700;color:#fff;' +
     'transition:opacity .18s ease .05s;}' +
     '.xnet-badge:hover .xnet-text{opacity:1;}' +
