@@ -33,10 +33,10 @@
   badge.href = BLOG_URL;
   badge.target = "_blank";
   badge.rel = "noopener";
-  badge.setAttribute("aria-label", "נבנה על ידי Xnet — מעבר לבלוג");
+  badge.setAttribute("aria-label", "נבנה על ידי Xnet — מעבר לדף הבית");
   badge.innerHTML =
     '<span class="xnet-logo-wrap"><img src="' + LOGO_URL + '" alt="Xnet"></span>' +
-    '<span class="xnet-text">נבנה ע״י Xnet<small>לחצו למעבר לבלוג</small></span>';
+    '<span class="xnet-text">נבנה ע״י Xnet<small>לחצו למעבר לדף הבית</small></span>';
 
   function mount() {
     if (!document.body.contains(badge)) {
