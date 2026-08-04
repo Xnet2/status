@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1"/>
+<title id="pageTitle">xnet פרוייקטים ועדכונים על ידי דוד</title>
+<meta name="description" content="xnet פרוייקטים ועדכונים על ידי דוד">
+<meta name="keywords" content="xnet פרוייקטים ועדכונים על ידי דוד">
+<meta name="google-site-verification" content="ZXEdDW4jzJU_cxuE1lL0tf76JJf3KZle2MIMjs4ua98" />
+
+<link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/6476/6476785.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Assistant:wght@300;400;500;600;700;800&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;}
+body{height:100%;font-family:'Heebo',sans-serif;-webkit-font-smoothing:antialiased;background:#fff;display:flex;flex-direction:row-reverse;}
+
+#bannedScreen { display:flex; flex-direction:column; align-items:center; justify-content:center; position:fixed; inset:0; background:#111; color:white; z-index:9999; text-align:center; padding:20px; }
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:1000;}
+.login-card{background:#fff;border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,.12);max-width:320px;width:90%;}
+.login-logo-img{width:90px;height:90px;border-radius:16px;margin:0 auto 14px;display:block;object-fit:contain;}
+.login-title{font-size:20px;font-weight:900;color:#111;margin-bottom:4px;}
+.login-sub{font-size:13px;color:#888;margin-bottom:24px;}
+
+/* LEFT SIDEBAR FOR CHANNELS */
+#leftSidebar {
+  width: 240px; min-width: 240px;
+  background: #fff;
+  border-right: 1px solid rgba(0,0,0,.08);
+  flex-shrink: 0;
+  position: sticky; top: 64px; height: calc(100vh - 64px);
+  display: flex; flex-direction: column;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+.channels-hdr {
+  padding: 15px; font-size: 14px; font-weight: 800; color: #111;
+  border-bottom: 1px solid #f0f0f0; background: #fafafa;
+}
+#channelsList { flex: 1; overflow-y: auto; padding: 10px 0; }
+.channel-item {
+  padding: 10px 15px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600; color: #4b5563;
+  border-bottom: 1px solid #f9fafb; transition: background 0.2s, color 0.2s;
+}
+.channel-item:hover { background: #f3f4f6; }
+.channel-item.active { background: #eff6ff; color: #1a56db; border-right: 4px solid #1a56db; }
+.channel-item i { width: 16px; text-align: center; color: #9ca3af; }
+.channel-item.active i { color: #1a56db; }
+
+#mobileMenuBtn { display: none; background: none; border: none; font-size: 18px; color: #111; cursor: pointer; padding: 5px; }
+
+@media(max-width: 900px) {
+  #leftSidebar { position: fixed; left: 0; transform: translateX(-100%); box-shadow: 4px 0 24px rgba(0,0,0,.12); }
+  #leftSidebar.open { transform: translateX(0); }
+  #mobileMenuBtn { display: block; }
+}
+
+body.dark #leftSidebar { background: #1a1a2e; border-color: #2a2a40; }
+body.dark .channels-hdr { background: #1e1e30; color: #fff; border-color: #2a2a40; }
+body.dark .channel-item { color: #d1d5db; border-color: #2a2a40; }
+body.dark .channel-item:hover { background: #2a2a45; }
+body.dark .channel-item.active { background: #2a2a45; color: #a5b4fc; border-right-color: #a5b4fc; }
+
+/* APP */
+#app{flex:1;min-width:0;height:100%;display:none;flex-direction:column;}
+
+/* AD SIDEBAR */
+#rightSidebar{
+  width:320px;min-width:320px;
+  background:#fff;
+  border-left:1px solid rgba(0,0,0,.08);
+  flex-shrink:0;
+  position:sticky;top:64px;height:calc(100vh - 64px);
+  flex-direction:column;
+  overflow:hidden;
+  display:none;
+}
+#rightSidebar.show{display:flex;}
+@media(max-width:900px){#rightSidebar{display:none!important;}}
+
+#adSidebarBlock{flex-shrink:0;}
+#adSidebarBlock a{display:block;width:100%;}
+#adSidebarBlock img{width:100%;height:auto;display:block;}
+
+/* HEADER */
+header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;padding:0 14px; display:flex;align-items:center;gap:12px; flex-shrink:0;position:fixed;top:0;left:0;right:0;z-index:100; overflow:visible;}
+#app{padding-top:64px;}
+.hdr-avatar{width:38px;height:38px;border-radius:10px;object-fit:contain;flex-shrink:0;}
+.hdr-info{flex:1;min-width:0;}
+.hdr-name{font-size:15px;font-weight:800;color:#111827;line-height:1.2;}
+.hdr-desc{font-size:12px;color:#4b5563;font-weight:600;line-height:1.35;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hdr-status{font-size:12px;color:#4b5563;font-weight:600;display:flex;align-items:center;gap:6px;margin-top:4px;}
+.hdr-user{display:flex;align-items:center;gap:4px;}
+.hdr-user img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #eee;}
+
+#adminBadge{ display:none;align-items:center;gap:4px; background:#f0f4ff;border:1px solid #c7d7fa; border-radius:8px;padding:2px 7px; font-size:11px;font-weight:700;color:#1a56db;white-space:nowrap;}
+#adminBadge.show{display:inline-flex;}
+#adminBadge i{font-size:10px;opacity:.7;}
+
+/* FEED */
+#feedWrap{flex:1;overflow-y:auto;padding:10px 0 24px;scrollbar-width:none;}
+#feedWrap::-webkit-scrollbar{display:none;}
+#feedInner{max-width:780px;margin:0 60px 0 auto;padding:0 10px 0 48px;display:flex;flex-direction:column;gap:18px;}
+@media(max-width:600px){ #feedInner{margin:0;padding:0 8px;} .bubble{min-width:0;} }
+
+.msg-row{ display:flex;direction:rtl; align-items:flex-start;gap:8px; padding:2px 0; animation:mi .3s cubic-bezier(.16,1,.3,1) both;}
+@keyframes mi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg-av{width:36px;height:36px;border-radius:0;object-fit:contain;flex-shrink:0;align-self:flex-start;margin-top:17px;background:transparent;}
+.msg-col{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start;position:relative;}
+.msg-meta{direction:rtl;display:flex;align-items:baseline;gap:6px;padding-right:4px;}
+.msg-meta-name{font-size:12px;font-weight:700;color:#666;}
+.msg-meta-time{font-size:11px;font-weight:500;color:#aaa;}
+.bubble{ background:#f3f4f6;direction:rtl; border-radius:18px 4px 18px 18px; padding:10px 14px 8px; display:inline-block;max-width:100%; box-shadow:0 1px 2px rgba(0,0,0,.10);}
+.bubble.is-red{background:#fff9f9;border-right:3px solid #e02020;}
+.bubble-text{font-size:19px;line-height:1.65;color:#111111;font-weight:400;white-space:pre-wrap;word-break:break-word;font-family:'Assistant','Heebo','Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+.bubble-text strong{font-weight:700;color:#1a1a1a;}
+.bubble-text em{font-style:italic;}
+.bubble-text a{color:#1a56db;text-decoration:underline;}
+.bubble-headline{font-size:19px;font-weight:700;color:#1f2937;line-height:1.5;margin-bottom:4px;font-family:'Assistant','Heebo','Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+.bubble-img{margin-top:9px;border-radius:12px;overflow:hidden;display:block;}
+.bubble-img img{width:100%;display:block;max-height:310px;height:auto;object-fit:contain;object-position:top;}
+.bubble-vid{margin-top:9px;}
+.bubble-vid video{width:100%;border-radius:12px;background:#000;}
+.bubble-vid video.portrait{width:auto;max-width:100%;max-height:480px;display:block;margin:0 auto;}
+.bubble-vid iframe{max-width:100%;border-radius:12px;}
+
+.bubble-html{margin-top:9px; border-radius:12px; overflow:hidden; width:100%; max-width:100%; background:#fff; position:relative;}
+.bubble-html iframe{width:100%; border:none; display:block; min-height:200px; resize:vertical; overflow:auto;}
+
+.vid-btn{display:inline-flex;align-items:center;gap:6px;background:#1a56db;color:#fff;padding:7px 15px;border-radius:99px;font-size:13px;font-weight:700;text-decoration:none;}
+.bubble-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+.bubble-divider{border:none;border-top:1.5px solid #e5e7eb;margin:10px 0;width:100%;}
+.lnk-btn{display:inline-flex;align-items:center;gap:5px;background:#f3f4f6;border-radius:99px;padding:6px 13px;font-size:13px;font-weight:600;color:#374151;text-decoration:none;border:none;}
+.bubble-foot{display:flex;align-items:center;gap:5px;margin-top:2px;flex-wrap:wrap;padding-right:10px;}
+
+/* תגיות */
+.post-tags-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+.post-tag { display:inline-flex; align-items:center; background:#f3f4f6; color:#4b5563; padding:2px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:background 0.2s; border:1px solid transparent; }
+.post-tag:hover { background:#e5e7eb; border-color:#d1d5db; color:#111; }
+
+/* REACTIONS */
+.rxn-row{display:contents;}
+.rxn-chip{ display:inline-flex;align-items:center;justify-content:center;gap:3px; background:#f3f4f6;border:1px solid #e5e7eb; border-radius:8px;padding:3px 7px;height:26px; cursor:pointer;transition:background .12s,border-color .12s,transform .1s; user-select:none;line-height:1;}
+.rxn-chip:hover{background:#e5e7eb;border-color:#9ca3af;}
+.rxn-chip.mine{background:#eff6ff;border-color:#3b82f6;box-shadow:0 0 0 1.5px #bfdbfe;}
+.rxn-emoji{font-size:15px;line-height:1;font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+.rxn-count{font-size:11px;font-weight:700;color:#6b7280;font-family:'Heebo',sans-serif;}
+.rxn-chip.mine .rxn-count{color:#1a56db;}
+.rxn-add-btn{ background:none;border:none;cursor:pointer;padding:1px;border-radius:6px;line-height:0; display:inline-flex;align-items:center;color:#ccc; transition:color .12s,background .12s,transform .12s;height:22px;width:22px;justify-content:center;}
+.rxn-add-btn:hover{color:#666;background:#f0f0f0;transform:scale(1.12);}
+.rxn-add-btn svg{width:14px;height:14px;display:block;}
+.rxn-add-btn.maxed{opacity:0.3;cursor:default;pointer-events:none;}
+.cmt-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:none;font-size:12px;color:#aaa;cursor:pointer;font-family:'Heebo',sans-serif;font-weight:600;padding:0;transition:color .12s;}
+.cmt-btn:hover{color:#1a56db;}
+.cmt-btn.has-cmt{color:#1a56db;}
+.link-btn{display:inline-flex;align-items:center;gap:3px;background:none;border:none;font-size:11px;color:#aaa;cursor:pointer;font-family:'Heebo',sans-serif;font-weight:700;padding:0;transition:color .12s;text-decoration:none;letter-spacing:.01em;}
+.link-btn.copied{color:#16a34a;}
+
+/* Bubble wrapper for top actions - חלונית עגולה אחת שמאחדת את כל הכפתורים */
+.bubble-wrap-outer{position:relative;display:inline-block;max-width:100%;margin-top:4px;}
+.bubble-top-actions{ position:absolute;top:-30px;left:2px; display:flex;align-items:center;gap:1px; opacity:0;pointer-events:none; transition:opacity .15s ease; z-index:10; direction:ltr; background:rgba(255,255,255,.97); border:1px solid #e5e7eb; border-radius:999px; padding:3px; box-shadow:0 2px 8px rgba(0,0,0,.13);}
+.msg-row:hover .bubble-top-actions{ opacity:1;pointer-events:all; }
+@media (hover:none){ .bubble-top-actions{ opacity:1;pointer-events:all; } }
+.bubble-top-actions .link-btn,
+.bubble-top-actions .cmt-btn,
+.bubble-top-actions .msg-action-btn{ background:none; border:none; box-shadow:none; border-radius:50%; width:24px;height:24px;padding:0; font-size:11px; color:#888; display:inline-flex;align-items:center;justify-content:center; font-family:'Heebo',sans-serif;font-weight:600; cursor:pointer;text-decoration:none; transition:background .12s,color .12s;}
+.bubble-top-actions .link-btn:hover,
+.bubble-top-actions .cmt-btn:hover{color:#1a56db;background:#eff6ff;}
+.bubble-top-actions .cmt-btn.has-cmt{color:#1a56db;}
+
+/* Admin action buttons */
+.msg-action-btn:hover{color:#dc2626;background:#fef2f2;}
+.msg-action-btn.quote:hover{color:#1a56db;background:#eff6ff;}
+.msg-action-btn.edit:hover{color:#059669;background:#ecfdf5;}
+.msg-action-btn.del:hover{color:#e02020;background:#fef2f2;}
+.msg-meta-edited{font-size:10px;color:#9ca3af;font-style:italic;font-weight:500;}
+
+/* Quote block */
+.quote-block{ display:flex;align-items:flex-start;gap:6px; background: linear-gradient(135deg,#f0f6ff,#f8faff);border-radius:8px; padding:7px 10px;margin-bottom:8px; cursor:pointer;transition:background .12s; border-right:3px solid #1a56db;}
+.quote-block:hover{background:#e8f0fe;}
+.quote-block i{margin-top:1px;flex-shrink:0;color:#1a56db;}
+.quote-block-text{ font-size:13px;color:#6b7280;font-style:italic; line-height:1.5;flex:1;}
+
+/* EMOJI PICKER */
+#emojiPicker{ position:fixed;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:8px; box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:600;display:none; grid-template-columns:repeat(6,28px);gap:3px; width:fit-content; animation:pickerPop .14s ease-out;}
+@keyframes pickerPop{from{opacity:0;transform:scale(.95) translateY(4px)}to{opacity:1;transform:scale(1) translateY(0)}}
+#emojiPicker.show{display:grid;}
+.emp-note{font-size:10px;color:#aaa;font-weight:600;}
+.ep-btn{background:none;border:none;font-size:17px;cursor:pointer;padding:1px;border-radius:6px;line-height:1;flex-shrink:0;font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;transition:background .1s;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;}
+.ep-btn:hover{background:#f0f0f0;}
+
+/* COMMENTS PANEL */
+#cpOverlay{display:none;}
+#commentsPanel{position:fixed;top:64px;left:0;right:auto;width:310px;max-width:100vw;height:calc(100% - 64px);background:#fff;box-shadow:4px 0 24px rgba(0,0,0,.12);z-index:300;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .3s cubic-bezier(.16,1,.3,1);}
+#commentsPanel.open{transform:translateX(0);}
+.cp-hdr{padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cp-title{font-size:15px;font-weight:800;color:#111;}
+.cp-close{background:none;border:none;font-size:17px;cursor:pointer;color:#aaa;padding:4px;border-radius:8px;}
+.cp-close:hover{background:#f3f4f6;}
+.cp-body{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
+.cp-spinner{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:10px;color:#bbb;font-size:12px;font-weight:600;padding:30px 0;}
+.cp-spinner-ring{width:28px;height:28px;border-radius:50%;border:2.5px solid #e5e7eb;border-top-color:#1a56db;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ci{display:flex;gap:8px;animation:cian .22s ease;}
+@keyframes cian{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.ci-av{width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;align-self:flex-start;}
+.ci-av-i{width:30px;height:30px;border-radius:50%;background:#1a56db;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:flex-start;}
+.ci-bubble{background:#f3f4f6;border-radius:4px 12px 12px 12px;padding:8px 12px;flex:1;position:relative;direction:rtl;}
+.ci-text{font-size:13px;line-height:1.6;color:#374151;word-break:break-word;}
+.ci-time{font-size:10px;color:#aaa;margin-top:3px;}
+.ci-del{position:absolute;top:6px;left:8px;background:none;border:none;font-size:11px;color:#ccc;cursor:pointer;opacity:0;transition:opacity .12s;}
+.ci-bubble:hover .ci-del{opacity:1;}
+.no-cmt{text-align:center;color:#aaa;font-size:13px;padding:30px 0;}
+.cp-inp-row{padding:10px 12px;border-top:1px solid #f0f0f0;display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
+.cp-inp{flex:1;border:1.5px solid #e5e7eb;border-radius:12px;padding:8px 12px;font-size:14px;font-family:'Heebo',sans-serif;resize:none;outline:none;max-height:80px;line-height:1.5;direction:rtl;}
+.cp-inp:focus{border-color:#93c5fd;}
+.cp-send{background:#1a56db;color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.cp-disabled-msg { text-align:center; color:#dc2626; font-size:12px; font-weight:700; padding:10px; background:#fef2f2; border-top:1px solid #fecaca; }
+
+/* HEADER ICON BUTTONS */
+.hdr-icon-btn,#searchBtn,#darkBtn,#notifBtn,#adBtn,#adminMsgsBtn,#siteSettingsBtn,#manageAdminsBtn,#writePermBtn,#updateModeHdrBtn,#leaderboardBtn{background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#888;transition:background .15s,color .15s;flex-shrink:0;text-decoration:none;position:relative;}
+.hdr-icon-btn:hover,#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#adBtn:hover,#adminMsgsBtn:hover,#siteSettingsBtn:hover,#manageAdminsBtn:hover,#writePermBtn:hover,#updateModeHdrBtn:hover,#leaderboardBtn:hover{background:#f3f4f6;color:#333;}
+#darkBtn.active{background:#1e1e30;color:#a5b4fc;}
+#darkBtn.active:hover{background:#2a2a45;color:#c4b5fd;}
+#notifBtn.active{background:#fef3c7;color:#d97706;}
+#notifBtn.active:hover{background:#fde68a;color:#b45309;}
+#notifBtn.active::after,#darkBtn.active::after{ content:'';position:absolute;top:5px;right:5px; width:6px;height:6px;border-radius:50%; border:1.5px solid #fff;}
+#notifBtn.active::after{background:#d97706;}
+#darkBtn.active::after{background:#a5b4fc;}
+#writePermBtn.has-granted{background:#eff6ff;color:#1a56db;}
+#updateModeHdrBtn{display:none;}
+#updateModeHdrBtn.is-on{background:#dcfce7;color:#16a34a;}
+#updateModeHdrBtn.is-on:hover{background:#bbf7d0;color:#15803d;}
+#updateModeHdrBtn.is-on::after{ content:'';position:absolute;top:5px;right:5px; width:6px;height:6px;border-radius:50%; background:#16a34a;border:1.5px solid #fff;}
+#updateModeHdrBtn.has-active{background:#dcfce7;color:#16a34a;}
+#updateModeHdrBtn.has-active:hover{background:#bbf7d0;color:#15803d;}
+#updateModeHdrBtn.has-active::after{ content:'';position:absolute;top:5px;right:5px; width:6px;height:6px;border-radius:50%; background:#16a34a;border:1.5px solid #fff;}
+#updateModeHdrBtn.no-active{background:#fff7ed;color:#ea580c;}
+#updateModeHdrBtn.no-active:hover{background:#ffedd5;color:#c2410c;}
+#updateModeHdrBtn.no-active::after{ content:'';position:absolute;top:5px;right:5px; width:6px;height:6px;border-radius:50%; background:#ea580c;border:1.5px solid #fff;}
+
+/* תפריט מנהל חדש בפרופיל */
+#userMenu { position: absolute; top: 54px; left: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 12px 36px rgba(0,0,0,.15); z-index: 900; min-width: 220px; overflow: hidden; font-family: 'Heebo', sans-serif; animation: pickerPop 0.2s ease-out; }
+body.dark #userMenu { background: #1a1a2e; border-color: #333; }
+
+#updateModePopover{ position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%); background:#fff;border:1.5px solid #e5e7eb;border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,.13);z-index:300; min-width:220px;overflow:hidden; animation:pickerPop .14s ease-out;direction:rtl;display:none;}
+#updateModePopover.open{display:block;}
+.ump-hdr{padding:10px 14px 6px;font-size:11px;font-weight:800;color:#9ca3af;border-bottom:1px solid #f3f4f6;}
+.ump-body{padding:8px 12px;display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;}
+.ump-row{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#374151;}
+.ump-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;}
+.ump-empty{font-size:12px;color:#aaa;text-align:center;padding:10px 0;}
+
+#updateTimeDialog{ position:fixed;inset:0;z-index:900; background:rgba(0,0,0,.4); display:none;align-items:center;justify-content:center; animation:lbIn .15s ease;}
+#updateTimeDialog.open{display:flex;}
+.utd-box{ background:#fff;border-radius:18px;padding:24px 24px 20px; width:280px;box-shadow:0 16px 48px rgba(0,0,0,.2); direction:rtl;display:flex;flex-direction:column;gap:14px;}
+.utd-title{font-size:15px;font-weight:800;color:#111;}
+.utd-sub{font-size:12px;color:#888;margin-top:-8px;}
+.utd-time-inp{ width:100%;border:1.5px solid #e5e7eb;border-radius:10px; padding:10px 12px;font-size:22px;font-weight:700; font-family:'Heebo',sans-serif;outline:none;text-align:center; direction:ltr;transition:border-color .15s;color:#111;}
+.utd-time-inp:focus{border-color:#1a56db;}
+.utd-btns{display:flex;gap:8px;}
+.utd-ok{flex:1;background:#16a34a;color:#fff;border:none;border-radius:10px;padding:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;}
+.utd-ok:hover{background:#15803d;}
+.utd-cancel{background:#f3f4f6;color:#6b7280;border:none;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;}
+.utd-cancel:hover{background:#e5e7eb;}
+
+#updateModeNotice{ display:none;align-items:center;gap:6px; font-size:11px;font-weight:700;color:#92400e; background:#fef3c7;border:1px solid #fde68a; border-radius:8px;padding:4px 9px;white-space:nowrap; cursor:pointer;transition:background .12s;flex-shrink:0;}
+#updateModeNotice:hover{background:#fde68a;}
+#updateModeNotice.show{display:inline-flex;}
+#adminMsgsBtn .unread-badge{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:#e02020;border:2px solid #fff;display:none;}
+#adminMsgsBtn .unread-badge.show{display:block;}
+
+/* SEARCH */
+#searchBar{position:absolute;top:50%;left:100%;margin-left:6px;transform:translateY(-50%);background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.12);display:none;align-items:center;gap:6px;padding:5px 10px 5px 8px;z-index:200;width:300px;white-space:nowrap;animation:searchPop .15s ease-out;}
+@keyframes searchPop{from{opacity:0;transform:translateY(-50%) scaleX(.85) translateX(-10px)}to{opacity:1;transform:translateY(-50%) scaleX(1) translateX(0)}}
+#searchBar.open{display:flex;}
+body.dark #searchBar{background:#1a1a2e;border-color:#3a3a50;}
+#searchInput{flex:1;border:none;border-radius:99px;padding:4px 8px;font-size:14px;font-family:'Heebo',sans-serif;outline:none;direction:rtl;background:transparent;}
+body.dark #searchInput{color:#e5e7eb;}
+#searchInput::placeholder{color:#bbb;}
+#searchClear{background:none;border:none;cursor:pointer;color:#bbb;font-size:14px;padding:2px;display:none;line-height:1;flex-shrink:0;}
+#searchClear.show{display:block;}
+#searchResults{display:none;flex:1;overflow-y:auto;padding:10px 0 24px;}
+#searchResultsInner{max-width:780px;margin:0 60px 0 auto;padding:0 10px 0 20px;display:flex;flex-direction:column;gap:6px;}
+@media(max-width:600px){#searchResultsInner{margin:0;padding:0 8px;}}
+#searchEmpty{text-align:center;padding:40px 20px;color:#aaa;font-size:14px;display:none;}
+
+/* ADMIN COMPOSE BAR */
+#composeEditBanner{ display:none;background:#fef3c7;border-bottom:1px solid #fde68a; padding:5px 14px;font-size:11px;font-weight:700;color:#92400e; direction:rtl;align-items:center;gap:6px;}
+#composeEditBanner.show{display:flex;}
+#adminComposeBar{ display:none;position:fixed;bottom:0;right:0;left:320px;z-index:200; background:#fff;border-top:2px solid #e5e7eb;box-shadow:0 -4px 20px rgba(0,0,0,.10); direction:rtl;flex-direction:column;}
+@media(max-width:900px){#adminComposeBar{right:0;left:0;}}
+#adminComposeBar.show{display:flex;}
+#adminComposeBar.blocked #composeEditor{background:#f3f4f6;color:#9ca3af;cursor:not-allowed;pointer-events:none;border-color:#e5e7eb;}
+#adminComposeBar.blocked .compose-send-btn{background:#d1d5db;cursor:not-allowed;box-shadow:none;pointer-events:none;}
+#adminComposeBar.blocked .compose-toolbar button:not(#profileToggle){opacity:.35;pointer-events:none;}
+#adminComposeBar.blocked .ctb-dropdown-wrap{opacity:.35;pointer-events:none;}
+
+#blockNotice{display:none;padding:8px 14px;font-size:13px;font-weight:800;color:#b91c1c;background:#fef2f2;border-bottom:1px solid #fecaca;text-align:center;flex-shrink:0;}
+#blockNotice.show{display:block;}
+#updateModeBar{display:none;padding:6px 14px;font-size:11px;font-weight:700;color:#374151;background:#f0fdf4;border-bottom:1px solid #bbf7d0;align-items:center;gap:8px;flex-shrink:0;direction:rtl;flex-wrap:wrap;}
+#updateModeBar.show{display:flex;}
+.update-mode-btn{display:flex;align-items:center;gap:5px;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;transition:all .15s;flex-shrink:0;}
+.update-mode-btn.on{background:#16a34a;color:#fff;}
+.update-mode-btn.off{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
+#updateModeWho{font-size:11px;color:#16a34a;font-weight:700;margin-right:auto;}
+
+.wperm-chip{position:relative;cursor:pointer;border-radius:50%;transition:transform .15s,box-shadow .15s;flex-shrink:0;}
+.wperm-chip:hover{transform:scale(1.12);}
+.wperm-chip.granted{box-shadow:0 0 0 2.5px #1a56db;}
+.wperm-chip.granted::after{ content:'✓';position:absolute;bottom:-2px;right:-2px; width:12px;height:12px;border-radius:50%; background:#1a56db;color:#fff;font-size:7px;font-weight:900; display:flex;align-items:center;justify-content:center; border:1.5px solid #fff;line-height:12px;text-align:center;}
+
+.compose-toolbar{display:flex;align-items:center;gap:4px;padding:6px 12px 4px;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;}
+.ctb-btn{background:none;border:1.5px solid #e5e7eb;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:700;color:#374151;cursor:pointer;font-family:'Heebo',sans-serif;display:flex;align-items:center;gap:4px;transition:background .12s,border-color .12s;}
+.ctb-btn:hover{background:#f3f4f6;border-color:#d1d5db;}
+.ctb-btn.red-active{background:#fef2f2;border-color:#fecaca;color:#dc2626;}
+.ctb-btn.has-val{background:#f0fdf4;border-color:#bbf7d0;color:#16a34a;}
+
+#profileToggle{display:flex;align-items:center;gap:5px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;color:#1a56db;cursor:pointer;font-family:'Heebo',sans-serif;transition:all .15s;}
+#profileToggle.red{background:#fef2f2;border-color:#fecaca;color:#dc2626;}
+
+.compose-main{display:flex;align-items:flex-end;gap:8px;padding:8px 12px;}
+#composeEditor{ flex:1;border:1.5px solid #e5e7eb;border-radius:14px; padding:10px 14px;font-size:15px;font-family:'Heebo',sans-serif; outline:none;resize:none;max-height:120px;overflow-y:auto; line-height:1.6;direction:rtl;background:#fafafa; transition:border-color .15s,box-shadow .15s;}
+#composeEditor:focus{border-color:#1a56db;background:#fff;box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+#composeEditor:empty:before{content:attr(placeholder);color:#b0b8c4;}
+.compose-send-btn{ width:42px;height:42px;border-radius:50%;border:none; background:linear-gradient(135deg,#1a56db,#1d4ed8); color:#fff;cursor:pointer; display:flex;align-items:center;justify-content:center; flex-shrink:0;box-shadow:0 3px 10px rgba(26,86,219,.35); transition:all .2s;}
+.compose-send-btn:hover{transform:scale(1.06);box-shadow:0 4px 14px rgba(26,86,219,.45);}
+.compose-send-btn.red{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 3px 10px rgba(220,38,38,.35);}
+
+#attachPreview{display:none;padding:6px 12px;gap:8px;align-items:center;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;}
+#attachPreview.show{display:flex;}
+.attach-chip{display:flex;align-items:center;gap:5px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px;padding:4px 8px;font-size:11px;font-weight:600;color:#374151;}
+.attach-chip button{background:none;border:none;cursor:pointer;color:#9ca3af;font-size:11px;padding:0;line-height:1;}
+.attach-chip button:hover{color:#dc2626;}
+
+.ctb-dropdown{position:absolute;bottom:100%;right:0;background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:14px;min-width:280px;box-shadow:0 -8px 24px rgba(0,0,0,.12);z-index:210;display:none;animation:pickerPop .14s ease-out;direction:rtl;}
+.ctb-dropdown.open{display:block;}
+.ctb-dropdown-wrap{position:relative;}
+.ctb-inp{width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:7px 11px;font-size:13px;outline:none;direction:ltr;font-family:'Heebo',sans-serif;margin-bottom:8px;transition:border-color .15s;}
+.ctb-inp:focus{border-color:#1a56db;}
+.ctb-inp-label{font-size:11px;font-weight:700;color:#6b7280;margin-bottom:4px;display:block;}
+.ctb-add-btn{width:100%;background:#1a56db;color:#fff;border:none;border-radius:10px;padding:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;}
+
+#loadMoreSpinner{display:none;align-items:center;justify-content:center;padding:16px;gap:8px;color:#aaa;font-size:13px;font-family:'Heebo',sans-serif;}
+.unread-sep{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:800;color:#e02020;padding:6px 0;margin:4px 0;direction:rtl;position:relative;}
+.unread-sep::before,.unread-sep::after{content:'';flex:1;height:1.5px;background:#fecaca;}
+.unread-sep span{background:#fff5f5;border:1px solid #fecaca;border-radius:99px;padding:2px 10px;white-space:nowrap;flex-shrink:0;}
+body.dark .unread-sep::before,body.dark .unread-sep::after{background:#4a1212;}
+body.dark .unread-sep span{background:#2a1010;border-color:#7f1d1d;}
+#loadMoreSpinner.show{display:flex;}
+.lm-ring{width:22px;height:22px;border-radius:50%;border:2.5px solid #e5e7eb;border-top-color:#1a56db;animation:spin .7s linear infinite;flex-shrink:0;}
+
+#scrollDownBtn{position:fixed;bottom:20px;left:calc(320px + 12px);width:44px;height:44px;background:#fff;border:1.5px solid #e5e7eb;border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.15);cursor:pointer;z-index:201;transition:bottom .2s ease;}
+#scrollDownBtn.show{display:flex;}
+#scrollDownBtn:hover{background:#f3f4f6;border-color:#d1d5db;}
+#scrollDownBtn .scroll-arrow{color:#374151;font-size:16px;line-height:1;}
+@media(max-width:900px){#scrollDownBtn{left:50%;transform:translateX(-50%);}}
+body.has-compose #scrollDownBtn{bottom:calc(var(--compose-h,120px) + 16px);}
+.unread-dot{width:8px;height:8px;border-radius:50%;background:#e02020;flex-shrink:0;display:none;box-shadow:0 0 0 2px #fff;}
+#scrollDownBtn.has-new .unread-dot{display:block;}
+
+#prog{position:fixed;top:0;inset-inline:0;height:2px;background:#1a56db;transform:scaleX(0);transform-origin:right;z-index:999;display:none;}
+#prog.on{display:block;animation:pr 1.1s ease-in-out infinite;}
+@keyframes pr{0%{transform:scaleX(0);transform-origin:right}50%{transform:scaleX(.55);transform-origin:right}100%{transform:scaleX(0);transform-origin:left}}
+
+#empty{display:none;text-align:center;padding:60px 20px;color:#aaa;}
+#empty i{font-size:36px;opacity:.2;margin-bottom:10px;display:block;}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;cursor:zoom-out;animation:lbIn .18s ease;}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+#lightbox.show{display:flex;}
+#lightbox img{max-width:94vw;max-height:90vh;border-radius:10px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.5);cursor:default;}
+#lbClose{position:fixed;top:14px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .12s;z-index:901;}
+#lbClose:hover{background:rgba(255,255,255,.28);}
+
+#adminMsgsModal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;}
+#adminMsgsModal.open{display:flex;}
+.admin-msgs-box{background:#fff;border-radius:20px;padding:0;max-width:480px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow:hidden;}
+.admin-msgs-hdr{padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.admin-msgs-title{font-size:15px;font-weight:800;color:#111;}
+.admin-msgs-close{background:none;border:none;font-size:16px;cursor:pointer;color:#aaa;padding:4px;border-radius:8px;}
+.admin-msgs-close:hover{background:#f3f4f6;}
+.admin-msgs-body{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.admin-msg-item{border-radius:12px;padding:12px 14px;border:1px solid #e5e7eb;background:#fafafa;}
+.admin-msg-item.unread{background:#eff6ff;border-color:#bfdbfe;}
+.admin-msg-sender-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.admin-msg-av{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.admin-msg-av img{width:100%;height:100%;object-fit:cover;}
+.admin-msg-name{font-size:12px;font-weight:800;color:#374151;}
+.admin-msg-time{font-size:10px;color:#aaa;margin-right:auto;}
+.admin-msg-text{font-size:13px;line-height:1.6;color:#374151;white-space:pre-wrap;}
+.admin-msgs-send{padding:12px 16px;border-top:1px solid #f0f0f0;display:none;gap:8px;align-items:flex-end;flex-shrink:0;}
+.admin-send-inp{flex:1;border:1.5px solid #e5e7eb;border-radius:12px;padding:8px 12px;font-size:13px;font-family:'Heebo',sans-serif;resize:none;outline:none;max-height:80px;line-height:1.5;direction:rtl;}
+.admin-send-inp:focus{border-color:#93c5fd;}
+.admin-send-btn{background:#1a56db;color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+
+#adOverlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;}
+#adCloseBtn:disabled{opacity:0.5;cursor:not-allowed;}
+
+#siteSettingsModal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;}
+#siteSettingsModal.open{display:flex;}
+.ss-box{background:#fff;border-radius:20px;padding:20px;max-width:500px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow-y:auto;}
+.ss-title{font-size:16px;font-weight:800;color:#111;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;}
+.ss-section{border:1px solid #e5e7eb;border-radius:12px;padding:12px;margin-bottom:12px;}
+.ss-section-title{font-size:13px;font-weight:700;color:#1a56db;margin-bottom:8px;}
+.ss-input{width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:8px;font-family:'Heebo';font-size:13px;}
+.ss-btn{background:#1a56db;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Heebo';margin-top:8px;}
+
+/* LEADERBOARD (סטטיסטיקות) */
+.lb-tab { background:#fff; border:1px solid #d1d5db; padding:6px 14px; border-radius:99px; font-family:'Heebo'; font-weight:700; color:#4b5563; cursor:pointer; transition:all 0.2s; }
+.lb-tab:hover { background:#f3f4f6; }
+.lb-tab.active { background:#1a56db; color:#fff; border-color:#1a56db; }
+
+.lb-podium { display:flex; align-items:flex-end; justify-content:center; gap:15px; margin-top:30px; height:200px; }
+.podium-item { display:flex; flex-direction:column; align-items:center; width:30%; }
+.podium-bar { width:100%; border-radius:12px 12px 0 0; color:white; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding-top:10px; font-weight:900; font-size:24px; transition:height 1s ease; box-shadow:0 10px 20px rgba(0,0,0,0.1); }
+.podium-1 .podium-bar { background:linear-gradient(to top, #ca8a04, #fde047); height:160px; }
+.podium-2 .podium-bar { background:linear-gradient(to top, #64748b, #cbd5e1); height:120px; }
+.podium-3 .podium-bar { background:linear-gradient(to top, #9a3412, #fdba74); height:90px; }
+.podium-av { width:50px; height:50px; border-radius:50%; border:3px solid #fff; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-bottom:-25px; z-index:2; background:#fff; object-fit:cover; }
+.podium-name { margin-top:35px; font-weight:800; color:#111; font-size:14px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; }
+
+.lb-bars { display:flex; flex-direction:column; gap:12px; }
+.lb-bar-row { display:flex; align-items:center; gap:10px; }
+.lb-bar-name { width:100px; font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left; }
+.lb-bar-track { flex:1; background:#e5e7eb; height:20px; border-radius:10px; overflow:hidden; display:flex; }
+.lb-bar-fill { background:linear-gradient(90deg, #3b82f6, #1a56db); height:100%; display:flex; align-items:center; padding:0 8px; color:white; font-size:10px; font-weight:800; transition:width 1s ease; white-space:nowrap; }
+
+.lb-list { display:flex; flex-direction:column; gap:8px; }
+.lb-list-item { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:10px 16px; transition:transform 0.2s, box-shadow 0.2s; }
+.lb-list-item:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+.lb-rank { font-size:18px; font-weight:900; color:#9ca3af; width:24px; text-align:center; }
+.lb-rank.gold { color:#ca8a04; }
+.lb-rank.silver { color:#64748b; }
+.lb-rank.bronze { color:#9a3412; }
+.lb-info { flex:1; }
+.lb-stats { display:flex; gap:15px; font-size:12px; font-weight:700; color:#4b5563; }
+.lb-stat-badge { background:#eff6ff; color:#1a56db; padding:4px 10px; border-radius:8px; display:flex; align-items:center; gap:5px; }
+
+/* DARK MODE EXTRA FIXES */
+body.dark .lb-list-item { background:#1e1e30; border-color:#333; }
+body.dark .lb-info { color:#fff; }
+body.dark .lb-stat-badge { background:#1a1a2e; }
+body.dark .ss-box, body.dark .utd-box { background:#1e1e30; color:#e5e7eb; }
+body.dark .ss-title, body.dark .utd-title { color:#fff; }
+body.dark .ss-section { border-color:#333; }
+body.dark .ss-input, body.dark .utd-time-inp { background:#0f0f15; color:#fff; border-color:#333; }
+
+/* MODALS VISIBILITY AND ANIMATIONS */
+#reportModalOverlay { display:flex !important; }
+#reportModalOverlay[style*="display:none"] { display:none !important; }
+#reportsModal { display:flex !important; }
+#reportsModal[style*="display:none"] { display:none !important; }
+@keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== DARK MODE FULL SCREEN FIX ===== */
+body.dark {
+  background: #0f0f15 !important;
+  color: #e5e7eb;
+}
+body.dark header {
+  background: #1a1a2e !important;
+  border-color: #2a2a40 !important;
+}
+body.dark .hdr-name { color: #f3f4f6 !important; }
+body.dark #app { background: #0f0f15; }
+body.dark #feedWrap { background: #0f0f15; }
+body.dark .bubble { background: #1e1e30 !important; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+body.dark .bubble-text { color: #d1d5db !important; }
+body.dark .bubble-headline { color: #f3f4f6 !important; }
+body.dark .rxn-chip { background: #2a2a40; border-color: #3a3a55; }
+body.dark .rxn-count { color: #9ca3af; }
+body.dark .bubble-top-actions { background: #1e1e30; border-color: #3a3a55; }
+body.dark .bubble-top-actions .link-btn,
+body.dark .bubble-top-actions .cmt-btn,
+body.dark .msg-action-btn { color: #9ca3af; }
+body.dark #adminComposeBar { background: #1a1a2e !important; border-color: #2a2a40 !important; }
+body.dark #composeEditor { background: #0f0f15 !important; border-color: #3a3a55 !important; color: #e5e7eb !important; }
+body.dark .compose-toolbar { border-color: #2a2a40; }
+body.dark .ctb-btn { background: #1a1a2e; border-color: #3a3a55; color: #d1d5db; }
+body.dark #tagFilterBar { background: #1a1a2e !important; border-color: #2a2a40 !important; }
+body.dark .msg-meta-name { color: #9ca3af; }
+body.dark .msg-meta-time { color: #6b7280; }
+body.dark #scrollDownBtn { background: #1e1e30; border-color: #3a3a55; }
+body.dark #scrollDownBtn .scroll-arrow { color: #d1d5db; }
+body.dark .unread-sep { color: #f87171; }
+body.dark .cp-hdr { background: #1a1a2e; border-color: #2a2a40; }
+body.dark .cp-title { color: #f3f4f6; }
+body.dark #commentsPanel { background: #1a1a2e; }
+body.dark .ci-bubble { background: #2a2a40; }
+body.dark .ci-text { color: #d1d5db; }
+body.dark .cp-inp { background: #0f0f15; border-color: #3a3a55; color: #e5e7eb; }
+body.dark .cp-inp-row { background: #1a1a2e; border-color: #2a2a40; }
+body.dark #emojiPicker { background: #1e1e30; border-color: #3a3a55; }
+body.dark .ep-btn:hover { background: #2a2a40; }
+body.dark .hdr-icon-btn, body.dark #searchBtn, body.dark #darkBtn,
+body.dark #notifBtn, body.dark #adBtn, body.dark #adminMsgsBtn,
+body.dark #siteSettingsBtn, body.dark #manageAdminsBtn,
+body.dark #writePermBtn, body.dark #updateModeHdrBtn, body.dark #leaderboardBtn {
+  color: #9ca3af;
+}
+body.dark .hdr-icon-btn:hover, body.dark #searchBtn:hover, body.dark #notifBtn:hover,
+body.dark #adBtn:hover, body.dark #adminMsgsBtn:hover { background: #2a2a40 !important; color: #f3f4f6 !important; }
+body.dark .quote-block { background: #1e1e30; border-color: #3b82f6; }
+body.dark .quote-block-text { color: #9ca3af; }
+body.dark .lnk-btn { background: #2a2a40; color: #d1d5db; }
+body.dark .ctb-dropdown { background: #1e1e30; border-color: #3a3a55; }
+body.dark .ctb-inp-label { color: #9ca3af; }
+body.dark .ctb-inp { background: #0f0f15; border-color: #3a3a55; color: #e5e7eb; }
+body.dark .post-tag { background: #2a2a40; color: #d1d5db; border-color: #3a3a55; }
+body.dark .post-tag:hover { background: #3a3a55; color: #f3f4f6; }
+body.dark #searchResultsInner .bubble { background: #1e1e30 !important; }
+
+/* עיצוב כפתור הסטטיסטיקות */
+.stats-hdr {
+    direction: rtl !important;
+    padding: 12px 16px !important;
+    margin: 0 14px 15px !important;
+    background: #f8fafc !important; 
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    color: #334155 !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    display: none; /* ברירת מחדל - מוסתר! */
+    justify-content: space-between !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.stats-hdr:hover {
+    background: #eff6ff !important; 
+    color: #1a56db !important; 
+    border-color: #bfdbfe !important;
+}
+/* 1. שחרור מלא של ההגבלות מהודעות בפיד (כדי שלא ימעכו את התוכן) */
+#feedWrap .msg-text, 
+#feedWrap .msg-content, 
+#feedWrap .feed-msg-body {
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+
+
+/* ====== איפוס הרקע הקיים של האתר (כדי שלא יסתיר לנו) ====== */
+body, html {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* ====== איפוס כדי ששום דבר לא יסתיר את העומק ====== */
+body, html {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* ====== רקע לבן ונקי ====== */
+body, html { background: #fff !important; }
+/* ====== מערכת פריסה חכמה ואוטומטית ====== */
+
+/* המיכל העוטף של הכל */
+.layout-wrapper {
+    display: flex; 
+    justify-content: center; /* ממרכז את הכל אוטומטית כשהצד ריק */
+    align-items: flex-start;
+    gap: 40px; 
+    width: 100%;
+    padding-right: 2%; 
+}
+
+/* פיד היצירות שלך */
+.your-feed-container {
+    width: 100%;
+    max-width: 850px; 
+}
+
+/* 1. הגדרה לעמודת הפרסומות כשיש בה תוכן */
+.ads-sidebar {
+    width: 300px; 
+    flex-shrink: 0; 
+}
+
+/* 2. החיישן האוטומטי: אם קופסת הפרסומות ריקה מתוכן - תעלים אותה! */
+.ads-sidebar:empty {
+    display: none;
+}
+/* פריסה חכמה לאזור הפוסטים (בלי לשבור את ה-JS) */
+#prog {
+    width: 100%;
+    max-width: 850px; /* רוחב מושלם שלא נמתח מידי */
+    margin-right: 5%; /* מרחיק קצת מהתפריט הימני */
+    margin-left: auto; /* דוחף הכל שמאלה ומשאיר מקום לפרסומות בעתיד */
+}
+
+/* ================= פאנל ניהול (עדין ובהיר) ================= */
+#adminPanelModal{
+  display:none; position:fixed; inset:0; z-index:850;
+  background:rgba(30,32,44,.42); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:20px;
+  animation:apFadeIn .2s ease-out;
+}
+#adminPanelModal.open{display:flex;}
+@keyframes apFadeIn{from{opacity:0}to{opacity:1}}
+.ap-box{
+  width:100%; max-width:840px; height:min(88vh,640px); display:flex; flex-direction:row;
+  background:#ffffff; border-radius:22px; overflow:hidden;
+  box-shadow:0 30px 70px rgba(30,35,60,.22), 0 0 0 1px rgba(20,20,30,.04);
+  animation:apPop .28s cubic-bezier(.16,1,.3,1) both;
+  font-family:'Heebo',sans-serif; direction:rtl;
+}
+@keyframes apPop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* --- סרגל צד (קטגוריות) --- */
+.ap-sidebar{
+  width:230px; min-width:230px; height:100%; flex-shrink:0;
+  background:#f8f9fc; border-left:1px solid #eef0f5;
+  display:flex; flex-direction:column;
+}
+.ap-sidebar-user{
+  padding:20px 18px 16px; display:flex; align-items:center; gap:11px; border-bottom:1px solid #eef0f5; flex-shrink:0;
+}
+.ap-sidebar-user img, .ap-sidebar-avatar-fallback{
+  width:40px; height:40px; border-radius:12px; object-fit:cover; flex-shrink:0;
+  box-shadow:0 2px 8px rgba(30,35,60,.1);
+}
+.ap-sidebar-avatar-fallback{background:#4f5fd6; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:15px;}
+.ap-sidebar-name{font-size:13.5px; font-weight:800; color:#1f2430; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ap-sidebar-role{font-size:11px; font-weight:700; color:#8a90a6; margin-top:2px;}
+.ap-nav{flex:1; overflow-y:auto; padding:12px 10px;}
+.ap-nav-item{
+  width:100%; display:flex; align-items:center; gap:11px; padding:10px 11px; margin-bottom:3px;
+  background:none; border:none; border-radius:12px; cursor:pointer; text-align:right;
+  font-family:'Heebo',sans-serif; font-size:13px; font-weight:700; color:#5b6072;
+  transition:background .15s, color .15s;
+}
+.ap-nav-item:hover{background:#eef0f7; color:#1f2430;}
+.ap-nav-item.active{background:#eef1fd; color:#4a55c7;}
+.ap-nav-icon{
+  width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  font-size:13px; background:rgba(79,95,214,.09); color:#6169c9; transition:background .15s, color .15s;
+}
+.ap-nav-item.active .ap-nav-icon{background:#4a55c7; color:#fff;}
+.ap-nav-item:hover .ap-nav-icon{background:rgba(79,95,214,.16);}
+
+/* --- אזור תוכן --- */
+.ap-content{flex:1; min-width:0; display:flex; flex-direction:column; height:100%; background:#fff;}
+.ap-content-hdr{
+  padding:18px 24px; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid #f1f2f6; flex-shrink:0;
+}
+.ap-content-title{font-size:16px; font-weight:900; color:#1f2430;}
+.ap-hdr-close{
+  background:#f4f5f9; border:none; color:#8a90a6; width:32px; height:32px; border-radius:10px;
+  cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:background .15s, color .15s;
+}
+.ap-hdr-close:hover{background:#eceef4; color:#4a4f63;}
+.ap-content-body{flex:1; overflow-y:auto; padding:20px 24px 28px;}
+.ap-sec{animation:apSecIn .22s ease-out both;}
+@keyframes apSecIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* --- רכיבי תוכן משותפים (עדינים) --- */
+.ap-stat-card{background:#f8f9fc; border:1px solid #eef0f5; border-radius:14px; padding:16px; text-align:center;}
+.ap-stat-num{font-size:22px; font-weight:900; color:#4a55c7; margin:6px 0 2px;}
+.ap-stat-lbl{font-size:11.5px; font-weight:700; color:#8a90a6;}
+.ap-field{border:1.5px solid #eef0f5; background:#fbfbfd; border-radius:11px; padding:9px 13px; font-size:13px; outline:none; font-family:'Heebo',sans-serif; width:100%; transition:border-color .15s, background .15s;}
+.ap-field:focus{border-color:#c2c8f0; background:#fff;}
+.ap-btn{border:none; border-radius:11px; padding:10px 16px; font-size:13px; font-weight:800; cursor:pointer; font-family:'Heebo',sans-serif; transition:filter .15s, background .15s;}
+.ap-btn:hover{filter:brightness(.96);}
+.ap-btn-primary{background:#4a55c7; color:#fff;}
+.ap-btn-soft{background:#f4f5f9; color:#4a4f63;}
+.ap-btn-danger{background:#fdf1f1; color:#c94b4b; border:1px solid #f6dede;}
+.ap-empty{text-align:center; padding:34px 10px; color:#a3a8b8; font-size:13px; font-weight:600;}
+.ap-row-card{display:flex; align-items:center; gap:11px; padding:11px; border-radius:13px; background:#f8f9fc; border:1px solid #eef0f5;}
+
+@media(max-width:680px){
+  .ap-box{flex-direction:column; height:min(92vh,640px); max-width:460px;}
+  .ap-sidebar{width:100%; min-width:0; border-left:none; border-bottom:1px solid #eef0f5; flex-direction:row; align-items:center;}
+  .ap-sidebar-user{border-bottom:none; border-left:1px solid #eef0f5; flex-shrink:0;}
+  .ap-nav{flex:1; display:flex; overflow-x:auto; overflow-y:hidden; padding:10px; gap:4px;}
+  .ap-nav-item{width:auto; white-space:nowrap; margin-bottom:0;}
+}
+
+</style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q4DQKGJ9E3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Q4DQKGJ9E3');
+</script>
+</head>
+<div id="prog"></div>
+<div id="bannedScreen" style="display:none;">
+  <i class="fas fa-ban" style="font-size:80px;color:#dc2626;margin-bottom:20px;"></i>
+  <h1 style="font-size:32px;font-weight:900;margin-bottom:10px;">הגישה נחסמה</h1>
+  <p style="font-size:16px;color:#aaa;max-width:400px;line-height:1.6;">החשבון שלך נחסם מגישה לאתר על ידי הנהלת הקהילה.<br>לא ניתן לצפות או לכתוב תכנים.</p>
+  <button onclick="doLogout()" style="margin-top:30px;background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Heebo',sans-serif;">התנתק מהמערכת</button>
+</div>
+
+<div id="loginScreen">
+ <div class="login-card">
+    <img class="login-logo-img" src="https://cdn-icons-png.flaticon.com/128/6476/6476785.png" onerror="this.style.display='none'">
+    <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים על ידי דוד</div>
+    <div class="login-sub">התחברות באמצעות גוגל</div>
+    <div id="googleBtn" style="display:flex; justify-content:center;"></div>
+  </div>
+</div>
+
+<div id="rightSidebar">
+  <div id="adInChat" style="display:none;flex:1;overflow:hidden;">
+    <iframe id="adInChatFrame" srcdoc="" style="width:100%;height:100%;border:none;display:none;"
+      sandbox="allow-scripts allow-popups allow-forms allow-top-navigation-by-user-activation"></iframe>
+    <a id="adInChatLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
+      <img id="adInChatImg" src="" style="width:100%;height:auto;display:block;">
+    </a>
+  </div>
+</div>
+
+<div id="adOnlySidebar" style="display:none;width:320px;min-width:320px;background:#fff;border-left:1px solid rgba(0,0,0,.08);flex-shrink:0;position:sticky;top:64px;height:calc(100vh - 64px);overflow:hidden;">
+  <a id="adSidebarLink" href="#" target="_blank" rel="noopener noreferrer">
+    <img id="adSidebarImg" src="" alt="פרסומת" style="width:100%;height:auto;display:block;">
+  </a>
+  <iframe id="adSidebarFrame" src="" style="display:none;width:100%;height:100%;border:none;" sandbox="allow-scripts allow-popups allow-forms allow-top-navigation-by-user-activation" loading="lazy"></iframe>
+</div>
+<div id="app">
+  <header>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;position:relative;">
+      <img class="hdr-avatar" src="https://cdn-icons-png.flaticon.com/128/6476/6476785.png" onerror="this.style.background='#e02020'">
+      <div id="hdrEmailCountBadge" style="position:absolute;top:-4px;left:-4px;background:#1a56db;color:#fff;border-radius:99px;font-size:9px;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;border:1.5px solid #fff;display:none;font-family:'Heebo',sans-serif;line-height:14px;"></div>
+    </div>
+    <div class="hdr-info">
+      <div class="hdr-name" id="hdrChannelName">xnet פרוייקטים ועדכונים על ידי דוד</div>
+      <div class="hdr-desc">עדכוני פרוייקטים התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet</div>
+      <div class="hdr-status">
+        <span id="publicUserCount">...</span> עוקבים
+      </div>
+    </div>
+    <div class="hdr-user">
+      <div style="position:relative;">
+        <button id="searchBtn" onclick="toggleSearch()" title="חיפוש">
+          <i class="fas fa-search" style="font-size:13px"></i>
+        </button>
+        <div id="searchBar">
+          <input id="searchInput" type="text" placeholder="חיפוש..." oninput="onSearch(this.value)" />
+          <button id="searchClear" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      
+      <button class="hdr-icon-btn" onclick="window.open('mailto:0548537646a@gmail.com?subject=%D7%9C%D7%9B%D7%91%D7%95%D7%93%20%D7%9E%D7%A0%D7%94%D7%9C%20%D7%90%D7%AA%D7%A8%20%D7%91%D7%99%D7%A0%D7%94%20%D7%95%D7%93%D7%A2%D7%94','_blank')" title="פנייה למנהל">
+        <i class="fas fa-envelope" style="font-size:13px"></i>
+      </button>
+      <button id="darkBtn" onclick="toggleDark()" title="מצב כהה">
+        <i class="fas fa-moon" style="font-size:13px"></i>
+      </button>
+      <button id="notifBtn" onclick="toggleNotifications()" title="התראות">
+        <i class="fas fa-bell" style="font-size:13px"></i>
+      </button>
+      
+      <div id="userAvatar" style="position:relative; margin-right:5px;"></div>
+    </div>
+  </header>
+
+  <div id="feedWrap">
+    <div id="loadMoreSpinner"><div class="lm-ring"></div>טוען עוד...</div>
+    <div id="feedInner"></div>
+    <div id="empty"><i class="fas fa-satellite-dish"></i><p>ממתין לעדכונים...</p></div>
+  </div>
+
+  <div id="searchResults">
+    <div id="searchResultsInner"></div>
+    <div id="searchEmpty">לא נמצאו תוצאות</div>
+  </div>
+
+  <button id="scrollDownBtn" onclick="scrollToBottom()">
+    <div class="unread-dot"></div>
+    <i class="fas fa-arrow-down scroll-arrow"></i>
+  </button>
+</div>
+
+<div id="adminComposeBar">
+  <div id="composeEditBanner">
+    <i class="fas fa-pen" style="font-size:10px"></i>
+    <span>מצב עריכה — ערוך את ההודעה ולחץ ✓ לשמור</span>
+  </div>
+  <div id="updateModeBar">
+    <button class="update-mode-btn off" id="updateModeBtn" onclick="toggleUpdateMode()">
+      <i class="fas fa-times" style="font-size:9px"></i> לא מעדכן
+    </button>
+    <span id="updateModeWho"></span>
+  </div>
+  <div id="blockNotice">✋ אין לך הרשאת כתיבה בערוץ זה — עברת למצב צפייה בלבד</div>
+  <div class="compose-toolbar">
+    <div id="composerNameBadge" style="background:#eff6ff; color:#1a56db; padding:4px 10px; border-radius:8px; font-size:12px; font-weight:800; border:1px solid #bfdbfe; margin-left:10px;"></div>
+    
+    <button class="ctb-btn" onmousedown="event.preventDefault()" onclick="composeFormat('bold')" title="מודגש"><i class="fas fa-bold"></i></button>
+    <button class="ctb-btn" onmousedown="event.preventDefault()" onclick="composeFormat('italic')" title="נטוי"><i class="fas fa-italic"></i></button>
+    <div style="width:1px;height:16px;background:#e5e7eb;margin:0 2px;"></div>
+    
+    <div class="ctb-dropdown-wrap" id="imgDropWrap">
+      <button class="ctb-btn" id="imgDropBtn" onclick="toggleCtbDropdown('imgDrop')" title="תמונה">
+        <i class="fas fa-image"></i> תמונה
+      </button>
+      <div class="ctb-dropdown" id="imgDrop">
+        <span class="ctb-inp-label">הדבק כתובת URL של תמונה</span>
+        <input class="ctb-inp" id="composeImgUrl" type="text" placeholder="https://..." oninput="updateComposeImg()">
+        <div id="composeImgThumb" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;">
+          <img id="composeImgThumbImg" style="width:100%;max-height:100px;object-fit:contain;display:block;">
+          <button onclick="clearComposeImg()" style="width:100%;background:#fef2f2;border:none;border-top:1px solid #fecaca;color:#dc2626;font-size:11px;font-weight:700;cursor:pointer;padding:4px;font-family:'Heebo',sans-serif;">הסר תמונה</button>
+        </div>
+      </div>
+    </div> <div class="ctb-dropdown-wrap" id="vidDropWrap">
+      <button class="ctb-btn" id="vidDropBtn" onclick="toggleCtbDropdown('vidDrop')" title="סרטון">
+        <i class="fas fa-video"></i> סרטון
+      </button>
+      <div class="ctb-dropdown" id="vidDrop">
+        <span class="ctb-inp-label">קישור לסרטון מכל מקור (URL)</span>
+        <input class="ctb-inp" id="composeVidUrl" type="text" placeholder="https://..." oninput="updateComposeVid()">
+      </div>
+    </div>
+    <div class="ctb-dropdown-wrap" id="btnDropWrap">
+      <button class="ctb-btn" id="btnDropBtn" onclick="toggleCtbDropdown('btnDrop')" title="כפתור">
+        <i class="fas fa-mouse-pointer"></i> כפתור
+      </button>
+      <div class="ctb-dropdown" id="btnDrop">
+        <span class="ctb-inp-label">טקסט כפתור</span>
+        <input class="ctb-inp" id="composeBtnText" placeholder="לחץ כאן" style="direction:rtl;">
+        <span class="ctb-inp-label">קישור</span>
+        <input class="ctb-inp" id="composeBtnUrl" placeholder="https://...">
+        <button class="ctb-add-btn" onclick="addComposeButton()">+ הוסף כפתור</button>
+        <div id="composeBtnList" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"></div>
+      </div>
+    </div>
+    <div class="ctb-dropdown-wrap" id="colorDropWrap">
+      <button class="ctb-btn" id="colorDropBtn" onclick="toggleCtbDropdown('colorDrop')" title="צבע טקסט">
+        <i class="fas fa-palette" style="font-size:11px"></i> צבע
+      </button>
+      <div class="ctb-dropdown" id="colorDrop" style="min-width:220px;">
+        <span class="ctb-inp-label">בחר צבע לטקסט הנבחר</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#e02020')" style="width:28px;height:28px;border-radius:6px;background:#e02020;border:2px solid transparent;cursor:pointer;" title="אדום"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#1a56db')" style="width:28px;height:28px;border-radius:6px;background:#1a56db;border:2px solid transparent;cursor:pointer;" title="כחול"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#059669')" style="width:28px;height:28px;border-radius:6px;background:#059669;border:2px solid transparent;cursor:pointer;" title="ירוק"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#d97706')" style="width:28px;height:28px;border-radius:6px;background:#d97706;border:2px solid transparent;cursor:pointer;" title="כתום"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#7c3aed')" style="width:28px;height:28px;border-radius:6px;background:#7c3aed;border:2px solid transparent;cursor:pointer;" title="סגול"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#db2777')" style="width:28px;height:28px;border-radius:6px;background:#db2777;border:2px solid transparent;cursor:pointer;" title="ורוד"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#0891b2')" style="width:28px;height:28px;border-radius:6px;background:#0891b2;border:2px solid transparent;cursor:pointer;" title="תכלת"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#374151')" style="width:28px;height:28px;border-radius:6px;background:#374151;border:2px solid transparent;cursor:pointer;" title="כהה"></button>
+          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#9ca3af')" style="width:28px;height:28px;border-radius:6px;background:#9ca3af;border:2px solid transparent;cursor:pointer;" title="אפור"></button>
+        </div>
+        <button onmousedown="event.preventDefault()" onclick="removeTextColor()" style="width:100%;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;border-radius:10px;padding:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;">✕ הסר צבע</button>
+      </div>
+    </div>
+    <button class="ctb-btn" onmousedown="event.preventDefault()" onclick="insertDivider()" title="קו מפריד">
+      <i class="fas fa-minus" style="font-size:11px"></i> קו
+    </button>
+    <div class="ctb-dropdown-wrap" id="linkDropWrap">
+      <button class="ctb-btn" id="linkDropBtn" onclick="saveLinkSelection();toggleCtbDropdown('linkDrop')" title="הוסף קישור">
+        <i class="fas fa-link" style="font-size:11px"></i> קישור
+      </button>
+      <div class="ctb-dropdown" id="linkDrop" style="min-width:260px;">
+        <span class="ctb-inp-label">טקסט הקישור</span>
+        <input class="ctb-inp" id="composeLinkText" placeholder="לחץ כאן..." style="direction:rtl;margin-bottom:8px;">
+        <span class="ctb-inp-label">כתובת URL</span>
+        <input class="ctb-inp" id="composeLinkUrl" placeholder="https://..." style="margin-bottom:8px;">
+        <button class="ctb-add-btn" onmousedown="event.preventDefault()" onclick="insertComposeLink()">הוסף קישור</button>
+      </div>
+    </div>
+    <div class="ctb-dropdown-wrap" id="htmlDropWrap">
+      <button class="ctb-btn" id="htmlDropBtn" onclick="toggleCtbDropdown('htmlDrop')" title="הטמע דף HTML">
+        <i class="fas fa-code" style="font-size:11px"></i> HTML
+      </button>
+      <div class="ctb-dropdown" id="htmlDrop" style="min-width:320px;">
+        <span class="ctb-inp-label">הדבק קוד HTML מלא</span>
+        <textarea id="composeHtmlCode" rows="6" placeholder="<!DOCTYPE html>..." style="width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:8px 11px;font-size:12px;font-family:monospace;outline:none;resize:vertical;direction:ltr;margin-bottom:8px;min-height:100px;transition:border-color .15s;"></textarea>
+        <div style="display:flex;gap:6px;">
+          <button class="ctb-add-btn" onclick="applyHtmlCode()" style="flex:1;">הטמע</button>
+          <button onclick="clearHtmlCode()" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;">נקה</button>
+        </div>
+        <div id="htmlPreviewBadge" style="display:none;margin-top:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;color:#16a34a;display:flex;align-items:center;gap:5px;">
+          <i class="fas fa-check-circle"></i> <span>קוד HTML מוכן לשליחה</span>
+          <button onclick="clearHtmlCode()" style="margin-right:auto;background:none;border:none;cursor:pointer;color:#dc2626;font-size:11px;">✕</button>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-right:auto; display:flex; align-items:center; gap:8px;">
+        <input id="composeTagsInput" type="text" placeholder="הוסף תוויות (מופרדות בפסיק)..." style="border:1px solid #e5e7eb; border-radius:8px; padding:4px 8px; font-size:11px; font-family:'Heebo'; outline:none; width:150px;">
+        <span id="composeCharCount" style="font-size:10px;color:#aaa;font-weight:600;">0</span>
+        <button class="ctb-btn" onclick="clearCompose()" title="נקה"><i class="fas fa-trash-alt" style="color:#e02020;"></i></button>
+    </div>
+  </div>
+
+  <div id="attachPreview"></div>
+
+  <div class="compose-main">
+    <div id="composeEditor" contenteditable="true" placeholder="כתוב משהו..."
+      oninput="onComposeChange()"
+      onkeydown="onComposeKeyDown(event)"
+    ></div>
+    <button id="updateModeNotice" onclick="toggleUpdateMode()" title="לחץ להפעלת מצב מעדכן">
+      <i class="fas fa-satellite-dish" style="font-size:10px"></i> לא מעדכן — לחץ להפעלה
+    </button>
+    <button class="compose-send-btn" id="composePreviewBtn" onclick="showPreview()" title="תצוגה מקדימה" style="background:#4b5563; box-shadow:0 3px 10px rgba(75,85,99,.35);">
+      <i class="fas fa-eye" style="font-size:14px"></i>
+    </button>
+    <button class="compose-send-btn" id="composeSendBtn" onclick="sendFeedPost()" title="שלח">
+      <i class="fas fa-paper-plane" style="font-size:14px"></i>
+    </button>
+    <button class="compose-send-btn" id="composeEditConfirmBtn" onclick="saveEditMsg()" title="שמור עריכה" style="display:none;background:#059669;">
+      <i class="fas fa-check" style="font-size:14px"></i>
+    </button>
+    <button class="compose-send-btn" id="composeEditCancelBtn" onclick="cancelEditMode()" title="בטל עריכה" style="display:none;background:#6b7280;">
+      <i class="fas fa-times" style="font-size:14px"></i>
+    </button>
+  </div>
+</div>
+
+<div id="previewModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:780px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow:hidden;">
+    <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="font-size:15px;font-weight:800;color:#111;">👁️ תצוגה מקדימה להודעה</span>
+      <button onclick="closePreview()" style="background:none;border:none;font-size:16px;cursor:pointer;color:#aaa;padding:4px;border-radius:8px;">✕</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:20px;background:#f9fafb;" id="previewModalBody"></div>
+  </div>
+</div>
+
+<div id="updateTimeDialog">
+  <div class="utd-box">
+    <div class="utd-title">🟢 הפעלת מצב מעדכן</div>
+    <div class="utd-sub">עד מתי בערך תעדכן?</div>
+    <input class="utd-time-inp" id="updateTimeInput" type="time" placeholder="שעה">
+    <div class="utd-btns">
+      <button class="utd-cancel" onclick="closeUpdateTimeDialog()">ביטול</button>
+      <button class="utd-ok" onclick="confirmUpdateTime()">✓ הפעל</button>
+    </div>
+  </div>
+</div>
+
+<div id="emojiPicker">
+  <button class="ep-close-btn" onclick="document.getElementById('emojiPicker').classList.remove('show')" title="סגור" style="position:absolute;top:6px;left:6px;background:none;border:none;cursor:pointer;color:#aaa;font-size:13px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .1s;z-index:2;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">✕</button>
+  <button class="ep-btn" onclick="pickEmoji('❤️')">❤️</button>
+  <button class="ep-btn" onclick="pickEmoji('👍')">👍</button>
+  <button class="ep-btn" onclick="pickEmoji('😂')">😂</button>
+  <button class="ep-btn" onclick="pickEmoji('😭')">😭</button>
+  <button class="ep-btn" onclick="pickEmoji('🔥')">🔥</button>
+  <button class="ep-btn" onclick="pickEmoji('🙏')">🙏</button>
+  <button class="ep-btn" onclick="pickEmoji('😍')">😍</button>
+  <button class="ep-btn" onclick="pickEmoji('😮')">😮</button>
+  <button class="ep-btn" onclick="pickEmoji('💯')">💯</button>
+  <button class="ep-btn" onclick="pickEmoji('👎')">👎</button>
+  <button class="ep-btn" onclick="pickEmoji('😊')">😊</button>
+  <button class="ep-btn" onclick="pickEmoji('😢')">😢</button>
+  <button class="ep-btn" onclick="pickEmoji('🤬')">🤬</button>
+  <button class="ep-btn" onclick="pickEmoji('💥')">💥</button>
+  <button class="ep-btn" onclick="pickEmoji('🥳')">🥳</button>
+  <button class="ep-btn" onclick="pickEmoji('😕')">😕</button>
+  <button class="ep-btn" onclick="pickEmoji('🍿')">🍿</button>
+  <button class="ep-btn" onclick="pickEmoji('💪')">💪</button>
+  <button class="ep-btn" onclick="pickEmoji('🚀')">🚀</button>
+  <button class="ep-btn" onclick="pickEmoji('😉')">😉</button>
+  <button class="ep-btn" onclick="pickEmoji('🥵')">🥵</button>
+  <button class="ep-btn" onclick="pickEmoji('🤑')">🤑</button>
+  <button class="ep-btn" onclick="pickEmoji('🎯')">🎯</button>
+  <button class="ep-btn" onclick="pickEmoji('🌀')">🌀</button>
+  <button class="ep-btn" onclick="pickEmoji('😌')">😌</button>
+  <button class="ep-btn" onclick="pickEmoji('💔')">💔</button>
+  <button class="ep-btn" onclick="pickEmoji('😨')">😨</button>
+  <button class="ep-btn" onclick="pickEmoji('🤣')">🤣</button>
+  <button class="ep-btn" onclick="pickEmoji('📖')">📖</button>
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lbClose" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <img id="lbImg" src="" onclick="event.stopPropagation()">
+</div>
+
+<div id="reportModalOverlay" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:16px;" onclick="if(event.target===this)closeReportModal()">
+  <div style="background:#fff;border-radius:20px;max-width:440px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow:hidden;animation:pickerPop .2s ease-out;font-family:'Heebo',sans-serif;direction:rtl;">
+    
+    <div style="padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:#fef2f2;display:flex;align-items:center;justify-content:center;">
+          <i class="fas fa-flag" style="color:#dc2626;font-size:14px;"></i>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:900;color:#111;">דיווח על הודעה</div>
+          <div id="reportModalMsgId" style="font-size:11px;color:#9ca3af;font-weight:600;"></div>
+        </div>
+      </div>
+      <button onclick="closeReportModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#aaa;padding:4px;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">✕</button>
+    </div>
+    
+    <div style="padding:18px 20px;">
+      <div style="background:#fff8f0;border-right:3px solid #f97316;border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.6;">
+        <i class="fas fa-info-circle" style="color:#f97316;margin-left:5px;"></i>
+        <span>שימו לב! חובה לציין את הסיבה לדיווח בכדי שנוכל לטפל בבעיה בהקדם האפשרי.</span>
+      </div> <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px;">תיאור הבעיה</label>
+      <textarea id="reportModalInput" rows="4" placeholder="פרט במספר מילים מה הבעיה בהודעה זו..." style="width:100%;border:1.5px solid #e5e7eb;border-radius:12px;padding:10px 12px;font-size:14px;font-family:'Heebo',sans-serif;outline:none;resize:vertical;direction:rtl;transition:border-color .15s;" onfocus="this.style.borderColor='#1a56db'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter'&&event.ctrlKey)submitReport()"></textarea>
+      <div id="reportModalError" style="display:none;font-size:12px;color:#dc2626;font-weight:700;margin-top:6px;padding:6px 10px;background:#fef2f2;border-radius:8px;"></div>
+    </div>
+    
+    <div style="padding:0 20px 18px;display:flex;gap:10px;">
+      <button id="reportSubmitBtn" onclick="submitReport()" style="flex:1;background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;transition:background .15s;" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
+        <i class="fas fa-paper-plane" style="font-size:12px;"></i> שלח דיווח
+      </button>
+<button onclick="closeReportModal()" style="background:#f3f4f6;color:#374151;border:none;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;transition:background .15s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+        ביטול
+      </button>
+    </div>
+  </div>
+</div>
+<div id="adminPanelModal" onclick="if(event.target===this)closeAdminPanel()">
+  <div class="ap-box" onclick="event.stopPropagation()">
+
+    <div class="ap-sidebar">
+      <div class="ap-sidebar-user">
+        <div id="apHdrAvatarWrap"></div>
+        <div style="min-width:0;">
+          <div class="ap-sidebar-name" id="apHdrName">-</div>
+          <div class="ap-sidebar-role" id="apHdrRole">-</div>
+        </div>
+      </div>
+      <nav class="ap-nav" id="apNav"></nav>
+    </div>
+
+    <div class="ap-content">
+      <div class="ap-content-hdr">
+        <span class="ap-content-title" id="apContentTitle">פאנל ניהול</span>
+        <button class="ap-hdr-close" onclick="closeAdminPanel()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ap-content-body" id="apContentBody">
+
+        <div class="ap-sec" id="ap-sec-stats">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div class="ap-stat-card"><i class="fas fa-circle" style="color:#5fc98d;font-size:8px;"></i><div class="ap-stat-num" id="statOnline">-</div><div class="ap-stat-lbl">מחוברים כעת</div></div>
+            <div class="ap-stat-card"><i class="fas fa-trophy" style="color:#d8b45a;font-size:12px;"></i><div class="ap-stat-num" id="statPeak">-</div><div class="ap-stat-lbl">שיא משתמשים</div></div>
+            <div class="ap-stat-card"><i class="fas fa-clock" style="color:#a3a8b8;font-size:12px;"></i><div class="ap-stat-num" id="statHour">-</div><div class="ap-stat-lbl">בשעה האחרונה</div></div>
+            <div class="ap-stat-card"><i class="fas fa-calendar-day" style="color:#a3a8b8;font-size:12px;"></i><div class="ap-stat-num" id="statDay">-</div><div class="ap-stat-lbl">ביממה האחרונה</div></div>
+          </div>
+          <div class="ap-stat-card" style="text-align:center;">
+            <div class="ap-stat-num" id="statWeek">-</div>
+            <div class="ap-stat-lbl">משתמשים ייחודיים בשבוע האחרון</div>
+          </div>
+        </div>
+
+        <div class="ap-sec" id="ap-sec-reports" style="display:none;">
+          <div id="reportsList" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <div class="ap-sec" id="ap-sec-writers" style="display:none;">
+          <div id="adminsList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
+          <div style="border-top:1px solid #f1f2f6;padding-top:16px;">
+            <div style="font-size:12px;font-weight:800;color:#5b6072;margin-bottom:9px;">הוספת יוצר / איש צוות חדש</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <input id="newAdminEmail" type="email" placeholder="אימייל Google..." class="ap-field" style="direction:ltr;">
+              <input id="newAdminName" type="text" placeholder="שם תצוגה (יופיע בפוסטים)..." class="ap-field">
+              <div style="font-size:11px;color:#a3a8b8;line-height:1.5;">הוספה כאן נותנת הרשאת כתיבה כללית (writer). כדי להעניק הרשאת ניהול מלאה (admin) יש להוסיף את המייל בגיליון עצמו, בטאב Admins.</div>
+              <button onclick="addAdmin()" class="ap-btn ap-btn-primary">+ הוסף משתמש</button>
+            </div>
+            <div id="adminMsgResult" style="display:none;margin-top:10px;font-size:12px;font-weight:700;text-align:center;"></div>
+          </div>
+        </div>
+
+        <div class="ap-sec" id="ap-sec-blocking" style="display:none;">
+          <div style="margin-bottom:22px;">
+            <div style="font-size:12px;font-weight:800;color:#5b6072;margin-bottom:9px;">חסימת משתמשים</div>
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <input type="email" id="settingsBlockEmail" class="ap-field" placeholder="הכנס אימייל לחסימה...">
+              <button class="ap-btn ap-btn-danger" style="flex-shrink:0;" onclick="blockUser()">חסום</button>
+            </div>
+            <div id="blockedUsersList" style="font-size:12px;color:#8a90a6;"></div>
+          </div>
+          <div style="border-top:1px solid #f1f2f6;padding-top:16px;">
+            <div style="font-size:12px;font-weight:800;color:#5b6072;margin-bottom:9px;">ייצוא נתונים</div>
+            <button class="ap-btn ap-btn-soft" onclick="exportEmailsToGroups()"><i class="fas fa-download" style="font-size:11px;"></i> הורד רשימת אימיילים (TXT)</button>
+          </div>
+        </div>
+
+        <div class="ap-sec" id="ap-sec-ads" style="display:none;">
+          <div style="border:1.5px solid #eef0f5;border-radius:14px;padding:16px;margin-bottom:14px;">
+            <div style="font-size:12.5px;font-weight:800;color:#4a55c7;margin-bottom:11px;"><i class="fas fa-window-restore" style="font-size:11px"></i> פרסומת פופאפ</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <input id="adPopupImageUrl" type="text" placeholder="קישור לתמונה https://..." class="ap-field" style="direction:ltr;">
+              <input id="adPopupLinkUrl" type="text" placeholder="קישור ללחיצה https://..." class="ap-field" style="direction:ltr;">
+              <textarea id="adPopupHtmlUrl" rows="3" placeholder="או הדבק כאן קוד HTML מלא..." class="ap-field" style="direction:ltr;font-family:monospace;"></textarea>
+              <input id="adPopupTimer" type="number" placeholder="שניות השהיה (מקסימום 5)" min="0" max="5" class="ap-field">
+              <div style="display:flex;gap:8px;margin-top:3px;">
+                <button onclick="saveAd('popup')" class="ap-btn ap-btn-primary" style="flex:1;">שמור</button>
+                <button onclick="deleteAd('popup')" class="ap-btn ap-btn-danger" style="flex:1;">הסר</button>
+              </div>
+            </div>
+          </div>
+          <div style="border:1.5px solid #eef0f5;border-radius:14px;padding:16px;">
+            <div style="font-size:12.5px;font-weight:800;color:#4a55c7;margin-bottom:11px;"><i class="fas fa-columns" style="font-size:11px"></i> פרסומת עמודה צדדית</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <input id="adSideImageUrl" type="text" placeholder="קישור לתמונה https://..." class="ap-field" style="direction:ltr;">
+              <input id="adSideLinkUrl" type="text" placeholder="קישור ללחיצה https://... (לתמונה בלבד)" class="ap-field" style="direction:ltr;">
+              <textarea id="adSideHtmlUrl" rows="3" placeholder="או הדבק כאן קוד HTML מלא..." class="ap-field" style="direction:ltr;font-family:monospace;"></textarea>
+              <div style="display:flex;gap:8px">
+                <button onclick="saveAd('side')" class="ap-btn ap-btn-primary" style="flex:1;">שמור</button>
+                <button onclick="deleteAd('side')" class="ap-btn ap-btn-danger" style="flex:1;">הסר</button>
+              </div>
+            </div>
+          </div>
+          <div id="adMsg" style="display:none;margin-top:12px;font-size:12px;font-weight:700;text-align:center"></div>
+        </div>
+
+        <div class="ap-sec" id="ap-sec-messages" style="display:none;display:flex;flex-direction:column;height:100%;">
+          <div class="admin-msgs-body" id="adminMsgsBody" style="flex:1;overflow-y:auto;margin-bottom:10px;">
+            <div class="ap-empty">אין הודעות</div>
+          </div>
+          <div class="admin-msgs-send" id="adminMsgsSendRow" style="display:flex;gap:8px;align-items:flex-end;flex-shrink:0;">
+            <textarea class="ap-field admin-send-inp" id="adminMsgInput" rows="1" placeholder="שלח הודעה לכל המנהלים..."
+              oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAdminMsg();}"></textarea>
+            <button class="ap-btn ap-btn-primary admin-send-btn" onclick="sendAdminMsg()" style="flex-shrink:0;">
+              <i class="fas fa-paper-plane" style="font-size:11px"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   מזג האוויר — לוגיקת אתר (מותאם לבק-אנד Google Apps Script)
+   קובץ זה מאחד את כל הלוגיקה. אין חלוקה לערוצים ואין מערכת תגובות.
+   ============================================================ */
+
+const BACKEND = "https://script.google.com/macros/s/AKfycbxD3EAna7fUJWicfB6LVjVmCH8ciqWA7Hfh3GI57WRJvjVloSJKsXElr6LNHLT_O17S/exec";
+const GOOGLE_CLIENT_ID = '426523025549-7c50rkn7cun4vmm2r802u0ij6egjehtg.apps.googleusercontent.com';
+const LOGO = 'https://cdn-icons-png.flaticon.com/128/6476/6476785.png';
+const SITE_TITLE = 'xnet פרוייקטים ועדכונים על ידי דוד';
+const STORAGE_KEY = 'bina_user';
+const AD_KEY = 'shaagat_ad';
+const AD_INTERVAL = 60 * 60 * 1000;
+const CHANNEL = 'general'; // אין יותר ערוצים - הכל בערוץ אחד קבוע
+
+let me = null, items = [], lastTs = 0, newCount = 0, atBottom = true;
+let activePicker = null;
+let rxnCache = {};
+const knownIds = new Set();
+let oldestTs = 0, allLoaded = false, loadingMore = false, pollPending = false;
+let _writersMap = {}; // email(lower) -> {name}
+let _isSuper = false, _isWriter = false;
+
+let composeImgUrl = '', composeVidUrl = '', composeBtns = [], composeHtmlCode = '';
+let adminMsgsLastId = null, adminMsgsUnread = 0;
+let _updateMode = false, _updateUntil = '';
+let _adminMsgsKnownIds = new Set();
+let _reportTargetMsgId = null;
+let _editMsgId = null;
+
+/* ================= עזרים כלליים ================= */
+function esc(t) { return (t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function escAttr(t) { return esc(t).replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+function fmtTime(ts) {
+  if (!ts) return '';
+  try { return new Date(Number(ts)).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false }); }
+  catch (e) { return ''; }
+}
+function fmtDate(ts) {
+  if (!ts) return '';
+  try { return new Date(Number(ts)).toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+  catch (e) { return ''; }
+}
+
+/* קריאת API מרוכזת: תמיד דרך אותו URL, action בפרמטר */
+async function api(action, params, method) {
+  method = method || 'GET';
+  try {
+    if (method === 'GET') {
+      const qs = new URLSearchParams(Object.assign({ action }, params || {}));
+      qs.set('t', Date.now());
+      const r = await fetch(BACKEND + '?' + qs.toString());
+      return await r.json();
+    } else {
+      const r = await fetch(BACKEND + '?action=' + encodeURIComponent(action), {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(params || {})
+      });
+      return await r.json();
+    }
+  } catch (e) {
+    return { status: 'error', message: String(e) };
+  }
+}
+
+function getRole() {
+  if (!me) return 'visitor';
+  if (_isSuper) return 'super';
+  if (_isWriter) return 'writer';
+  return 'user';
+}
+function isAdmin() { const r = getRole(); return r === 'super' || r === 'writer'; }
+function isSuperAdmin() { return _isSuper; }
+
+function getDisplayName(email, fallback) {
+  const entry = _writersMap[(email || '').toLowerCase()];
+  if (entry && entry.name) return entry.name;
+  if (fallback && !fallback.includes('@') && fallback.length < 30) return fallback;
+  if (email && email.includes('@')) return email.split('@')[0];
+  return fallback || email || '?';
+}
+
+function saveUser(u) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(u)); } catch (e) {} }
+function loadSavedUser() { try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch (e) {} return null; }
+function clearSavedUser() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} }
+
+function showToast(msg, type) {
+  type = type || 'success';
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:32px;right:24px;z-index:9999;background:${type === 'success' ? '#059669' : '#dc2626'};color:#fff;padding:13px 20px;border-radius:12px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.2);font-family:'Heebo',sans-serif;`;
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+/* ================= התחברות ================= */
+function doLogout() {
+  clearSavedUser(); me = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('bannedScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+}
+
+async function verifyAndLogin(user) {
+  const d = await api('auth_check', { email: user.email });
+  if (d.banned) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('bannedScreen').style.display = 'flex';
+    return false;
+  }
+  _isSuper = !!d.admin;
+  _isWriter = !!d.writer;
+  me = user; saveUser(user);
+  await applyLogin();
+  return true;
+}
+
+async function applyLogin() {
+  const pageTitle = document.getElementById('pageTitle'); if (pageTitle) pageTitle.innerText = SITE_TITLE;
+  const hdr = document.getElementById('hdrChannelName'); if (hdr) hdr.innerText = SITE_TITLE;
+  const logT = document.getElementById('loginSiteTitle'); if (logT) logT.innerText = SITE_TITLE;
+
+  const av = document.getElementById('userAvatar');
+  const avatarHtml = me.picture
+    ? `<img src="${escAttr(me.picture)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #1a56db;box-shadow:0 2px 6px rgba(0,0,0,0.1)">`
+    : `<div style="width:34px;height:34px;border-radius:50%;background:#1a56db;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">${esc(me.name[0].toUpperCase())}</div>`;
+  av.innerHTML = `<div style="cursor:pointer" onclick="toggleUserMenu(event)">${avatarHtml}</div><div id="userMenu" style="display:none;"></div>`;
+
+  document.querySelectorAll('[title="פנייה למנהל"]').forEach(btn => {
+    btn.onclick = () => window.open('mailto:0548537646a@gmail.com?subject=' + encodeURIComponent('לכבוד מנהל אתר מזג האוויר'), '_blank');
+  });
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  api('api_log_login', { email: me.email, name: me.name, picture: me.picture }, 'POST');
+
+  // מציגים מיד את מה שאפשר בלי לחכות לשרת - הרשאות הכתיבה כבר ידועות מ-auth_check
+  applyWritePerm();
+  refreshUserMenu();
+  loadFeed();
+
+  // רשימת הכותבים (לשמות תצוגה + פאנל יוצרים) נטענת במקביל ולא חוסמת את הפיד
+  loadWritersMap().then(() => { refreshUserMenu(); applyWritePerm(); });
+
+  if (isAdmin()) {
+    loadAdminMsgs(); setInterval(loadAdminMsgs, 8000);
+    pingSitePresence(); setInterval(pingSitePresence, 15000);
+    pollUpdateMode(); setInterval(pollUpdateMode, 8000);
+    document.getElementById('feedWrap').style.paddingBottom = '120px';
+  }
+
+  setTimeout(loadAd, 3000); setInterval(loadAd, 60 * 60 * 1000);
+  initDark(); initNotifications();
+  triggerStats(); setInterval(triggerStats, 20000);
+}
+
+async function handleGoogle(resp) {
+  let payload = {};
+  try {
+    const base64Url = resp.credential.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = base64.length % 4;
+    const paddedBase64 = pad ? base64 + '='.repeat(4 - pad) : base64;
+    const jsonPayload = decodeURIComponent(window.atob(paddedBase64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    payload = JSON.parse(jsonPayload);
+  } catch (e) { alert('חלה שגיאה טכנית בהתחברות. נסה שוב.'); return; }
+
+  const email = (payload.email || '').toLowerCase();
+  if (!email || !email.includes('@')) return;
+  const picture = payload.picture || '';
+  const name = payload.name || email.split('@')[0];
+  await verifyAndLogin({ email, name, picture });
+}
+
+function initGoogle() {
+  google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogle, auto_select: true });
+  const saved = loadSavedUser();
+  if (saved) { verifyAndLogin(saved); return; }
+  google.accounts.id.renderButton(document.getElementById('googleBtn'), { theme: 'outline', size: 'large', locale: 'he', width: 240 });
+  google.accounts.id.prompt();
+}
+function tryInitGoogle() { if (window.google && window.google.accounts) initGoogle(); else setTimeout(tryInitGoogle, 100); }
+if (document.readyState === 'complete') tryInitGoogle(); else window.addEventListener('load', tryInitGoogle);
+
+/* ================= תפריט משתמש ================= */
+function toggleUserMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('userMenu'); if (!menu) return;
+  const isOpen = menu.style.display !== 'none';
+  menu.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) setTimeout(() => document.addEventListener('click', () => { menu.style.display = 'none'; }, { once: true }), 0);
+}
+
+function refreshUserMenu() {
+  if (!me) return;
+  const role = getRole();
+  const avatarHtml = me.picture
+    ? `<img src="${escAttr(me.picture)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #1a56db;box-shadow:0 2px 6px rgba(0,0,0,0.1)">`
+    : `<div style="width:34px;height:34px;border-radius:50%;background:#1a56db;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">${esc(me.name[0].toUpperCase())}</div>`;
+  let adminMenuHtml = '';
+  if (isAdmin()) {
+    adminMenuHtml += `<div style="border-top:1px solid #e5e7eb; margin-top:8px; padding:8px 10px 2px;">
+      <button onclick="openAdminPanel()" style="width:100%;padding:11px 14px;text-align:right;background:linear-gradient(135deg,#1a56db,#6d28d9);border:none;border-radius:12px;cursor:pointer;font-size:13.5px;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px -4px rgba(26,86,219,.6);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 18px -4px rgba(26,86,219,.7)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 14px -4px rgba(26,86,219,.6)'"><i class="fas fa-shield-halved" style="width:16px;"></i> פאנל ניהול</button>
+    </div>`;
+  }
+  const menu = document.getElementById('userMenu'); if (!menu) return;
+  menu.innerHTML = `
+    <div style="padding:16px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f3f4f6;">
+      ${avatarHtml}
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(me.name)}</div>
+        <div style="font-size:11px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(me.email)}</div>
+        <div style="font-size:10px;font-weight:800;color:#1a56db;">${role === 'super' ? 'מנהל ראשי' : role === 'writer' ? 'כותב מורשה' : 'משתמש'}</div>
+      </div>
+    </div>
+    ${adminMenuHtml}
+    <div style="border-top:1px solid #e5e7eb; margin-top:4px; padding:4px 0;">
+      <button onclick="doLogout()" style="width:100%;padding:10px 16px;text-align:right;background:none;border:none;cursor:pointer;font-size:13px;font-weight:700;color:#dc2626;display:flex;align-items:center;gap:10px;"><i class="fas fa-sign-out-alt" style="width:16px;"></i> התנתק</button>
+    </div>`;
+}
+
+/* ================= פאנל ניהול (עדין ובהיר, עם סרגל צד) ================= */
+let _adminPanelActiveSection = null;
+const AP_SECTIONS = [
+  { key: 'stats', icon: 'fa-chart-line', title: 'סטטיסטיקות קהילה', superOnly: false },
+  { key: 'reports', icon: 'fa-flag', title: 'דיווחי משתמשים', superOnly: true },
+  { key: 'writers', icon: 'fa-user-group', title: 'מורשי כתיבה', superOnly: true },
+  { key: 'blocking', icon: 'fa-user-slash', title: 'חסימת משתמשים', superOnly: true },
+  { key: 'ads', icon: 'fa-rectangle-ad', title: 'פרסומות', superOnly: true },
+  { key: 'messages', icon: 'fa-comments', title: 'הודעות צוות', superOnly: true },
+];
+
+function openAdminPanel() {
+  if (!me || !isAdmin()) return;
+  document.getElementById('userMenu') && (document.getElementById('userMenu').style.display = 'none');
+  const role = getRole();
+
+  const avWrap = document.getElementById('apHdrAvatarWrap');
+  avWrap.innerHTML = me.picture
+    ? `<img src="${escAttr(me.picture)}">`
+    : `<div class="ap-sidebar-avatar-fallback">${esc(me.name[0].toUpperCase())}</div>`;
+  document.getElementById('apHdrName').innerText = me.name;
+  document.getElementById('apHdrRole').innerText = role === 'super' ? 'מנהל ראשי' : 'כותב מורשה';
+
+  const visible = AP_SECTIONS.filter(s => role === 'super' || !s.superOnly);
+  document.getElementById('apNav').innerHTML = visible.map(s => `
+    <button class="ap-nav-item" data-sec="${s.key}" onclick="switchAdminSection('${s.key}')">
+      <span class="ap-nav-icon"><i class="fas ${s.icon}"></i></span>
+      <span>${s.title}</span>
+    </button>`).join('');
+
+  document.getElementById('adminPanelModal').classList.add('open');
+  switchAdminSection(visible[0].key);
+}
+function closeAdminPanel() {
+  document.getElementById('adminPanelModal').classList.remove('open');
+  _adminPanelActiveSection = null;
+}
+function switchAdminSection(sec) {
+  _adminPanelActiveSection = sec;
+  document.querySelectorAll('.ap-nav-item').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
+  document.querySelectorAll('.ap-sec').forEach(s => s.style.display = (s.id === 'ap-sec-' + sec) ? (sec === 'messages' ? 'flex' : 'block') : 'none');
+  const found = AP_SECTIONS.find(s => s.key === sec);
+  document.getElementById('apContentTitle').innerText = found ? found.title : 'פאנל ניהול';
+  if (sec === 'stats') openSiteStats();
+  else if (sec === 'reports') openReportsModal();
+  else if (sec === 'writers') openManageAdmins();
+  else if (sec === 'blocking') openSiteSettings();
+  else if (sec === 'ads') openAdPanel();
+  else if (sec === 'messages') openAdminMsgs();
+}
+
+async function loadWritersMap() {
+  const d = await api('allowed_list', {});
+  _writersMap = {};
+  (d.list || []).forEach(w => { if (w.email) _writersMap[w.email.toLowerCase()] = { name: w.name || w.email.split('@')[0] }; });
+}
+
+function applyWritePerm() {
+  const bar = document.getElementById('adminComposeBar');
+  if (!bar) return;
+  if (isAdmin()) { bar.classList.add('show'); bar.classList.remove('blocked'); }
+  else { bar.classList.remove('show'); }
+  const badge = document.getElementById('composerNameBadge');
+  if (badge && me) badge.innerText = 'כותב בתור: ' + getDisplayName(me.email, me.name);
+}
+
+/* ================= טקסט עשיר ================= */
+function editorToMarkdown(el) {
+  const clone = el.cloneNode(true);
+  const quoteDiv = clone.querySelector('[data-quote-preview]'); if (quoteDiv) quoteDiv.remove();
+  let html = clone.innerHTML;
+  html = html.replace(/<br\s*\/?>/gi, '\n');
+  html = html.replace(/<\/div>/gi, '\n').replace(/<div[^>]*>/gi, '');
+  html = html.replace(/<\/p>/gi, '\n').replace(/<p[^>]*>/gi, '');
+  html = html.replace(/<b\b[^>]*>(.*?)<\/b>/gi, '**$1**');
+  html = html.replace(/<strong\b[^>]*>(.*?)<\/strong>/gi, '**$1**');
+  html = html.replace(/<i\b[^>]*>(.*?)<\/i>/gi, '_$1_');
+  html = html.replace(/<em\b[^>]*>(.*?)<\/em>/gi, '_$1_');
+  html = html.replace(/<u\b[^>]*>(.*?)<\/u>/gi, '__$1__');
+  html = html.replace(/<s\b[^>]*>(.*?)<\/s>/gi, '~~$1~~');
+  html = html.replace(/<a[^>]+href="([^"]+)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)');
+  html = html.replace(/<span[^>]+style="[^"]*color:\s*([^;"]+)[^"]*"[^>]*>(.*?)<\/span>/gi, '\x02color:$1\x03$2\x02/color\x03');
+  html = html.replace(/<font[^>]+color="([^"]+)"[^>]*>(.*?)<\/font>/gi, '\x02color:$1\x03$2\x02/color\x03');
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html.replace(/<[^>]+>/g, '');
+  return txt.value.trim();
+}
+
+function rich(t) {
+  if (!t) return '';
+  let s = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  s = s.replace(/\n/g, '<br>')
+    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>')
+    .replace(/__([^_\n]+)__/g, '<u>$1</u>')
+    .replace(/_([^_\n]+)_/g, '<em>$1</em>')
+    .replace(/~~([^~\n]+)~~/g, '<s>$1</s>')
+    .replace(/---DIVIDER---/g, '<hr class="bubble-divider">')
+    .replace(/<br>\s*(<hr[^>]*>)\s*<br>/g, '$1')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/(?<!href=")(https?:\/\/[^\s<>"']{1,500})/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/\x02color:([^\x03]+)\x03([\s\S]*?)\x02\/color\x03/g, '<span style="color:$1">$2</span>');
+  return s;
+}
+
+const REACT_SVG = `<svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.65"/><circle cx="8.5" cy="9.5" r="1.1" fill="currentColor"/><circle cx="13.5" cy="9.5" r="1.1" fill="currentColor"/><path d="M8 13.2c.65 1.5 2 2.2 3 2.2s2.35-.72 3-2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+
+function buildMsg(e) {
+  const id = e.id;
+  const role = getRole();
+  const canDel = role === 'super' || (role === 'writer' && e.senderEmail === me?.email);
+  const canEdit = role === 'super' || (role === 'writer' && e.senderEmail === me?.email);
+
+  let content = `<div class="bubble-text">${rich(e.text || '')}</div>`;
+  let media = '';
+  if (e.imgUrl) { const su = escAttr(e.imgUrl); media += `<div class="bubble-img"><img src="${su}" loading="lazy" style="cursor:pointer;border-radius:12px;display:block;" onclick="openLightbox('${su}')" onerror="this.closest('.bubble-img').remove()"></div>`; }
+  if (e.videoUrl) {
+    const vu = e.videoUrl;
+    const ytMatch = vu.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    const driveMatch = vu.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+    const isDirectVideo = /\.(mp4|webm|ogg|m3u8)([?#,]|$)/i.test(vu) || vu.includes('.m3u8');
+    if (ytMatch) media += `<div class="bubble-vid" style="margin-top:9px;border-radius:12px;overflow:hidden;"><iframe width="100%" height="200" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allowfullscreen></iframe></div>`;
+    else if (driveMatch) media += `<div class="bubble-vid" style="margin-top:9px;border-radius:12px;overflow:hidden;"><iframe src="https://drive.google.com/file/d/${driveMatch[1]}/preview" width="100%" height="300" frameborder="0" allow="autoplay" allowfullscreen></iframe></div>`;
+    else if (isDirectVideo) media += `<div class="bubble-vid" style="margin-top:9px;border-radius:12px;overflow:hidden;width:100%;"><video controls playsinline preload="metadata" style="max-height:480px;display:block;border-radius:12px;object-fit:contain;" src="${escAttr(vu)}"></video></div>`;
+    else media += `<div class="bubble-vid" style="margin-top:9px;border-radius:12px;overflow:hidden;width:100%;background:#000;"><iframe src="${escAttr(vu)}" width="100%" height="300" frameborder="0" allowfullscreen></iframe></div>`;
+  }
+  let btns = ''; if (e.buttons && e.buttons.length) btns = '<div class="bubble-btns">' + e.buttons.map(b => `<a class="lnk-btn" href="${escAttr(b.url)}" target="_blank">${esc(b.text)}</a>`).join('') + '</div>';
+  if (e.htmlCode) { const safeHtml = e.htmlCode.replace(/`/g, '&#96;'); media += `<div class="bubble-html" style="margin-top:9px;border-radius:12px;overflow:hidden;width:100%;"><iframe srcdoc="${safeHtml.replace(/"/g, '&quot;')}" style="width:100%;border:none;display:block;" sandbox="allow-scripts allow-popups" scrolling="no" onload="try{this.style.height=this.contentDocument.body.scrollHeight+'px'}catch(e){}"></iframe></div>`; }
+
+  let tagsHtml = '';
+  if (e.tags && e.tags.length) tagsHtml = '<div class="post-tags-row" style="margin-top:8px;">' + e.tags.map(t => `<span class="post-tag" onclick="document.getElementById('searchInput').value='${escAttr(t)}';onSearch('${escAttr(t)}')"><i class="fas fa-tag"></i> ${esc(t)}</span>`).join('') + '</div>';
+
+  let quoteHtml = '';
+  if (e.quote) {
+    quoteHtml = `<div class="quote-block" onclick="(function(){const el=document.querySelector('[data-id=\\"${escAttr(e.quote.id || '')}\\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='2px solid #1a56db';setTimeout(()=>el.style.outline='',1500);}})()">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
+        <i class="fas fa-reply" style="color:#1a56db;font-size:10px;transform:scaleX(-1);"></i>
+        <span style="font-size:11px;font-weight:800;color:#1a56db;">${esc(e.quote.sender)}</span>
+      </div>
+      <div class="quote-block-text">${esc((e.quote.text || '').substring(0, 120))}${(e.quote.text || '').length > 120 ? '...' : ''}</div>
+    </div>`;
+  }
+
+  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}</div></div><div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div></div></div></div>`;
+}
+
+function copyMsgLink(id, btn) {
+  const el = document.querySelector(`.msg-row[data-id="${id}"]`); if (el) el.id = 'msg-link-' + id;
+  const url = location.href.split('#')[0] + '#msg-link-' + id;
+  navigator.clipboard.writeText(url).catch(() => {});
+  btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check" style="font-size:9px"></i>';
+  setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-link" style="font-size:9px"></i>'; }, 1500);
+}
+
+function renderRxn(msgId, rxns, barElement) {
+  rxnCache[msgId] = rxns;
+  const bar = barElement || document.getElementById('rxn-' + msgId); if (!bar) return;
+  const addBtn = bar.querySelector('.rxn-add-btn'); bar.innerHTML = '';
+  const activeTypes = Object.entries(rxns || {}).filter(([, users]) => users && users.length);
+  activeTypes.forEach(([emoji, users]) => {
+    const mine = users.includes(me?.email); const c = document.createElement('button');
+    c.className = 'rxn-chip' + (mine ? ' mine' : ''); c.innerHTML = `<span class="rxn-emoji">${esc(emoji)}</span><span class="rxn-count">${users.length}</span>`;
+    c.onclick = () => doReact(msgId, emoji); bar.appendChild(c);
+  });
+  if (addBtn) { addBtn.classList.toggle('maxed', activeTypes.length >= 5); bar.appendChild(addBtn); }
+  else { const b = document.createElement('button'); b.className = 'rxn-add-btn' + (activeTypes.length >= 5 ? ' maxed' : ''); b.innerHTML = REACT_SVG; b.onclick = ev => openPicker(ev, msgId); bar.appendChild(b); }
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#emojiPicker') && !e.target.closest('.rxn-add-btn')) document.getElementById('emojiPicker')?.classList.remove('show');
+  if (!e.target.closest('.ctb-dropdown') && !e.target.closest('.ctb-dropdown-wrap')) closeAllCtbDropdowns();
+});
+
+function openPicker(ev, msgId) {
+  ev.stopPropagation(); activePicker = msgId;
+  const p = document.getElementById('emojiPicker');
+  p.style.visibility = 'hidden'; p.style.display = 'grid';
+  const pH = p.offsetHeight, pW = p.offsetWidth;
+  p.style.display = ''; p.style.visibility = '';
+  const rect = ev.currentTarget.getBoundingClientRect(); const M = 8;
+  let top = rect.top - pH - M; if (top < 56 + M) top = rect.bottom + M; top = Math.max(56 + M, top);
+  let left = rect.right - pW; if (left < M) left = M; if (left + pW > window.innerWidth - M) left = window.innerWidth - pW - M;
+  p.style.top = top + 'px'; p.style.left = left + 'px'; p.classList.add('show');
+}
+function pickEmoji(em) { document.getElementById('emojiPicker').classList.remove('show'); if (activePicker) doReact(activePicker, em); activePicker = null; }
+
+async function doReact(msgId, emoji) {
+  if (!me) return;
+  const bar = document.getElementById('rxn-' + msgId);
+  const current = rxnCache[msgId] || {}; const activeTypes = Object.entries(current).filter(([, u]) => u.length);
+  if (!(emoji in current) && activeTypes.length >= 5) return;
+  const users = [...(current[emoji] || [])]; const myIdx = users.indexOf(me.email);
+  if (myIdx >= 0) users.splice(myIdx, 1); else users.push(me.email);
+  const optimistic = { ...current }; if (users.length) optimistic[emoji] = users; else delete optimistic[emoji];
+  if (bar) renderRxn(msgId, optimistic, bar);
+  const d = await api('feed_react', { email: me.email, msgId, emoji }, 'POST');
+  if (d.status === 'ok' && bar) renderRxn(msgId, d.reactions, bar);
+}
+
+async function deleteFeedMsg(id) {
+  if (!confirm('למחוק הודעה זו לצמיתות?')) return;
+  const d = await api('feed_delete', { email: me.email, id }, 'POST');
+  if (d.status === 'ok') { document.querySelector(`.msg-row[data-id="${id}"]`)?.remove(); items = items.filter(i => i.id !== id); }
+}
+
+function quoteFeedMsg(id) {
+  if (!isAdmin()) return;
+  const entry = items.find(e => e.id === id); if (!entry) return;
+  const ed = document.getElementById('composeEditor');
+  const rawText = (entry.text || '').trim();
+  const lines = rawText.split('\n');
+  const preview = lines.slice(0, 2).join(' ').substring(0, 100) + (rawText.length > 100 ? '…' : '');
+  ed._quoteData = { id, text: rawText, preview, sender: entry.sender };
+  ed.innerHTML = '';
+  const qDiv = document.createElement('div');
+  qDiv.setAttribute('data-quote-preview', '1'); qDiv.contentEditable = 'false';
+  qDiv.style.cssText = 'background:#f3f4f6;border-right:3px solid #9ca3af;border-radius:8px;padding:7px 10px;margin-bottom:6px;color:#6b7280;font-size:13px;font-style:italic;cursor:default;user-select:none;display:flex;align-items:center;gap:6px;';
+  qDiv.innerHTML = `<i class="fas fa-quote-right" style="font-size:10px;opacity:.5;flex-shrink:0;"></i><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(preview)}</span><button onclick="cancelQuote()" style="margin-right:auto;background:none;border:none;cursor:pointer;color:#aaa;font-size:12px;padding:0;line-height:1;flex-shrink:0;">✕</button>`;
+  ed.appendChild(qDiv);
+  const cursor = document.createElement('div'); cursor.innerHTML = '<br>'; ed.appendChild(cursor);
+  ed.focus();
+  const range = document.createRange(); range.setStart(cursor, 0); range.collapse(true);
+  window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+  document.getElementById('adminComposeBar')?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  onComposeChange(); updateAttachPreview();
+}
+function cancelQuote() {
+  const ed = document.getElementById('composeEditor');
+  ed.querySelector('[data-quote-preview]')?.remove(); ed._quoteData = null;
+  onComposeChange(); updateAttachPreview();
+}
+
+/* ================= דיווחים ================= */
+function reportMsg(msgId) {
+  if (!me) { showToast('יש להתחבר כדי לדווח', 'error'); return; }
+  _reportTargetMsgId = msgId;
+  document.getElementById('reportModalMsgId').textContent = '#' + msgId;
+  document.getElementById('reportModalInput').value = '';
+  document.getElementById('reportModalError').style.display = 'none';
+  document.getElementById('reportModalOverlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('reportModalInput').focus(), 80);
+}
+function closeReportModal() { document.getElementById('reportModalOverlay').style.display = 'none'; _reportTargetMsgId = null; }
+async function submitReport() {
+  const reason = document.getElementById('reportModalInput').value.trim();
+  const errEl = document.getElementById('reportModalError');
+  if (!reason) { errEl.style.display = 'block'; errEl.textContent = 'נא לפרט את סיבת הדיווח.'; return; }
+  const btn = document.getElementById('reportSubmitBtn'); btn.disabled = true; btn.textContent = 'שולח...';
+  const d = await api('feed_report', { email: me.email, msgId: _reportTargetMsgId, reason }, 'POST');
+  if (d.status === 'ok') { closeReportModal(); showToast('הדיווח נשלח בהצלחה. תודה!', 'success'); }
+  else { errEl.style.display = 'block'; errEl.textContent = 'שגיאה בשליחה, נסה שוב.'; }
+  btn.disabled = false; btn.textContent = 'שלח דיווח';
+}
+
+async function openReportsModal() {
+  document.getElementById('reportsList').innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> טוען דיווחים...</div>';
+  const d = await api('reports_get', { email: me.email });
+  const reports = d.reports || [];
+  if (!reports.length) { document.getElementById('reportsList').innerHTML = '<div class="ap-empty">אין דיווחים פתוחים.</div>'; return; }
+  document.getElementById('reportsList').innerHTML = reports.map(r => `
+    <div class="ap-row-card" style="flex-direction:column;align-items:stretch;background:#fdf6f6;border-color:#f6dede;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:6px;"><i class="fas fa-flag" style="color:#c94b4b;font-size:11px;"></i><span style="font-weight:800;color:#b1483f;font-size:13px;">דיווח על הודעה</span></div>
+        <a href="#" onclick="scrollToReportedMsg('${r.msgId}'); closeReportsModal(); return false;" style="font-size:11px;font-weight:700;color:#4a55c7;text-decoration:none;background:#eef1fd;padding:3px 9px;border-radius:6px;border:1px solid #d9deed;"><i class="fas fa-arrow-left" style="font-size:9px;"></i> עבור להודעה</a>
+      </div>
+      <div style="font-size:12px;color:#7a7f92;margin-bottom:4px;"><b>מדווח:</b> ${esc(r.reporterEmail || r.email)}</div>
+      <div style="font-size:12px;color:#7a7f92;margin-bottom:10px;"><b>סיבה:</b> ${esc(r.reason)}</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="deleteFeedMsg('${r.msgId}');dismissReport('${r.id}')" class="ap-btn ap-btn-danger" style="flex:1;"><i class="fas fa-trash" style="font-size:10px;"></i> מחק פוסט</button>
+        <button onclick="dismissReport('${r.id}')" class="ap-btn ap-btn-soft" style="flex:1;"><i class="fas fa-check" style="font-size:10px;"></i> טופל</button>
+      </div>
+    </div>`).join('');
+}
+function closeReportsModal() { closeAdminPanel(); }
+function scrollToReportedMsg(msgId) {
+  const el = document.querySelector('[data-id="' + msgId + '"]');
+  if (el) { el.id = 'msg-link-' + msgId; el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.outline = '2px solid #dc2626'; setTimeout(() => el.style.outline = '', 1800); }
+}
+async function dismissReport(reportId) { await api('report_resolve', { email: me.email, reportId }, 'POST'); openReportsModal(); }
+
+/* ================= פיד ================= */
+async function loadFeed() {
+  const d = await api('feed', { channel: CHANNEL, limit: 20 });
+  if (d.status !== 'ok') { console.error('שגיאה בטעינת הפיד'); return; }
+  items = [...d.messages].reverse();
+  items.forEach(e => knownIds.add(e.id));
+  allLoaded = d.messages.length < 20;
+  oldestTs = items.length ? Math.min(...items.map(e => e.ts || Infinity)) : 0;
+  lastTs = items.length ? Math.max(...items.map(e => e.ts || 0)) : 0;
+
+  // רינדור מיידי של הפיד בלי לחכות לסימון "נקרא" - חוסך סיבוב-הלוך-ושוב נוסף לפני שמשהו נראה על המסך
+  const inner = document.getElementById('feedInner');
+  let html = '';
+  items.forEach(e => {
+    html += buildMsg(e);
+    if (e.reactions) rxnCache[e.id] = e.reactions;
+  });
+  inner.innerHTML = items.length ? html : '';
+  document.getElementById('empty').style.display = items.length ? 'none' : 'block';
+  items.forEach(e => { if (e.reactions) renderRxn(e.id, e.reactions); });
+  document.getElementById('feedWrap').scrollTop = 999999;
+
+  if (!me) return;
+  const lastReadD = await api('get_last_read', { email: me.email, channel: CHANNEL });
+  const lastReadTs = lastReadD.ts || 0;
+  let unreadCount = 0;
+  if (lastReadTs > 0) {
+    const firstUnread = items.find(e => e.ts > lastReadTs);
+    if (firstUnread) {
+      unreadCount = items.filter(e => e.ts > lastReadTs).length;
+      const el = document.querySelector(`.msg-row[data-id="${firstUnread.id}"]`);
+      if (el) el.insertAdjacentHTML('beforebegin', `<div class="unread-sep" id="unreadMarker"><span>לא נקרא</span></div>`);
+    }
+  }
+
+  const marker = document.getElementById('unreadMarker');
+  if (marker) {
+    setTimeout(() => { marker.scrollIntoView({ behavior: 'smooth', block: 'center' }); atBottom = false; newCount = unreadCount; updateScrollBtn(); }, 100);
+  } else {
+    document.getElementById('feedWrap').scrollTop = 999999;
+  }
+  if (lastTs > 0 && me) api('set_last_read', { email: me.email, channel: CHANNEL, ts: lastTs }, 'POST');
+}
+
+async function loadMore() {
+  if (loadingMore || allLoaded || !oldestTs) return;
+  loadingMore = true; document.getElementById('loadMoreSpinner').classList.add('show');
+  const d = await api('feed', { channel: CHANNEL, before: oldestTs, limit: 20 });
+  if (d.status === 'ok' && d.messages.length) {
+    const older = d.messages.filter(e => !knownIds.has(e.id)).reverse();
+    if (!older.length) { allLoaded = true; }
+    else {
+      older.forEach(e => { knownIds.add(e.id); items.unshift(e); });
+      oldestTs = Math.min(...older.map(e => e.ts || Infinity));
+      allLoaded = older.length < 20;
+      const inner = document.getElementById('feedInner'); const wrap = document.getElementById('feedWrap');
+      const prevHeight = wrap.scrollHeight; const prevTop = wrap.scrollTop;
+      inner.insertAdjacentHTML('afterbegin', older.map(buildMsg).join(''));
+      older.forEach(e => { if (e.reactions) renderRxn(e.id, e.reactions); });
+      wrap.scrollTop = prevTop + (wrap.scrollHeight - prevHeight);
+    }
+  } else { allLoaded = true; }
+  loadingMore = false; document.getElementById('loadMoreSpinner').classList.remove('show');
+}
+
+async function pollAll() {
+  if (!me || !items.length || pollPending) return; pollPending = true;
+  const d = await api('feed_poll', { channel: CHANNEL, msgIds: items.map(e => e.id), since: lastTs }, 'POST');
+  pollPending = false;
+  if (d.status !== 'ok') return;
+  const ni = (d.newMessages || []).filter(e => !knownIds.has(e.id));
+  if (ni.length) {
+    lastTs = Math.max(...ni.map(e => e.ts || 0), lastTs); ni.forEach(e => knownIds.add(e.id)); items.push(...ni);
+    const inner = document.getElementById('feedInner'); document.getElementById('empty').style.display = 'none';
+    ni.forEach(e => { const div = document.createElement('div'); div.innerHTML = buildMsg(e); inner.appendChild(div.firstChild); if (e.reactions) renderRxn(e.id, e.reactions); });
+    if (atBottom) document.getElementById('feedWrap').scrollTop = 999999; else { newCount += ni.length; updateScrollBtn(); }
+    if (document.getElementById('leaderboardModal').style.display === 'flex') loadLeaderboardData();
+  }
+  (d.updated || []).forEach(e => {
+    const idx = items.findIndex(i => i.id === e.id);
+    if (idx >= 0) items[idx] = e;
+    if (e.reactions) renderRxn(e.id, e.reactions);
+  });
+  (d.removedIds || []).forEach(id => {
+    document.querySelector(`.msg-row[data-id="${id}"]`)?.remove();
+    items = items.filter(i => i.id !== id); knownIds.delete(id);
+  });
+}
+setInterval(pollAll, 6000);
+
+document.getElementById('feedWrap')?.addEventListener('scroll', () => {
+  const wrap = document.getElementById('feedWrap');
+  const isAtBottom = wrap.scrollHeight - wrap.scrollTop - wrap.clientHeight < 50;
+  atBottom = isAtBottom; if (isAtBottom) newCount = 0;
+  updateScrollBtn();
+  if (wrap.scrollTop <= 150) loadMore();
+});
+
+function updateScrollBtn() {
+  const btn = document.getElementById('scrollDownBtn'); if (!btn) return;
+  if (newCount > 0) { btn.style.display = 'flex'; btn.classList.add('has-new'); }
+  else if (atBottom) { btn.style.display = 'none'; }
+  else { btn.style.display = 'flex'; btn.classList.remove('has-new'); }
+}
+function scrollToBottom() {
+  document.getElementById('feedWrap').scrollTo({ top: 999999, behavior: 'smooth' });
+  newCount = 0; updateScrollBtn();
+  if (me && lastTs) api('set_last_read', { email: me.email, channel: CHANNEL, ts: lastTs }, 'POST');
+}
+
+/* ================= כתיבת פוסט ================= */
+function closeAllCtbDropdowns() { document.querySelectorAll('.ctb-dropdown').forEach(el => el.classList.remove('open')); }
+function toggleCtbDropdown(id) { const el = document.getElementById(id); const wasOpen = el.classList.contains('open'); closeAllCtbDropdowns(); if (!wasOpen) el.classList.add('open'); }
+function composeFormat(cmd) { const ed = document.getElementById('composeEditor'); ed.focus(); requestAnimationFrame(() => { document.execCommand(cmd, false, null); onComposeChange(); }); }
+function applyTextColor(color) { document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor', false, color); closeAllCtbDropdowns(); onComposeChange(); }
+function removeTextColor() { document.execCommand('removeFormat', false, 'foreColor'); closeAllCtbDropdowns(); onComposeChange(); }
+function updateComposeImg() { composeImgUrl = document.getElementById('composeImgUrl').value.trim(); const thumb = document.getElementById('composeImgThumb'); if (composeImgUrl) { document.getElementById('composeImgThumbImg').src = composeImgUrl; thumb.style.display = 'block'; } else { thumb.style.display = 'none'; } updateAttachPreview(); }
+function clearComposeImg() { composeImgUrl = ''; document.getElementById('composeImgUrl').value = ''; document.getElementById('composeImgThumb').style.display = 'none'; updateAttachPreview(); }
+function updateComposeVid() { composeVidUrl = document.getElementById('composeVidUrl').value.trim(); updateAttachPreview(); }
+function clearComposeVid() { composeVidUrl = ''; document.getElementById('composeVidUrl').value = ''; updateAttachPreview(); }
+function applyHtmlCode() { composeHtmlCode = document.getElementById('composeHtmlCode').value.trim(); document.getElementById('htmlPreviewBadge').style.display = 'flex'; updateAttachPreview(); closeAllCtbDropdowns(); }
+function clearHtmlCode() { composeHtmlCode = ''; document.getElementById('composeHtmlCode').value = ''; document.getElementById('htmlPreviewBadge').style.display = 'none'; updateAttachPreview(); }
+function addComposeButton() { const text = document.getElementById('composeBtnText').value.trim(); const url = document.getElementById('composeBtnUrl').value.trim(); if (text && url) { composeBtns.push({ id: Date.now(), text, url }); document.getElementById('composeBtnText').value = ''; document.getElementById('composeBtnUrl').value = ''; renderComposeBtns(); updateAttachPreview(); } }
+function removeComposeButton(id) { composeBtns = composeBtns.filter(b => b.id !== id); renderComposeBtns(); updateAttachPreview(); }
+function renderComposeBtns() { document.getElementById('composeBtnList').innerHTML = composeBtns.map(b => `<div style="display:inline-flex;align-items:center;gap:4px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:3px 8px;font-size:11px;font-weight:700;color:#ea580c;"><i class="fas fa-mouse-pointer" style="font-size:9px"></i>${esc(b.text)} <button onclick="removeComposeButton(${b.id})" style="background:none;border:none;cursor:pointer;color:#9ca3af;">✕</button></div>`).join(''); }
+function insertDivider() { const ed = document.getElementById('composeEditor'); ed.focus(); document.execCommand('insertText', false, '\n---DIVIDER---\n'); onComposeChange(); }
+
+let savedRange;
+function saveLinkSelection() { const sel = window.getSelection(); if (sel.rangeCount > 0) { savedRange = sel.getRangeAt(0); document.getElementById('composeLinkText').value = sel.toString(); } }
+function insertComposeLink() {
+  const url = document.getElementById('composeLinkUrl').value;
+  const text = document.getElementById('composeLinkText').value || url;
+  if (!url) return;
+  const a = `<a href="${url}" target="_blank" style="color:#1a56db;text-decoration:underline;">${text}</a>`;
+  if (savedRange) { const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(savedRange); document.execCommand('insertHTML', false, a); }
+  else { document.getElementById('composeEditor').innerHTML += a; }
+  toggleCtbDropdown('linkDrop');
+}
+
+function updateAttachPreview() {
+  const prev = document.getElementById('attachPreview'); const chips = [];
+  if (composeImgUrl) chips.push(`<div class="attach-chip"><i class="fas fa-image" style="color:#1a56db;"></i> תמונה <button onclick="clearComposeImg()">✕</button></div>`);
+  if (composeVidUrl) chips.push(`<div class="attach-chip"><i class="fas fa-video" style="color:#7c3aed;"></i> סרטון <button onclick="clearComposeVid()">✕</button></div>`);
+  if (composeHtmlCode) chips.push(`<div class="attach-chip"><i class="fas fa-code" style="color:#059669;"></i> HTML <button onclick="clearHtmlCode()">✕</button></div>`);
+  composeBtns.forEach(b => chips.push(`<div class="attach-chip"><i class="fas fa-mouse-pointer" style="color:#ea580c;"></i> ${esc(b.text)} <button onclick="removeComposeButton(${b.id})">✕</button></div>`));
+  const ed = document.getElementById('composeEditor');
+  if (ed && ed._quoteData) chips.push(`<div class="attach-chip"><i class="fas fa-quote-right" style="color:#aaa;"></i> צוטט: ${esc(ed._quoteData.sender)} <button onclick="document.getElementById('composeEditor')._quoteData=null;updateAttachPreview()">✕</button></div>`);
+  prev.innerHTML = chips.join(''); prev.classList.toggle('show', chips.length > 0);
+}
+
+function clearCompose() { document.getElementById('composeEditor').innerHTML = ''; composeImgUrl = ''; composeVidUrl = ''; composeHtmlCode = ''; composeBtns = []; document.getElementById('composeEditor')._quoteData = null; updateAttachPreview(); }
+function onComposeChange() { const ed = document.getElementById('composeEditor'); document.getElementById('composeCharCount').textContent = editorToMarkdown(ed).length; }
+function onComposeKeyDown(e) {}
+
+function showPreview() {
+  const ed = document.getElementById('composeEditor'); const text = editorToMarkdown(ed).trim();
+  if (!text && !composeImgUrl && !composeHtmlCode && !composeVidUrl) { alert('אין מה להציג.'); return; }
+  const mockEntry = { id: 'preview', text, imgUrl: composeImgUrl, videoUrl: composeVidUrl, htmlCode: composeHtmlCode, sender: getDisplayName(me?.email, me?.name), ts: Date.now(), buttons: composeBtns, quote: ed._quoteData };
+  document.getElementById('previewModalBody').innerHTML = buildMsg(mockEntry);
+  document.getElementById('previewModal').style.display = 'flex';
+}
+function closePreview() { document.getElementById('previewModal').style.display = 'none'; document.getElementById('previewModalBody').innerHTML = ''; }
+
+async function sendFeedPost() {
+  if (!me || !isAdmin()) { alert('אין לך הרשאת כתיבה'); return; }
+  const ed = document.getElementById('composeEditor');
+  const editorText = editorToMarkdown(ed).trim();
+  const tagsInput = document.getElementById('composeTagsInput')?.value.trim();
+  const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+  if (!editorText && !composeImgUrl && !composeHtmlCode) { alert('הודעה ריקה'); return; }
+  const btn = document.getElementById('composeSendBtn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+  const displayName = getDisplayName(me.email, me.name);
+  const d = await api('feed_add', { channel: CHANNEL, text: editorText, quote: ed._quoteData, imgUrl: composeImgUrl, videoUrl: composeVidUrl, htmlCode: composeHtmlCode, sender: displayName, senderEmail: me.email, buttons: composeBtns, tags }, 'POST');
+  if (d.status === 'ok') { clearCompose(); document.getElementById('feedWrap').scrollTop = 999999; await loadFeed(); }
+  else { alert('שגיאה בשליחה'); }
+  btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; btn.disabled = false;
+}
+
+function openEditMsg(id) {
+  if (!isAdmin()) return;
+  const e = items.find(i => i.id === id); if (!e) return; _editMsgId = id;
+  const ed = document.getElementById('composeEditor'); ed.innerHTML = e.text || '';
+  composeImgUrl = e.imgUrl || ''; composeVidUrl = e.videoUrl || ''; composeHtmlCode = e.htmlCode || ''; composeBtns = (e.buttons || []).map(b => ({ text: b.text, url: b.url }));
+  if (composeImgUrl) { document.getElementById('composeImgUrl').value = composeImgUrl; const th = document.getElementById('composeImgThumb'); if (th) { document.getElementById('composeImgThumbImg').src = composeImgUrl; th.style.display = 'flex'; } }
+  if (composeVidUrl) document.getElementById('composeVidUrl').value = composeVidUrl;
+  updateAttachPreview();
+  document.getElementById('composeSendBtn').style.display = 'none'; document.getElementById('composePreviewBtn').style.display = 'none';
+  document.getElementById('composeEditConfirmBtn').style.display = 'flex'; document.getElementById('composeEditCancelBtn').style.display = 'flex';
+  document.getElementById('composeEditBanner').classList.add('show');
+  document.getElementById('adminComposeBar').scrollIntoView({ behavior: 'smooth', block: 'end' });
+  setTimeout(() => { ed.focus(); const r = document.createRange(); r.selectNodeContents(ed); r.collapse(false); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }, 200);
+}
+function cancelEditMode() { _editMsgId = null; clearCompose(); document.getElementById('composeSendBtn').style.display = 'flex'; document.getElementById('composePreviewBtn').style.display = 'flex'; document.getElementById('composeEditConfirmBtn').style.display = 'none'; document.getElementById('composeEditCancelBtn').style.display = 'none'; document.getElementById('composeEditBanner').classList.remove('show'); }
+async function saveEditMsg() {
+  if (!_editMsgId || !me) return;
+  const ed = document.getElementById('composeEditor'); const editorText = editorToMarkdown(ed).trim();
+  if (!editorText && !composeImgUrl && !composeHtmlCode) { alert('ההודעה לא יכולה להיות ריקה'); return; }
+  const btn = document.getElementById('composeEditConfirmBtn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:12px"></i>'; btn.disabled = true;
+  const d = await api('feed_edit', { email: me.email, id: _editMsgId, text: editorText, imgUrl: composeImgUrl, videoUrl: composeVidUrl, htmlCode: composeHtmlCode, buttons: composeBtns.map(b => ({ text: b.text, url: b.url })) }, 'POST');
+  if (d.status === 'ok') { cancelEditMode(); await loadFeed(); } else { alert('שגיאה בשמירה'); }
+  btn.innerHTML = '<i class="fas fa-check" style="font-size:14px"></i>'; btn.disabled = false;
+}
+
+/* ================= חיפוש ================= */
+function toggleSearch() {
+  const bar = document.getElementById('searchBar'); if (!bar) return;
+  bar.classList.toggle('open');
+  if (bar.classList.contains('open')) setTimeout(() => document.getElementById('searchInput')?.focus(), 100);
+  else clearSearch();
+}
+let searchTimeout = null;
+function onSearch(val) {
+  const searchClear = document.getElementById('searchClear'); if (searchClear) searchClear.classList.toggle('show', val.length > 0);
+  if (!val || val.trim() === '') { clearSearch(); return; }
+  clearTimeout(searchTimeout); searchTimeout = setTimeout(() => doSearch(val), 400);
+}
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchBar').classList.remove('open');
+  document.getElementById('searchClear')?.classList.remove('show');
+  document.getElementById('feedWrap').style.display = '';
+  document.getElementById('searchResults').style.display = 'none';
+  const inner = document.getElementById('feedInner');
+  inner.innerHTML = items.map(buildMsg).join('');
+  items.forEach(e => { if (e.reactions) renderRxn(e.id, e.reactions); });
+}
+async function doSearch(q) {
+  const qLow = q.toLowerCase();
+  document.getElementById('feedWrap').style.display = 'none';
+  document.getElementById('searchResults').style.display = 'block';
+  const inner = document.getElementById('searchResultsInner'); const empty = document.getElementById('searchEmpty');
+  inner.innerHTML = '<div style="text-align:center;padding:30px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i> מחפש...</div>'; empty.style.display = 'none';
+  let allItems = []; let before = 0;
+  for (let page = 0; page < 10; page++) {
+    const d = await api('feed', before ? { channel: CHANNEL, before, limit: 50 } : { channel: CHANNEL, limit: 50 });
+    if (d.status !== 'ok' || !d.messages.length) break;
+    allItems.push(...d.messages);
+    if (d.messages.length < 50) break;
+    before = Math.min(...d.messages.map(e => e.ts || Infinity));
+  }
+  const results = allItems.filter(e => (e.text || '').toLowerCase().includes(qLow));
+  if (!results.length) { inner.innerHTML = ''; empty.style.display = 'block'; return; }
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  inner.innerHTML = results.map(e => buildMsg(e).replace(new RegExp(`(${escaped})`, 'gi'), '<mark style="background:#fff176;border-radius:3px;padding:0 1px">$1</mark>')).join('');
+  results.forEach(e => { if (e.reactions) renderRxn(e.id, e.reactions); });
+}
+
+/* ================= מצב מעדכן (גלובלי, משבצת אחת) ================= */
+function openUpdateTimeDialog() {
+  const now = new Date(); now.setHours(now.getHours() + 1, 0, 0, 0);
+  const inp = document.getElementById('updateTimeInput'); if (inp) inp.value = String(now.getHours()).padStart(2, '0') + ':00';
+  document.getElementById('updateTimeDialog').classList.add('open'); setTimeout(() => inp?.focus(), 100);
+}
+function closeUpdateTimeDialog() { document.getElementById('updateTimeDialog').classList.remove('open'); }
+function confirmUpdateTime() {
+  const val = (document.getElementById('updateTimeInput')?.value || '').trim();
+  if (!val) { alert('נא לבחור שעה'); return; }
+  _updateMode = true; _updateUntil = val; closeUpdateTimeDialog(); applyUpdateModeUI(); saveUpdateModeToServer(true, val);
+}
+function toggleUpdateMode() {
+  if (_updateMode) { _updateMode = false; _updateUntil = ''; applyUpdateModeUI(); saveUpdateModeToServer(false, ''); }
+  else openUpdateTimeDialog();
+}
+function applyUpdateModeUI() {
+  const btn = document.getElementById('updateModeBtn');
+  if (btn) {
+    if (_updateMode) { btn.className = 'update-mode-btn on'; btn.innerHTML = `<i class="fas fa-check" style="font-size:9px"></i> מעדכן${_updateUntil ? ' עד ' + _updateUntil : ''}`; }
+    else { btn.className = 'update-mode-btn off'; btn.innerHTML = '<i class="fas fa-times" style="font-size:9px"></i> לא מעדכן'; }
+  }
+  const notice = document.getElementById('updateModeNotice');
+  if (notice) notice.classList.toggle('show', !_updateMode);
+}
+async function saveUpdateModeToServer(active, until) {
+  await api('update_mode_set', { email: me.email, name: getDisplayName(me.email, me.name), active, until }, 'POST');
+}
+function isUntilExpired(until) {
+  if (!until) return false; const m = until.match(/^(\d{1,2}):(\d{2})$/); if (!m) return false;
+  const now = new Date(); return (now.getHours() * 60 + now.getMinutes()) > (parseInt(m[1], 10) * 60 + parseInt(m[2], 10));
+}
+async function pollUpdateMode() {
+  if (!isAdmin()) return;
+  const d = await api('update_mode_get', {});
+  if (_updateMode && isUntilExpired(_updateUntil)) { _updateMode = false; _updateUntil = ''; applyUpdateModeUI(); saveUpdateModeToServer(false, ''); }
+  const sendBtn = document.getElementById('composeSendBtn');
+  if (sendBtn) { sendBtn.disabled = false; sendBtn.style.opacity = '1'; sendBtn.title = 'שלח'; }
+}
+
+/* ================= דירוג יוצרים (לפי מספר פוסטים) ================= */
+let lbData = [];
+function openLeaderboard() { document.getElementById('leaderboardModal').style.display = 'flex'; loadLeaderboardData(); }
+function closeLeaderboard() { document.getElementById('leaderboardModal').style.display = 'none'; }
+async function loadLeaderboardData() {
+  const lbEl = document.getElementById('lbContent'); if (!lbEl) return;
+  lbEl.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa;"><i class="fas fa-spinner fa-spin fa-2x"></i><br>טוען נתונים...</div>';
+  const d = await api('api_leaderboard', {});
+  if (d.status !== 'ok') { lbEl.innerHTML = '<div style="text-align:center;padding:30px;color:#dc2626;">שגיאה בטעינת הנתונים</div>'; return; }
+  lbData = (d.leaderboard || []).map(u => ({ email: u.email, name: getDisplayName(u.email, u.name), count: u.count }));
+  switchLbView('podium');
+}
+function switchLbView(viewType) {
+  document.querySelectorAll('.lb-tab').forEach(b => b.classList.remove('active')); const content = document.getElementById('lbContent');
+  if (!lbData.length) { content.innerHTML = '<div style="text-align:center;color:#888;">אין עדיין מספיק נתונים לדירוג.</div>'; return; }
+  if (viewType === 'podium') {
+    document.getElementById('lbTabPodium').classList.add('active'); const top3 = lbData.slice(0, 3); let html = '<div class="lb-podium">';
+    if (top3[1]) html += `<div class="podium-item podium-2"><img class="podium-av" src="${LOGO}"><div class="podium-bar">${top3[1].count}</div><div class="podium-name">${esc(top3[1].name)}</div></div>`;
+    if (top3[0]) html += `<div class="podium-item podium-1"><img class="podium-av" src="${LOGO}"><div class="podium-bar">${top3[0].count}</div><div class="podium-name">${esc(top3[0].name)}</div></div>`;
+    if (top3[2]) html += `<div class="podium-item podium-3"><img class="podium-av" src="${LOGO}"><div class="podium-bar">${top3[2].count}</div><div class="podium-name">${esc(top3[2].name)}</div></div>`;
+    html += '</div>'; content.innerHTML = html;
+  } else if (viewType === 'bars') {
+    document.getElementById('lbTabBars').classList.add('active'); const maxC = Math.max(...lbData.map(u => u.count));
+    content.innerHTML = '<div class="lb-bars">' + lbData.map(u => { const width = maxC > 0 ? (u.count / maxC) * 100 : 0; return `<div class="lb-bar-row"><div class="lb-bar-name">${esc(u.name)}</div><div class="lb-bar-track"><div class="lb-bar-fill" style="width:${width}%">${u.count} פוסטים</div></div></div>`; }).join('') + '</div>';
+  } else if (viewType === 'list') {
+    document.getElementById('lbTabList').classList.add('active');
+    content.innerHTML = '<div class="lb-list">' + lbData.map((u, i) => { let rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''; return `<div class="lb-list-item"><div class="lb-rank ${rankClass}">${i + 1}</div><div class="lb-info"><div style="font-weight:800;font-size:14px;color:#111;">${esc(u.name)}</div></div><div class="lb-stats"><div class="lb-stat-badge"><i class="fas fa-pen"></i> ${u.count} פוסטים</div></div></div>`; }).join('') + '</div>';
+  }
+}
+
+/* ================= הגדרות אתר (חסימות) ================= */
+let siteBlockedEmails = [];
+function openSiteSettings() { loadSiteSettingsData(); }
+function closeSiteSettings() { closeAdminPanel(); }
+async function loadSiteSettingsData() {
+  const d = await api('api_settings', {});
+  siteBlockedEmails = d.blockedEmails || [];
+  renderBlockedUsers();
+}
+async function blockUser() {
+  const email = document.getElementById('settingsBlockEmail').value.trim().toLowerCase(); if (!email) return;
+  if (!siteBlockedEmails.includes(email)) {
+    siteBlockedEmails.push(email); document.getElementById('settingsBlockEmail').value = ''; renderBlockedUsers();
+    await api('api_settings', { admin_email: me.email, blockedEmails: siteBlockedEmails }, 'POST');
+    showToast('המשתמש נחסם', 'success');
+  }
+}
+function renderBlockedUsers() {
+  const el = document.getElementById('blockedUsersList');
+  if (!siteBlockedEmails.length) { el.innerHTML = 'אין משתמשים חסומים.'; return; }
+  el.innerHTML = siteBlockedEmails.map(email => `<div style="display:flex;align-items:center;justify-content:space-between;background:#fdf6f6;padding:8px 11px;margin-bottom:6px;border:1px solid #f6dede;border-radius:10px;font-size:12.5px;color:#5b6072;"><span>${esc(email)}</span><button onclick="unblockUser('${escAttr(email)}')" style="color:#c94b4b;background:none;border:none;cursor:pointer;font-weight:700;font-size:12px;font-family:'Heebo',sans-serif;">הסר חסימה</button></div>`).join('');
+}
+async function unblockUser(email) {
+  siteBlockedEmails = siteBlockedEmails.filter(e => e !== email); renderBlockedUsers();
+  await api('api_settings', { admin_email: me.email, blockedEmails: siteBlockedEmails }, 'POST');
+}
+async function exportEmailsToGroups() {
+  if (!isSuperAdmin()) return;
+  const d = await api('api_export_emails', { email: me.email }, 'POST');
+  const emails = (d.users || []).map(u => u.email).join('\n');
+  const blob = new Blob([emails], { type: 'text/plain;charset=utf-8' });
+  const link = document.createElement('a'); link.href = URL.createObjectURL(blob);
+  link.download = 'community_emails.txt'; link.click();
+}
+
+/* ================= פרסומות ================= */
+function shouldShowAd() { const last = parseInt(localStorage.getItem(AD_KEY) || '0'); return Date.now() - last > AD_INTERVAL; }
+function markAdShown() { localStorage.setItem(AD_KEY, String(Date.now())); }
+
+async function loadAd() {
+  const d = await api('ad_get', {});
+  if (d.side && (d.side.imageUrl || d.side.htmlCode)) showAdSide(d.side); else hideAdSide();
+  if (d.popup && (d.popup.imageUrl || d.popup.htmlCode) && shouldShowAd()) showAdPopup(d.popup);
+}
+function showAdSide(ad) {
+  const img = document.getElementById('adSidebarImg'); const link = document.getElementById('adSidebarLink'); const frame = document.getElementById('adSidebarFrame');
+  if (ad.htmlCode) { if (img) img.style.display = 'none'; if (link) link.style.display = 'none'; if (frame) { frame.srcdoc = ad.htmlCode; frame.style.display = 'block'; } }
+  else { if (frame) { frame.style.display = 'none'; frame.src = ''; } if (img) { img.src = ad.imageUrl || ''; img.style.display = 'block'; } if (link) link.href = ad.link || '#'; }
+  if (isAdmin()) {
+    const adInChat = document.getElementById('adInChat'); const adFrame = document.getElementById('adInChatFrame'); const adImg = document.getElementById('adInChatImg'); const adLink = document.getElementById('adInChatLink');
+    if (adInChat) {
+      if (ad.htmlCode) { if (adFrame) { adFrame.srcdoc = ad.htmlCode; adFrame.style.display = 'block'; } if (adLink) adLink.style.display = 'none'; }
+      else { if (adFrame) adFrame.style.display = 'none'; if (adImg) { adImg.src = ad.imageUrl || ''; adImg.style.display = 'block'; } if (adLink) { adLink.style.display = 'block'; adLink.href = ad.link || '#'; } }
+    }
+  } else { if (window.innerWidth > 900) document.getElementById('adOnlySidebar').style.display = 'block'; }
+}
+function hideAdSide() { document.getElementById('adOnlySidebar').style.display = 'none'; const adInChat = document.getElementById('adInChat'); if (adInChat) adInChat.style.display = 'none'; }
+function showAdPopup(ad) {
+  if (document.getElementById('adOverlay')) return;
+  const overlay = document.createElement('div'); overlay.id = 'adOverlay'; overlay.style.cssText = 'position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center';
+  const inner = document.createElement('div'); inner.style.cssText = 'position:relative;max-width:420px;width:90%;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)';
+  let timerVal = parseInt(ad.timer || 0); if (timerVal > 5) timerVal = 5;
+  const closeBtn = `<button id="adCloseBtn" onclick="closeAd()" style="position:absolute;top:10px;right:10px;z-index:2;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:Heebo,sans-serif" ${timerVal > 0 ? 'disabled' : ''}>${timerVal > 0 ? timerVal : '✕'}</button>`;
+  if (ad.htmlCode) { inner.innerHTML = closeBtn; const frame = document.createElement('iframe'); frame.srcdoc = ad.htmlCode; frame.style.cssText = 'width:100%;height:70vh;border:none;display:block;'; frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-forms allow-top-navigation-by-user-activation'); inner.appendChild(frame); }
+  else { inner.innerHTML = closeBtn + `<a href="${escAttr(ad.link || '#')}" target="_blank" rel="noopener noreferrer" onclick="closeAd()"><img src="${escAttr(ad.imageUrl)}" style="width:100%;display:block;max-height:70vh;object-fit:contain;background:#000"></a>`; }
+  overlay.appendChild(inner); document.body.appendChild(overlay); markAdShown();
+  if (timerVal > 0) { let t = timerVal; let intv = setInterval(() => { t--; let b = document.getElementById('adCloseBtn'); if (b) { if (t <= 0) { b.disabled = false; b.innerText = '✕'; clearInterval(intv); } else b.innerText = t; } else clearInterval(intv); }, 1000); }
+}
+function closeAd() { document.getElementById('adOverlay')?.remove(); }
+
+async function openAdPanel() {
+  const d = await api('ad_get', {});
+  if (d.popup) { document.getElementById('adPopupImageUrl').value = d.popup.imageUrl || ''; document.getElementById('adPopupLinkUrl').value = d.popup.link || ''; document.getElementById('adPopupHtmlUrl').value = d.popup.htmlCode || ''; document.getElementById('adPopupTimer').value = d.popup.timer || 0; }
+  if (d.side) { document.getElementById('adSideImageUrl').value = d.side.imageUrl || ''; document.getElementById('adSideLinkUrl').value = d.side.link || ''; document.getElementById('adSideHtmlUrl').value = d.side.htmlCode || ''; }
+}
+function closeAdPanel() { closeAdminPanel(); }
+async function saveAd(type) {
+  const imgEl = type === 'popup' ? 'adPopupImageUrl' : 'adSideImageUrl'; const lnkEl = type === 'popup' ? 'adPopupLinkUrl' : 'adSideLinkUrl'; const htmlEl = type === 'popup' ? 'adPopupHtmlUrl' : 'adSideHtmlUrl';
+  const imageUrl = document.getElementById(imgEl).value.trim(); const linkUrl = document.getElementById(lnkEl).value.trim(); const htmlCode = document.getElementById(htmlEl)?.value.trim() || '';
+  let timer = 0; if (type === 'popup') { timer = parseInt(document.getElementById('adPopupTimer').value || 0); if (timer < 0) timer = 0; if (timer > 5) timer = 5; }
+  if (!imageUrl && !htmlCode) { showAdMsg('יש להזין תמונה או קוד HTML', 'red'); return; }
+  const d = await api('ad_set', { email: me.email, imageUrl, linkUrl, htmlCode, displayType: type, timer }, 'POST');
+  if (d.status === 'ok') { showAdMsg('נשמר ✓', 'green'); loadAd(); } else showAdMsg('שגיאה', 'red');
+}
+async function deleteAd(type) {
+  const imgEl = type === 'popup' ? 'adPopupImageUrl' : 'adSideImageUrl'; const lnkEl = type === 'popup' ? 'adPopupLinkUrl' : 'adSideLinkUrl';
+  await api('ad_set', { email: me.email, imageUrl: '', linkUrl: '', displayType: type, timer: 0 }, 'POST');
+  document.getElementById(imgEl).value = ''; document.getElementById(lnkEl).value = ''; if (type === 'side') hideAdSide(); showAdMsg('הוסרה ✓', 'green');
+}
+function showAdMsg(txt, color) { const el = document.getElementById('adMsg'); el.textContent = txt; el.style.color = color === 'green' ? '#16a34a' : '#dc2626'; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 2000); }
+
+/* ================= הודעות צוות ================= */
+async function loadAdminMsgs() {
+  const d = await api('admin_msgs_get', {});
+  if (d.status !== 'ok') return;
+  const msgs = d.messages || [];
+  const newMsgs = msgs.filter(m => !_adminMsgsKnownIds.has(m.id));
+  if (!newMsgs.length) return;
+  newMsgs.forEach(m => { _adminMsgsKnownIds.add(m.id); adminMsgsUnread++; });
+  const badge = document.getElementById('adminMsgsBadge');
+  if (badge) { badge.textContent = adminMsgsUnread; badge.style.display = adminMsgsUnread > 0 ? 'flex' : 'none'; }
+  if (document.getElementById('adminPanelModal')?.classList.contains('open') && _adminPanelActiveSection === 'messages') renderAdminMsgs(msgs);
+}
+function renderAdminMsgs(msgs) {
+  const body = document.getElementById('adminMsgsBody'); if (!body) return;
+  if (!msgs.length) { body.innerHTML = '<div class="ap-empty">אין הודעות</div>'; return; }
+  body.innerHTML = msgs.map(m => {
+    const isMine = m.email === me?.email;
+    return `<div style="background:${isMine ? '#eef1fd' : '#f8f9fc'};border:1px solid ${isMine ? '#d9deed' : '#eef0f5'};border-radius:12px;padding:10px 12px;margin-bottom:8px;">
+      <div style="font-size:11px;font-weight:800;color:${isMine ? '#4a55c7' : '#5b6072'};margin-bottom:3px;">${esc(m.name || m.email)}</div>
+      <div style="font-size:13px;color:#1f2430;line-height:1.5;">${esc(m.text)}</div>
+      <div style="font-size:10px;color:#a3a8b8;margin-top:4px;">${fmtTime(m.ts)}</div>
+    </div>`;
+  }).join('');
+  body.scrollTop = body.scrollHeight;
+}
+async function openAdminMsgs() {
+  adminMsgsUnread = 0;
+  const badge = document.getElementById('adminMsgsBadge'); if (badge) badge.style.display = 'none';
+  const d = await api('admin_msgs_get', {});
+  if (d.status === 'ok') renderAdminMsgs(d.messages || []);
+  const sendRow = document.getElementById('adminMsgsSendRow'); if (sendRow) sendRow.style.display = isSuperAdmin() ? 'flex' : 'none';
+}
+function closeAdminMsgs() { closeAdminPanel(); }
+async function sendAdminMsg() {
+  if (!isSuperAdmin()) return;
+  const inp = document.getElementById('adminMsgInput'); const text = (inp?.value || '').trim(); if (!text) return;
+  inp.value = ''; inp.style.height = 'auto';
+  const d = await api('admin_msgs_add', { email: me.email, name: getDisplayName(me.email, me.name), text }, 'POST');
+  if (d.status === 'ok') { const d2 = await api('admin_msgs_get', {}); renderAdminMsgs(d2.messages || []); }
+}
+
+/* ================= ניהול מורשי כתיבה ================= */
+async function openManageAdmins() { document.getElementById('adminMsgResult').style.display = 'none'; await renderAdminsList(); }
+function closeManageAdmins() { closeAdminPanel(); }
+async function renderAdminsList() {
+  const list = document.getElementById('adminsList'); if (!list) return;
+  list.innerHTML = '<div style="text-align:center;padding:20px;color:#a3a8b8;"><i class="fas fa-spinner fa-spin"></i> טוען...</div>';
+  const d = await api('allowed_list', {});
+  const users = d.list || [];
+  if (!users.length) { list.innerHTML = '<div class="ap-empty">אין כותבים מורשים עדיין</div>'; return; }
+  list.innerHTML = users.map(u => {
+    const pic = `<div style="width:36px;height:36px;border-radius:50%;background:#4a55c7;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${esc((u.name || u.email || '?')[0].toUpperCase())}</div>`;
+    const isMe = u.email === me?.email?.toLowerCase();
+    return `<div class="ap-row-card">
+      ${pic}
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:800;color:#1f2430;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(u.name || u.email)}${isMe ? ' <span style="font-size:10px;color:#a3a8b8;">(אני)</span>' : ''}</div>
+        <div style="font-size:11px;color:#8a90a6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(u.email)}</div>
+        <div style="font-size:10px;font-weight:800;color:#5fa980;margin-top:2px;">כותב מורשה</div>
+      </div>
+      ${isSuperAdmin() ? `<button onclick="removeAdmin('${escAttr(u.email)}')" title="הסר" style="background:#fdf1f1;border:1px solid #f6dede;border-radius:8px;padding:5px 10px;cursor:pointer;color:#c94b4b;font-size:11px;font-weight:700;font-family:'Heebo',sans-serif;flex-shrink:0;"><i class="fas fa-trash" style="font-size:10px;"></i></button>` : ''}
+    </div>`;
+  }).join('');
+}
+async function addAdmin() {
+  const email = document.getElementById('newAdminEmail')?.value.trim().toLowerCase();
+  const name = document.getElementById('newAdminName')?.value.trim();
+  if (!email || !name) { showAdminMsg('יש למלא אימייל ושם', 'red'); return; }
+  if (!email.includes('@')) { showAdminMsg('אימייל לא תקין', 'red'); return; }
+  const d = await api('allowed_add', { email: me.email, target: email, name }, 'POST');
+  if (d.status === 'ok') {
+    showAdminMsg('נוסף בהצלחה ✓', 'green');
+    document.getElementById('newAdminEmail').value = ''; document.getElementById('newAdminName').value = '';
+    await loadWritersMap(); await renderAdminsList();
+  } else { showAdminMsg('שגיאה', 'red'); }
+}
+async function removeAdmin(targetEmail) {
+  if (!isSuperAdmin()) return;
+  if (!confirm(`להסיר את ${targetEmail} מהצוות?`)) return;
+  const d = await api('allowed_remove', { email: me.email, target: targetEmail }, 'POST');
+  if (d.status === 'ok') { await loadWritersMap(); await renderAdminsList(); showAdminMsg('הוסר בהצלחה', 'green'); }
+  else { showAdminMsg('שגיאה', 'red'); }
+}
+function showAdminMsg(txt, color) { const el = document.getElementById('adminMsgResult'); if (!el) return; el.textContent = txt; el.style.color = color === 'green' ? '#3f9a6e' : '#c94b4b'; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
+
+/* ================= סטטיסטיקות ================= */
+async function pingSitePresence() { if (!me) return; await api('presence_ping', { email: me.email, name: me.name, picture: me.picture }, 'POST'); }
+async function triggerStats() {
+  const d = await api('site_stats', {});
+  if (d.status === 'ok') {
+    const map = { publicUserCount: d.online, statOnline: d.online, statHour: d.hour, statDay: d.day, statWeek: d.week, statPeak: d.peak };
+    for (let id in map) { const el = document.getElementById(id); if (el) el.innerText = map[id]; }
+  }
+}
+async function openSiteStats() {
+  const d = await api('site_stats', {});
+  if (d.status === 'ok') {
+    document.getElementById('statOnline').innerText = d.online || '0';
+    document.getElementById('statHour').innerText = d.hour || '0';
+    document.getElementById('statDay').innerText = d.day || '0';
+    document.getElementById('statWeek').innerText = d.week || '0';
+    document.getElementById('statPeak').innerText = d.peak || '0';
+  }
+}
+function closeSiteStats() { closeAdminPanel(); }
+
+/* ================= לייטבוקס, מצב כהה, התראות ================= */
+function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.getElementById('lbImg').src = ''; }
+function openLightbox(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').classList.add('show'); }
+function toggleDark() { const on = document.body.classList.toggle('dark'); document.getElementById('darkBtn').classList.toggle('active', on); localStorage.setItem('shaagat_dark', on ? '1' : '0'); }
+function initDark() { if (localStorage.getItem('shaagat_dark') === '1') { document.body.classList.add('dark'); document.getElementById('darkBtn')?.classList.add('active'); } }
+let notificationsOn = false;
+async function toggleNotifications() {
+  if (!('Notification' in window)) { alert('הדפדפן לא תומך בהתראות'); return; }
+  if (notificationsOn) { notificationsOn = false; document.getElementById('notifBtn').classList.remove('active'); localStorage.setItem('shaagat_notif', '0'); return; }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') { notificationsOn = true; document.getElementById('notifBtn').classList.add('active'); localStorage.setItem('shaagat_notif', '1'); new Notification(SITE_TITLE, { body: 'התראות מופעלות ✓', icon: LOGO }); }
+}
+function initNotifications() { if (localStorage.getItem('shaagat_notif') === '1' && Notification.permission === 'granted') { notificationsOn = true; document.getElementById('notifBtn')?.classList.add('active'); } }
+function sendNotification(title, body) { if (notificationsOn && Notification.permission === 'granted' && document.visibilityState !== 'visible') new Notification(title || SITE_TITLE, { body: body || 'הודעה חדשה', icon: LOGO }); }
+
+/* ================= סרגל צד - תפריט מובייל ================= */
+
+/* ================= רקע מונפש ================= */
+document.addEventListener('DOMContentLoaded', () => {
+  const mouseBlob = document.getElementById('mouseBlob');
+  const bgContainer = document.getElementById('bgContainer');
+  const canvas = document.getElementById('sparklesCanvas');
+  if (!mouseBlob || !canvas) return;
+  const ctx = canvas.getContext('2d');
+  let width = canvas.width = window.innerWidth, height = canvas.height = window.innerHeight;
+  let mouseX = width / 2, mouseY = height / 2, currentX = mouseX, currentY = mouseY, particles = [];
+  window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; addParticle(mouseX, mouseY); });
+  function addParticle(x, y) { if (Math.random() > 0.2) return; particles.push({ x: x + (Math.random() * 30 - 15), y: y + (Math.random() * 30 - 15), size: Math.random() * 2 + 0.5, speedX: (Math.random() - 0.5) * 0.5, speedY: (Math.random() - 0.5) * 0.5, life: 1 }); }
+  function animate() {
+    currentX += (mouseX - currentX) * 0.08; currentY += (mouseY - currentY) * 0.08;
+    mouseBlob.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+    let moveX = (mouseX / width - 0.5) * 40, moveY = (mouseY / height - 0.5) * 40;
+    if (bgContainer) bgContainer.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < particles.length; i++) { let p = particles[i]; p.x += p.speedX; p.y += p.speedY; p.life -= 0.01; if (p.life > 0) { ctx.fillStyle = `rgba(255, 230, 150, ${p.life * 0.6})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); } }
+    particles = particles.filter(p => p.life > 0);
+    requestAnimationFrame(animate);
+  }
+  animate();
+});
+
+</script>
+<script>
+  // שמנו את זה כאן כדי שזה יעבוד תמיד, גם אם הקובץ השני קורס
+  window.closeReportModal = function() {
+    // מציאת חלון הרקע (ה-overlay) והסתרתו
+    const overlay = document.querySelector('[onclick*="closeReportModal"]');
+    if (overlay) overlay.style.display = 'none';
+    
+    // ניקוי תיבת הטקסט אם קיימת
+    const input = document.getElementById('reportModalInput');
+    if (input) input.value = '';
+    
+    // הסתרת הודעת שגיאה אם קיימת
+    const error = document.getElementById('reportModalError');
+    if (error) error.style.display = 'none';
+  };
+</script>
+</body>
+</html>
