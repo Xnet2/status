@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1"/>
-<title id="pageTitle">xnet פרוייקטים ועדכונים על ידי דוד</title>
-<meta name="description" content="xnet פרוייקטים ועדכונים על ידי דוד">
-<meta name="keywords" content="xnet פרוייקטים ועדכונים על ידי דוד">
+<title id="pageTitle">xnet פרוייקטים ועדכונים</title>
+<meta name="description" content="xnet פרוייקטים ועדכונים">
+<meta name="keywords" content="xnet פרוייקטים ועדכונים">
 <meta name="google-site-verification" content="ZXEdDW4jzJU_cxuE1lL0tf76JJf3KZle2MIMjs4ua98" />
 
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png">
@@ -35,7 +35,7 @@ body{height:100%;font-family:'Heebo',sans-serif;-webkit-font-smoothing:antialias
   background: #fff;
   border-right: 1px solid rgba(0,0,0,.08);
   flex-shrink: 0;
-  position: sticky; top: 64px; height: calc(100vh - 64px);
+  position: sticky; top: 78px; height: calc(100vh - 78px);
   display: flex; flex-direction: column;
   z-index: 100;
   transition: transform 0.3s ease;
@@ -78,7 +78,7 @@ body.dark .channel-item.active { background: #2a2a45; color: #a5b4fc; border-rig
   background:#fff;
   border-left:1px solid rgba(0,0,0,.08);
   flex-shrink:0;
-  position:sticky;top:64px;height:calc(100vh - 64px);
+  position:sticky;top:78px;height:calc(100vh - 78px);
   flex-direction:column;
   overflow:hidden;
   display:none;
@@ -91,15 +91,22 @@ body.dark .channel-item.active { background: #2a2a45; color: #a5b4fc; border-rig
 #adSidebarBlock img{width:100%;height:auto;display:block;}
 
 /* HEADER */
-header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;padding:0 14px; display:flex;align-items:center;gap:12px; flex-shrink:0;position:fixed;top:0;left:0;right:0;z-index:100; overflow:visible;}
-#app{padding-top:64px;}
+header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:78px;padding:0 16px; display:flex;align-items:center;gap:12px; flex-shrink:0;position:fixed;top:0;left:0;right:0;z-index:100; overflow:visible;}
+#app{padding-top:78px;}
 .hdr-avatar{width:38px;height:38px;border-radius:10px;object-fit:contain;flex-shrink:0;}
 .hdr-info{flex:1;min-width:0;}
 .hdr-name{font-size:15px;font-weight:800;color:#111827;line-height:1.2;}
 .hdr-desc{font-size:12px;color:#4b5563;font-weight:600;line-height:1.35;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .hdr-status{font-size:12px;color:#4b5563;font-weight:600;display:flex;align-items:center;gap:6px;margin-top:4px;}
-.hdr-user{display:flex;align-items:center;gap:4px;}
+.hdr-user{display:flex;align-items:center;gap:6px;}
 .hdr-user img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #eee;}
+.hdr-icon-group{display:flex;align-items:center;gap:1px;background:rgba(255,255,255,.97);border:1px solid #e5e7eb;border-radius:999px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.10);}
+body.dark .hdr-icon-group{background:#1e1e30;border-color:#3a3a55;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+#loginHdrBtn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.97);border:1px solid #e5e7eb;box-shadow:0 2px 8px rgba(0,0,0,.10);color:#1a56db;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:background .12s ease,transform .1s ease;}
+#loginHdrBtn:hover{background:#eff6ff;}
+#loginHdrBtn:active{transform:scale(.92);}
+body.dark #loginHdrBtn{background:#1e1e30;border-color:#3a3a55;color:#93bbfd;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+body.dark #loginHdrBtn:hover{background:#26314f;}
 
 #adminBadge{ display:none;align-items:center;gap:4px; background:#f0f4ff;border:1px solid #c7d7fa; border-radius:8px;padding:2px 7px; font-size:11px;font-weight:700;color:#1a56db;white-space:nowrap;}
 #adminBadge.show{display:inline-flex;}
@@ -114,9 +121,9 @@ header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;pad
 .msg-row{ display:flex;direction:rtl; align-items:flex-start;gap:8px; padding:2px 0; animation:mi .3s cubic-bezier(.16,1,.3,1) both;}
 @keyframes mi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .msg-av{width:36px;height:36px;border-radius:0;object-fit:contain;flex-shrink:0;align-self:flex-start;margin-top:17px;background:transparent;}
-.msg-col{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start;position:relative;}
+.msg-col{display:flex;flex-direction:column;gap:1px;min-width:0;align-items:flex-start;position:relative;}
 .msg-meta{direction:rtl;display:flex;align-items:baseline;gap:6px;padding-right:4px;}
-.msg-meta-name{font-size:12px;font-weight:700;color:#666;}
+.msg-meta-name{font-size:12px;font-weight:800;color:#111;}
 .msg-meta-time{font-size:11px;font-weight:500;color:#aaa;}
 .bubble{ background:#f3f4f6;direction:rtl; border-radius:18px 4px 18px 18px; padding:10px 14px 8px; display:inline-block;max-width:100%; box-shadow:0 1px 2px rgba(0,0,0,.10);}
 .bubble.is-red{background:#fff9f9;border-right:3px solid #e02020;}
@@ -148,14 +155,17 @@ header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;pad
 
 /* REACTIONS */
 .rxn-row{display:contents;}
-.rxn-chip{ display:inline-flex;align-items:center;justify-content:center;gap:3px; background:#f3f4f6;border:1px solid #e5e7eb; border-radius:8px;padding:3px 7px;height:26px; cursor:pointer;transition:background .12s,border-color .12s,transform .1s; user-select:none;line-height:1;}
-.rxn-chip:hover{background:#e5e7eb;border-color:#9ca3af;}
-.rxn-chip.mine{background:#eff6ff;border-color:#3b82f6;box-shadow:0 0 0 1.5px #bfdbfe;}
-.rxn-emoji{font-size:15px;line-height:1;font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
-.rxn-count{font-size:11px;font-weight:700;color:#6b7280;font-family:'Heebo',sans-serif;}
+.rxn-chip{ display:inline-flex;align-items:center;justify-content:center;gap:4px; background:#f3f4f6;border:1px solid transparent; border-radius:999px;padding:3px 9px;height:26px; cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .08s ease; user-select:none;line-height:1;}
+.rxn-chip:hover{background:#e9eaee;}
+.rxn-chip:active{transform:scale(.93);}
+.rxn-chip.mine{background:#eaf1ff;border-color:#cfe0fd;}
+.rxn-chip.mine:hover{background:#dfebfe;}
+.rxn-emoji{font-size:14px;line-height:1;font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+.rxn-count{font-size:11px;font-weight:700;color:#8a8f9c;font-family:'Heebo',sans-serif;transition:color .15s ease;}
 .rxn-chip.mine .rxn-count{color:#1a56db;}
-.rxn-add-btn{ background:none;border:none;cursor:pointer;padding:1px;border-radius:6px;line-height:0; display:inline-flex;align-items:center;color:#ccc; transition:color .12s,background .12s,transform .12s;height:22px;width:22px;justify-content:center;}
-.rxn-add-btn:hover{color:#666;background:#f0f0f0;transform:scale(1.12);}
+.rxn-add-btn{ background:none;border:none;cursor:pointer;padding:1px;border-radius:8px;line-height:0; display:inline-flex;align-items:center;color:#c2c5cc; transition:color .15s ease,background .15s ease,transform .1s ease;height:24px;width:24px;justify-content:center;}
+.rxn-add-btn:hover{color:#6b7280;background:#f0f1f4;transform:scale(1.08);}
+.rxn-add-btn:active{transform:scale(.92);}
 .rxn-add-btn svg{width:14px;height:14px;display:block;}
 .rxn-add-btn.maxed{opacity:0.3;cursor:default;pointer-events:none;}
 .cmt-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:none;font-size:12px;color:#aaa;cursor:pointer;font-family:'Heebo',sans-serif;font-weight:600;padding:0;transition:color .12s;}
@@ -165,7 +175,7 @@ header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;pad
 .link-btn.copied{color:#16a34a;}
 
 /* Bubble wrapper for top actions - חלונית עגולה אחת שמאחדת את כל הכפתורים */
-.bubble-wrap-outer{position:relative;display:inline-block;max-width:100%;margin-top:4px;}
+.bubble-wrap-outer{position:relative;display:inline-block;max-width:100%;margin-top:1px;}
 .bubble-top-actions{ position:absolute;top:-30px;left:2px; display:flex;align-items:center;gap:1px; opacity:0;pointer-events:none; transition:opacity .15s ease; z-index:10; direction:ltr; background:rgba(255,255,255,.97); border:1px solid #e5e7eb; border-radius:999px; padding:3px; box-shadow:0 2px 8px rgba(0,0,0,.13);}
 .msg-row:hover .bubble-top-actions{ opacity:1;pointer-events:all; }
 @media (hover:none){ .bubble-top-actions{ opacity:1;pointer-events:all; } }
@@ -199,7 +209,7 @@ header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;pad
 
 /* COMMENTS PANEL */
 #cpOverlay{display:none;}
-#commentsPanel{position:fixed;top:64px;left:0;right:auto;width:310px;max-width:100vw;height:calc(100% - 64px);background:#fff;box-shadow:4px 0 24px rgba(0,0,0,.12);z-index:300;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .3s cubic-bezier(.16,1,.3,1);}
+#commentsPanel{position:fixed;top:78px;left:0;right:auto;width:310px;max-width:100vw;height:calc(100% - 78px);background:#fff;box-shadow:4px 0 24px rgba(0,0,0,.12);z-index:300;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .3s cubic-bezier(.16,1,.3,1);}
 #commentsPanel.open{transform:translateX(0);}
 .cp-hdr{padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .cp-title{font-size:15px;font-weight:800;color:#111;}
@@ -226,8 +236,9 @@ header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;pad
 .cp-disabled-msg { text-align:center; color:#dc2626; font-size:12px; font-weight:700; padding:10px; background:#fef2f2; border-top:1px solid #fecaca; }
 
 /* HEADER ICON BUTTONS */
-.hdr-icon-btn,#searchBtn,#darkBtn,#notifBtn,#adBtn,#siteSettingsBtn,#manageAdminsBtn,#writePermBtn,#updateModeHdrBtn,#leaderboardBtn{background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#888;transition:background .15s,color .15s;flex-shrink:0;text-decoration:none;position:relative;}
-.hdr-icon-btn:hover,#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#adBtn:hover,#siteSettingsBtn:hover,#manageAdminsBtn:hover,#writePermBtn:hover,#updateModeHdrBtn:hover,#leaderboardBtn:hover{background:#f3f4f6;color:#333;}
+.hdr-icon-btn,#searchBtn,#darkBtn,#notifBtn,#adBtn,#siteSettingsBtn,#manageAdminsBtn,#writePermBtn,#updateModeHdrBtn,#leaderboardBtn{background:none;border:none;cursor:pointer;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#888;transition:background .12s ease,color .12s ease,transform .1s ease;flex-shrink:0;text-decoration:none;position:relative;}
+.hdr-icon-btn:hover,#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#adBtn:hover,#siteSettingsBtn:hover,#manageAdminsBtn:hover,#writePermBtn:hover,#updateModeHdrBtn:hover,#leaderboardBtn:hover{background:#eff6ff;color:#1a56db;}
+.hdr-icon-btn:active,#searchBtn:active,#darkBtn:active,#notifBtn:active,#adBtn:active{transform:scale(.92);}
 #darkBtn.active{background:#1e1e30;color:#a5b4fc;}
 #darkBtn.active:hover{background:#2a2a45;color:#c4b5fd;}
 #notifBtn.active{background:#fef3c7;color:#d97706;}
@@ -453,7 +464,8 @@ body.dark #feedWrap { background: #0f0f15; }
 body.dark .bubble { background: #1e1e30 !important; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
 body.dark .bubble-text { color: #d1d5db !important; }
 body.dark .bubble-headline { color: #f3f4f6 !important; }
-body.dark .rxn-chip { background: #2a2a40; border-color: #3a3a55; }
+body.dark .rxn-chip { background: #2a2a40; border-color: transparent; }
+body.dark .rxn-chip.mine { background: #26314f; border-color: #3a4a72; }
 body.dark .rxn-count { color: #9ca3af; }
 body.dark .bubble-top-actions { background: #1e1e30; border-color: #3a3a55; }
 body.dark .bubble-top-actions .link-btn,
@@ -464,7 +476,7 @@ body.dark #composeEditor { background: #0f0f15 !important; border-color: #3a3a55
 body.dark .compose-toolbar { border-color: #2a2a40; }
 body.dark .ctb-btn { background: #1a1a2e; border-color: #3a3a55; color: #d1d5db; }
 body.dark #tagFilterBar { background: #1a1a2e !important; border-color: #2a2a40 !important; }
-body.dark .msg-meta-name { color: #9ca3af; }
+body.dark .msg-meta-name { color: #f0f1f4; }
 body.dark .msg-meta-time { color: #6b7280; }
 body.dark #scrollDownBtn { background: #1e1e30; border-color: #3a3a55; }
 body.dark #scrollDownBtn .scroll-arrow { color: #d1d5db; }
@@ -485,7 +497,7 @@ body.dark #writePermBtn, body.dark #updateModeHdrBtn, body.dark #leaderboardBtn 
   color: #9ca3af;
 }
 body.dark .hdr-icon-btn:hover, body.dark #searchBtn:hover, body.dark #notifBtn:hover,
-body.dark #adBtn:hover { background: #2a2a40 !important; color: #f3f4f6 !important; }
+body.dark #adBtn:hover { background: #26314f !important; color: #93bbfd !important; box-shadow:none; }
 body.dark .quote-block { background: #1e1e30; border-color: #3b82f6; }
 body.dark .quote-block-text { color: #9ca3af; }
 body.dark .lnk-btn { background: #2a2a40; color: #d1d5db; }
@@ -692,7 +704,7 @@ body, html { background: #fff !important; }
  <div class="login-card">
     <button class="login-close" onclick="closeLoginModal()" title="סגור">✕</button>
     <img class="login-logo-img" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png4" onerror="this.style.display='none'">
-    <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים על ידי דוד</div>
+    <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים</div>
     <div class="login-sub">התחברות באמצעות גוגל</div>
     <div id="googleBtn" style="display:flex; justify-content:center;"></div>
   </div>
@@ -708,7 +720,7 @@ body, html { background: #fff !important; }
   </div>
 </div>
 
-<div id="adOnlySidebar" style="display:none;width:320px;min-width:320px;background:#fff;border-left:1px solid rgba(0,0,0,.08);flex-shrink:0;position:sticky;top:64px;height:calc(100vh - 64px);overflow:hidden;">
+<div id="adOnlySidebar" style="display:none;width:320px;min-width:320px;background:#fff;border-left:1px solid rgba(0,0,0,.08);flex-shrink:0;position:sticky;top:78px;height:calc(100vh - 78px);overflow:hidden;">
   <a id="adSidebarLink" href="#" target="_blank" rel="noopener noreferrer">
     <img id="adSidebarImg" src="" alt="פרסומת" style="width:100%;height:auto;display:block;">
   </a>
@@ -721,36 +733,34 @@ body, html { background: #fff !important; }
       <div id="hdrEmailCountBadge" style="position:absolute;top:-4px;left:-4px;background:#1a56db;color:#fff;border-radius:99px;font-size:9px;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;border:1.5px solid #fff;display:none;font-family:'Heebo',sans-serif;line-height:14px;"></div>
     </div>
     <div class="hdr-info">
-      <div class="hdr-name" id="hdrChannelName">xnet פרוייקטים ועדכונים על ידי דוד</div>
+      <div class="hdr-name" id="hdrChannelName">xnet פרוייקטים ועדכונים</div>
       <div class="hdr-desc">עדכוני פרוייקטים התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet</div>
       <div class="hdr-status">
         <span id="publicUserCount">...</span> עוקבים
       </div>
     </div>
     <div class="hdr-user">
-      <div style="position:relative;">
-        <button id="searchBtn" onclick="toggleSearch()" title="חיפוש">
-          <i class="fas fa-search" style="font-size:13px"></i>
-        </button>
-        <div id="searchBar">
-          <input id="searchInput" type="text" placeholder="חיפוש..." oninput="onSearch(this.value)" />
-          <button id="searchClear" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+      <div class="hdr-icon-group">
+        <div style="position:relative;">
+          <button id="searchBtn" onclick="toggleSearch()" title="חיפוש">
+            <i class="fas fa-search" style="font-size:13px"></i>
+          </button>
+          <div id="searchBar">
+            <input id="searchInput" type="text" placeholder="חיפוש..." oninput="onSearch(this.value)" />
+            <button id="searchClear" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+          </div>
         </div>
+
+        <button id="darkBtn" onclick="toggleDark()" title="מצב כהה">
+          <i class="fas fa-moon" style="font-size:13px"></i>
+        </button>
+        <button id="notifBtn" onclick="toggleNotifications()" title="התראות">
+          <i class="fas fa-bell" style="font-size:13px"></i>
+        </button>
+        <button id="loginHdrBtn" onclick="openLoginModal()" title="התחבר"><i class="fas fa-right-to-bracket" style="font-size:13px"></i></button>
       </div>
-      
-      <button class="hdr-icon-btn" onclick="window.open('mailto:0548537646a@gmail.com?subject=%D7%9C%D7%9B%D7%91%D7%95%D7%93%20%D7%9E%D7%A0%D7%94%D7%9C%20%D7%90%D7%AA%D7%A8%20%D7%91%D7%99%D7%A0%D7%94%20%D7%95%D7%93%D7%A2%D7%94','_blank')" title="פנייה למנהל">
-        <i class="fas fa-envelope" style="font-size:13px"></i>
-      </button>
-      <button id="darkBtn" onclick="toggleDark()" title="מצב כהה">
-        <i class="fas fa-moon" style="font-size:13px"></i>
-      </button>
-      <button id="notifBtn" onclick="toggleNotifications()" title="התראות">
-        <i class="fas fa-bell" style="font-size:13px"></i>
-      </button>
-      
-      <div id="userAvatar" style="position:relative; margin-right:5px;">
-        <button id="loginHdrBtn" onclick="openLoginModal()" style="background:#1a56db;color:#fff;border:none;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;">התחבר</button>
-      </div>
+
+      <div id="userAvatar" style="position:relative; margin-right:5px;"></div>
     </div>
   </header>
 
@@ -1114,7 +1124,7 @@ body, html { background: #fff !important; }
 const BACKEND = "https://script.google.com/macros/s/AKfycbxD3EAna7fUJWicfB6LVjVmCH8ciqWA7Hfh3GI57WRJvjVloSJKsXElr6LNHLT_O17S/exec";
 const GOOGLE_CLIENT_ID = '426523025549-7c50rkn7cun4vmm2r802u0ij6egjehtg.apps.googleusercontent.com';
 const LOGO = 'https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png';
-const SITE_TITLE = 'xnet פרוייקטים ועדכונים על ידי דוד';
+const SITE_TITLE = 'xnet פרוייקטים ועדכונים';
 const STORAGE_KEY = 'bina_user';
 const AD_KEY = 'shaagat_ad';
 const AD_INTERVAL = 60 * 60 * 1000;
@@ -1129,6 +1139,7 @@ let _writersMap = {}; // email(lower) -> {name}
 let _isSuper = false, _isWriter = false;
 
 let composeImgUrl = '', composeVidUrl = '', composeBtns = [], composeHtmlCode = '';
+let _pendingReactMsgIds = new Set();
 let _updateMode = false, _updateUntil = '';
 let _reportTargetMsgId = null;
 let _editMsgId = null;
@@ -1237,8 +1248,11 @@ async function verifyAndLogin(user) {
 }
 
 function applyGuestUI() {
-  const av = document.getElementById('userAvatar');
-  av.innerHTML = `<button id="loginHdrBtn" onclick="openLoginModal()" style="background:#1a56db;color:#fff;border:none;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;">התחבר</button>`;
+  document.getElementById('userAvatar').innerHTML = '';
+  const group = document.querySelector('.hdr-icon-group');
+  if (group && !document.getElementById('loginHdrBtn')) {
+    group.insertAdjacentHTML('beforeend', `<button id="loginHdrBtn" onclick="openLoginModal()" title="התחבר"><i class="fas fa-right-to-bracket" style="font-size:13px"></i></button>`);
+  }
   applyWritePerm();
 }
 
@@ -1252,10 +1266,6 @@ async function applyLogin() {
     ? `<img src="${escAttr(me.picture)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #1a56db;box-shadow:0 2px 6px rgba(0,0,0,0.1)">`
     : `<div style="width:34px;height:34px;border-radius:50%;background:#1a56db;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">${esc(me.name[0].toUpperCase())}</div>`;
   av.innerHTML = `<div style="cursor:pointer" onclick="toggleUserMenu(event)">${avatarHtml}</div><div id="userMenu" style="display:none;"></div>`;
-
-  document.querySelectorAll('[title="פנייה למנהל"]').forEach(btn => {
-    btn.onclick = () => window.open('mailto:0548537646a@gmail.com?subject=' + encodeURIComponent('לכבוד מנהל אתר מזג האוויר'), '_blank');
-  });
 
   closeLoginModal();
   document.getElementById('app').style.display = 'flex';
@@ -1529,7 +1539,7 @@ function openPicker(ev, msgId) {
   const pH = p.offsetHeight, pW = p.offsetWidth;
   p.style.display = ''; p.style.visibility = '';
   const rect = ev.currentTarget.getBoundingClientRect(); const M = 8;
-  let top = rect.top - pH - M; if (top < 56 + M) top = rect.bottom + M; top = Math.max(56 + M, top);
+  let top = rect.top - pH - M; if (top < 70 + M) top = rect.bottom + M; top = Math.max(70 + M, top);
   let left = rect.right - pW; if (left < M) left = M; if (left + pW > window.innerWidth - M) left = window.innerWidth - pW - M;
   p.style.top = top + 'px'; p.style.left = left + 'px'; p.classList.add('show');
 }
@@ -1543,8 +1553,10 @@ async function doReact(msgId, emoji) {
   const users = [...(current[emoji] || [])]; const myIdx = users.indexOf(me.email);
   if (myIdx >= 0) users.splice(myIdx, 1); else users.push(me.email);
   const optimistic = { ...current }; if (users.length) optimistic[emoji] = users; else delete optimistic[emoji];
+  _pendingReactMsgIds.add(msgId);
   if (bar) renderRxn(msgId, optimistic, bar);
   const d = await api('feed_react', { email: me.email, msgId, emoji }, 'POST');
+  _pendingReactMsgIds.delete(msgId);
   if (d.status === 'ok' && bar) renderRxn(msgId, d.reactions, bar);
 }
 
@@ -1710,7 +1722,7 @@ async function pollAll() {
   (d.updated || []).forEach(e => {
     const idx = items.findIndex(i => i.id === e.id);
     if (idx >= 0) items[idx] = e;
-    if (e.reactions) renderRxn(e.id, e.reactions);
+    if (e.reactions && !_pendingReactMsgIds.has(e.id) && JSON.stringify(e.reactions) !== JSON.stringify(rxnCache[e.id] || {})) renderRxn(e.id, e.reactions);
   });
   (d.removedIds || []).forEach(id => {
     document.querySelector(`.msg-row[data-id="${id}"]`)?.remove();
