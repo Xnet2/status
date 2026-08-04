@@ -8,7 +8,6 @@
 <meta name="keywords" content="xnet פרוייקטים ועדכונים על ידי דוד">
 <meta name="google-site-verification" content="ZXEdDW4jzJU_cxuE1lL0tf76JJf3KZle2MIMjs4ua98" />
 
-  
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Assistant:wght@300;400;500;600;700;800&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
@@ -21,8 +20,11 @@ body{height:100%;font-family:'Heebo',sans-serif;-webkit-font-smoothing:antialias
 #bannedScreen { display:flex; flex-direction:column; align-items:center; justify-content:center; position:fixed; inset:0; background:#111; color:white; z-index:9999; text-align:center; padding:20px; }
 
 /* LOGIN */
-#loginScreen{position:fixed;inset:0;background:rgba(17,17,17,.55);display:none;align-items:center;justify-content:center;z-index:1000;}
-.login-card{background:#fff;border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,.12);max-width:320px;width:90%;position:relative;}
+#loginScreen{position:fixed;inset:0;background:rgba(17,17,17,.5);display:none;align-items:center;justify-content:center;z-index:1000;}
+#loginScreen.open{display:flex;}
+.login-card{position:relative;background:#fff;border-radius:18px;padding:38px 32px;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,.12);max-width:320px;width:90%;}
+.login-close{position:absolute;top:10px;left:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#aaa;width:28px;height:28px;border-radius:8px;}
+.login-close:hover{background:#f3f4f6;color:#333;}
 .login-logo-img{width:90px;height:90px;border-radius:16px;margin:0 auto 14px;display:block;object-fit:contain;}
 .login-title{font-size:20px;font-weight:900;color:#111;margin-bottom:4px;}
 .login-sub{font-size:13px;color:#888;margin-bottom:24px;}
@@ -224,8 +226,8 @@ header{ background:#fff;border-bottom:1px solid rgba(0,0,0,.08); height:64px;pad
 .cp-disabled-msg { text-align:center; color:#dc2626; font-size:12px; font-weight:700; padding:10px; background:#fef2f2; border-top:1px solid #fecaca; }
 
 /* HEADER ICON BUTTONS */
-.hdr-icon-btn,#searchBtn,#darkBtn,#notifBtn,#adBtn,#adminMsgsBtn,#siteSettingsBtn,#manageAdminsBtn,#writePermBtn,#updateModeHdrBtn,#leaderboardBtn{background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#888;transition:background .15s,color .15s;flex-shrink:0;text-decoration:none;position:relative;}
-.hdr-icon-btn:hover,#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#adBtn:hover,#adminMsgsBtn:hover,#siteSettingsBtn:hover,#manageAdminsBtn:hover,#writePermBtn:hover,#updateModeHdrBtn:hover,#leaderboardBtn:hover{background:#f3f4f6;color:#333;}
+.hdr-icon-btn,#searchBtn,#darkBtn,#notifBtn,#adBtn,#siteSettingsBtn,#manageAdminsBtn,#writePermBtn,#updateModeHdrBtn,#leaderboardBtn{background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#888;transition:background .15s,color .15s;flex-shrink:0;text-decoration:none;position:relative;}
+.hdr-icon-btn:hover,#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#adBtn:hover,#siteSettingsBtn:hover,#manageAdminsBtn:hover,#writePermBtn:hover,#updateModeHdrBtn:hover,#leaderboardBtn:hover{background:#f3f4f6;color:#333;}
 #darkBtn.active{background:#1e1e30;color:#a5b4fc;}
 #darkBtn.active:hover{background:#2a2a45;color:#c4b5fd;}
 #notifBtn.active{background:#fef3c7;color:#d97706;}
@@ -273,9 +275,6 @@ body.dark #userMenu { background: #1a1a2e; border-color: #333; }
 #updateModeNotice{ display:none;align-items:center;gap:6px; font-size:11px;font-weight:700;color:#92400e; background:#fef3c7;border:1px solid #fde68a; border-radius:8px;padding:4px 9px;white-space:nowrap; cursor:pointer;transition:background .12s;flex-shrink:0;}
 #updateModeNotice:hover{background:#fde68a;}
 #updateModeNotice.show{display:inline-flex;}
-#adminMsgsBtn .unread-badge{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:#e02020;border:2px solid #fff;display:none;}
-#adminMsgsBtn .unread-badge.show{display:block;}
-
 /* SEARCH */
 #searchBar{position:absolute;top:50%;left:100%;margin-left:6px;transform:translateY(-50%);background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.12);display:none;align-items:center;gap:6px;padding:5px 10px 5px 8px;z-index:200;width:300px;white-space:nowrap;animation:searchPop .15s ease-out;}
 @keyframes searchPop{from{opacity:0;transform:translateY(-50%) scaleX(.85) translateX(-10px)}to{opacity:1;transform:translateY(-50%) scaleX(1) translateX(0)}}
@@ -380,27 +379,6 @@ body.has-compose #scrollDownBtn{bottom:calc(var(--compose-h,120px) + 16px);}
 #lbClose{position:fixed;top:14px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .12s;z-index:901;}
 #lbClose:hover{background:rgba(255,255,255,.28);}
 
-#adminMsgsModal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;}
-#adminMsgsModal.open{display:flex;}
-.admin-msgs-box{background:#fff;border-radius:20px;padding:0;max-width:480px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow:hidden;}
-.admin-msgs-hdr{padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.admin-msgs-title{font-size:15px;font-weight:800;color:#111;}
-.admin-msgs-close{background:none;border:none;font-size:16px;cursor:pointer;color:#aaa;padding:4px;border-radius:8px;}
-.admin-msgs-close:hover{background:#f3f4f6;}
-.admin-msgs-body{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
-.admin-msg-item{border-radius:12px;padding:12px 14px;border:1px solid #e5e7eb;background:#fafafa;}
-.admin-msg-item.unread{background:#eff6ff;border-color:#bfdbfe;}
-.admin-msg-sender-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.admin-msg-av{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
-.admin-msg-av img{width:100%;height:100%;object-fit:cover;}
-.admin-msg-name{font-size:12px;font-weight:800;color:#374151;}
-.admin-msg-time{font-size:10px;color:#aaa;margin-right:auto;}
-.admin-msg-text{font-size:13px;line-height:1.6;color:#374151;white-space:pre-wrap;}
-.admin-msgs-send{padding:12px 16px;border-top:1px solid #f0f0f0;display:none;gap:8px;align-items:flex-end;flex-shrink:0;}
-.admin-send-inp{flex:1;border:1.5px solid #e5e7eb;border-radius:12px;padding:8px 12px;font-size:13px;font-family:'Heebo',sans-serif;resize:none;outline:none;max-height:80px;line-height:1.5;direction:rtl;}
-.admin-send-inp:focus{border-color:#93c5fd;}
-.admin-send-btn{background:#1a56db;color:#fff;border:none;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
-
 #adOverlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;}
 #adCloseBtn:disabled{opacity:0.5;cursor:not-allowed;}
 
@@ -501,13 +479,13 @@ body.dark .cp-inp-row { background: #1a1a2e; border-color: #2a2a40; }
 body.dark #emojiPicker { background: #1e1e30; border-color: #3a3a55; }
 body.dark .ep-btn:hover { background: #2a2a40; }
 body.dark .hdr-icon-btn, body.dark #searchBtn, body.dark #darkBtn,
-body.dark #notifBtn, body.dark #adBtn, body.dark #adminMsgsBtn,
+body.dark #notifBtn, body.dark #adBtn,
 body.dark #siteSettingsBtn, body.dark #manageAdminsBtn,
 body.dark #writePermBtn, body.dark #updateModeHdrBtn, body.dark #leaderboardBtn {
   color: #9ca3af;
 }
 body.dark .hdr-icon-btn:hover, body.dark #searchBtn:hover, body.dark #notifBtn:hover,
-body.dark #adBtn:hover, body.dark #adminMsgsBtn:hover { background: #2a2a40 !important; color: #f3f4f6 !important; }
+body.dark #adBtn:hover { background: #2a2a40 !important; color: #f3f4f6 !important; }
 body.dark .quote-block { background: #1e1e30; border-color: #3b82f6; }
 body.dark .quote-block-text { color: #9ca3af; }
 body.dark .lnk-btn { background: #2a2a40; color: #d1d5db; }
@@ -710,12 +688,12 @@ body, html { background: #fff !important; }
   <button onclick="doLogout()" style="margin-top:30px;background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Heebo',sans-serif;">התנתק מהמערכת</button>
 </div>
 
-<div id="loginScreen">
+<div id="loginScreen" onclick="if(event.target===this)closeLoginModal()">
  <div class="login-card">
-    <button onclick="closeLoginScreen()" style="position:absolute;top:10px;left:12px;background:none;border:none;font-size:18px;color:#aaa;cursor:pointer;line-height:1;padding:4px;">✕</button>
+    <button class="login-close" onclick="closeLoginModal()" title="סגור">✕</button>
     <img class="login-logo-img" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png4" onerror="this.style.display='none'">
     <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים על ידי דוד</div>
-    <div class="login-sub">התחברות באמצעות גוגל (לא חובה — נדרש רק כדי לשלוח דיווח)</div>
+    <div class="login-sub">התחברות באמצעות גוגל</div>
     <div id="googleBtn" style="display:flex; justify-content:center;"></div>
   </div>
 </div>
@@ -770,7 +748,9 @@ body, html { background: #fff !important; }
         <i class="fas fa-bell" style="font-size:13px"></i>
       </button>
       
-      <div id="userAvatar" style="position:relative; margin-right:5px;"></div>
+      <div id="userAvatar" style="position:relative; margin-right:5px;">
+        <button id="loginHdrBtn" onclick="openLoginModal()" style="background:#1a56db;color:#fff;border:none;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;">התחבר</button>
+      </div>
     </div>
   </header>
 
@@ -1219,19 +1199,32 @@ function showToast(msg, type) {
   setTimeout(() => t.remove(), 3000);
 }
 
-/* ================= התחברות ================= */
+/* ================= התחברות (אופציונלית) ================= */
+// האתר עצמו נגיש לכולם בלי צורך בהתחברות. התחברות עם גוגל היא אופציונלית,
+// ונדרשת רק לפעולות שדורשות זיהוי משתמש (למשל שליחת דיווח, או כתיבה למי שיש לו הרשאה).
+let _googleReady = false, _googleBtnRendered = false;
+
+function openLoginModal() {
+  document.getElementById('loginScreen').classList.add('open');
+  if (_googleReady && !_googleBtnRendered) {
+    google.accounts.id.renderButton(document.getElementById('googleBtn'), { theme: 'outline', size: 'large', locale: 'he', width: 240 });
+    _googleBtnRendered = true;
+  }
+}
+function closeLoginModal() { document.getElementById('loginScreen').classList.remove('open'); }
+
 function doLogout() {
-  clearSavedUser(); me = null;
-  document.getElementById('app').style.display = 'none';
+  clearSavedUser(); me = null; _isSuper = false; _isWriter = false;
   document.getElementById('bannedScreen').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
+  closeLoginModal();
+  applyGuestUI();
   try { google.accounts.id.disableAutoSelect(); } catch (e) {}
 }
 
 async function verifyAndLogin(user) {
   const d = await api('auth_check', { email: user.email });
   if (d.banned) {
-    document.getElementById('loginScreen').style.display = 'none';
+    closeLoginModal();
     document.getElementById('app').style.display = 'none';
     document.getElementById('bannedScreen').style.display = 'flex';
     return false;
@@ -1241,6 +1234,12 @@ async function verifyAndLogin(user) {
   me = user; saveUser(user);
   await applyLogin();
   return true;
+}
+
+function applyGuestUI() {
+  const av = document.getElementById('userAvatar');
+  av.innerHTML = `<button id="loginHdrBtn" onclick="openLoginModal()" style="background:#1a56db;color:#fff;border:none;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;">התחבר</button>`;
+  applyWritePerm();
 }
 
 async function applyLogin() {
@@ -1258,7 +1257,7 @@ async function applyLogin() {
     btn.onclick = () => window.open('mailto:0548537646a@gmail.com?subject=' + encodeURIComponent('לכבוד מנהל אתר מזג האוויר'), '_blank');
   });
 
-  document.getElementById('loginScreen').style.display = 'none';
+  closeLoginModal();
   document.getElementById('app').style.display = 'flex';
 
   api('api_log_login', { email: me.email, name: me.name, picture: me.picture }, 'POST');
@@ -1272,15 +1271,10 @@ async function applyLogin() {
   loadWritersMap().then(() => { refreshUserMenu(); applyWritePerm(); });
 
   if (isAdmin()) {
-    loadAdminMsgs(); setInterval(loadAdminMsgs, 8000);
     pingSitePresence(); setInterval(pingSitePresence, 15000);
     pollUpdateMode(); setInterval(pollUpdateMode, 8000);
     document.getElementById('feedWrap').style.paddingBottom = '120px';
   }
-
-  setTimeout(loadAd, 3000); setInterval(loadAd, 60 * 60 * 1000);
-  initDark(); initNotifications();
-  triggerStats(); setInterval(triggerStats, 20000);
 }
 
 async function handleGoogle(resp) {
@@ -1303,13 +1297,22 @@ async function handleGoogle(resp) {
 
 function initGoogle() {
   google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogle, auto_select: true });
+  _googleReady = true;
   const saved = loadSavedUser();
   if (saved) { verifyAndLogin(saved); return; }
-  google.accounts.id.renderButton(document.getElementById('googleBtn'), { theme: 'outline', size: 'large', locale: 'he', width: 240 });
-  google.accounts.id.prompt();
+  // התחברות אופציונלית בלבד: לא פותחים מסך כניסה חוסם ולא מציגים את חלון הבחירה
+  // האוטומטי של גוגל - המשתמש יכול להתחבר ביוזמתו דרך כפתור "התחבר".
 }
 function tryInitGoogle() { if (window.google && window.google.accounts) initGoogle(); else setTimeout(tryInitGoogle, 100); }
 if (document.readyState === 'complete') tryInitGoogle(); else window.addEventListener('load', tryInitGoogle);
+
+/* האתר פתוח לצפייה לכולם - טוענים את הפיד מיד, בלי לחכות להתחברות */
+document.addEventListener('DOMContentLoaded', () => {
+  loadFeed();
+  setTimeout(loadAd, 3000); setInterval(loadAd, 60 * 60 * 1000);
+  initDark(); initNotifications();
+  triggerStats(); setInterval(triggerStats, 20000);
+});
 
 /* ================= תפריט משתמש ================= */
 function toggleUserMenu(e) {
@@ -1387,7 +1390,7 @@ function closeAdminPanel() {
 function switchAdminSection(sec) {
   _adminPanelActiveSection = sec;
   document.querySelectorAll('.ap-nav-item').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
-  document.querySelectorAll('.ap-sec').forEach(s => s.style.display = (s.id === 'ap-sec-' + sec) ? (sec === 'messages' ? 'flex' : 'block') : 'none');
+  document.querySelectorAll('.ap-sec').forEach(s => s.style.display = (s.id === 'ap-sec-' + sec) ? 'block' : 'none');
   const found = AP_SECTIONS.find(s => s.key === sec);
   document.getElementById('apContentTitle').innerText = found ? found.title : 'פאנל ניהול';
   if (sec === 'stats') openSiteStats();
@@ -1580,7 +1583,7 @@ function cancelQuote() {
 
 /* ================= דיווחים ================= */
 function reportMsg(msgId) {
-  if (!me) { showToast('יש להתחבר כדי לדווח', 'error'); return; }
+  if (!me) { showToast('יש להתחבר כדי לדווח', 'error'); openLoginModal(); return; }
   _reportTargetMsgId = msgId;
   document.getElementById('reportModalMsgId').textContent = '#' + msgId;
   document.getElementById('reportModalInput').value = '';
@@ -1692,7 +1695,7 @@ async function loadMore() {
 }
 
 async function pollAll() {
-  if (!me || !items.length || pollPending) return; pollPending = true;
+  if (!items.length || pollPending) return; pollPending = true;
   const d = await api('feed_poll', { channel: CHANNEL, msgIds: items.map(e => e.id), since: lastTs }, 'POST');
   pollPending = false;
   if (d.status !== 'ok') return;
@@ -2157,6 +2160,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (error) error.style.display = 'none';
   };
 </script>
-  <script src="https://xnet2.github.io/status/xnet-badge.js"></script>
 </body>
 </html>
