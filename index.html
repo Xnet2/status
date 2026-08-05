@@ -1131,6 +1131,13 @@ const AD_INTERVAL = 60 * 60 * 1000;
 const CHANNEL = 'general'; // אין יותר ערוצים - הכל בערוץ אחד קבוע
 
 let me = null, items = [], lastTs = 0, newCount = 0, atBottom = true;
+// מזהה אנונימי קבוע למי שלא מחובר - נשמר בדפדפן כדי שריאקציה חוזרת תבטל את הקודמת
+function getAnonId() {
+  let id = localStorage.getItem('shaagat_anon_id');
+  if (!id) { id = 'anon_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('shaagat_anon_id', id); }
+  return id;
+}
+function getMyReactId() { return me ? me.email : getAnonId(); }
 let activePicker = null;
 let rxnCache = {};
 const knownIds = new Set();
@@ -1519,7 +1526,7 @@ function renderRxn(msgId, rxns, barElement) {
   const addBtn = bar.querySelector('.rxn-add-btn'); bar.innerHTML = '';
   const activeTypes = Object.entries(rxns || {}).filter(([, users]) => users && users.length);
   activeTypes.forEach(([emoji, users]) => {
-    const mine = users.includes(me?.email); const c = document.createElement('button');
+    const mine = users.includes(getMyReactId()); const c = document.createElement('button');
     c.className = 'rxn-chip' + (mine ? ' mine' : ''); c.innerHTML = `<span class="rxn-emoji">${esc(emoji)}</span><span class="rxn-count">${users.length}</span>`;
     c.onclick = () => doReact(msgId, emoji); bar.appendChild(c);
   });
@@ -1546,16 +1553,16 @@ function openPicker(ev, msgId) {
 function pickEmoji(em) { document.getElementById('emojiPicker').classList.remove('show'); if (activePicker) doReact(activePicker, em); activePicker = null; }
 
 async function doReact(msgId, emoji) {
-  if (!me) return;
+  const uid = getMyReactId();
   const bar = document.getElementById('rxn-' + msgId);
   const current = rxnCache[msgId] || {}; const activeTypes = Object.entries(current).filter(([, u]) => u.length);
   if (!(emoji in current) && activeTypes.length >= 5) return;
-  const users = [...(current[emoji] || [])]; const myIdx = users.indexOf(me.email);
-  if (myIdx >= 0) users.splice(myIdx, 1); else users.push(me.email);
+  const users = [...(current[emoji] || [])]; const myIdx = users.indexOf(uid);
+  if (myIdx >= 0) users.splice(myIdx, 1); else users.push(uid);
   const optimistic = { ...current }; if (users.length) optimistic[emoji] = users; else delete optimistic[emoji];
   _pendingReactMsgIds.add(msgId);
   if (bar) renderRxn(msgId, optimistic, bar);
-  const d = await api('feed_react', { email: me.email, msgId, emoji }, 'POST');
+  const d = await api('feed_react', me ? { email: me.email, msgId, emoji } : { anonId: uid, msgId, emoji }, 'POST');
   _pendingReactMsgIds.delete(msgId);
   if (d.status === 'ok' && bar) renderRxn(msgId, d.reactions, bar);
 }
@@ -2098,7 +2105,7 @@ async function pingSitePresence() { if (!me) return; await api('presence_ping', 
 async function triggerStats() {
   const d = await api('site_stats', {});
   if (d.status === 'ok') {
-    const map = { publicUserCount: d.online, statOnline: d.online, statHour: d.hour, statDay: d.day, statWeek: d.week, statPeak: d.peak };
+    const map = { publicUserCount: d.followers, statOnline: d.online, statHour: d.hour, statDay: d.day, statWeek: d.week, statPeak: d.peak };
     for (let id in map) { const el = document.getElementById(id); if (el) el.innerText = map[id]; }
   }
 }
