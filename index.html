@@ -807,6 +807,8 @@ body, html { background: #fff !important; }
       <div class="ctb-dropdown" id="imgDrop">
         <span class="ctb-inp-label">הדבק כתובת URL של תמונה</span>
         <input class="ctb-inp" id="composeImgUrl" type="text" placeholder="https://..." oninput="updateComposeImg()">
+        <input type="file" id="composeImgFile" accept="image/*" style="display:none;">
+        <button type="button" id="composeImgUploadBtn" onclick="document.getElementById('composeImgFile').click()" style="width:100%;margin-top:6px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px;color:#374151;font-size:11px;font-weight:700;cursor:pointer;padding:6px;font-family:'Heebo',sans-serif;"><i class="fas fa-upload"></i> העלאת תמונה מהמחשב</button>
         <div id="composeImgThumb" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;">
           <img id="composeImgThumbImg" style="width:100%;max-height:100px;object-fit:contain;display:block;">
           <button onclick="clearComposeImg()" style="width:100%;background:#fef2f2;border:none;border-top:1px solid #fecaca;color:#dc2626;font-size:11px;font-weight:700;cursor:pointer;padding:4px;font-family:'Heebo',sans-serif;">הסר תמונה</button>
@@ -1086,6 +1088,8 @@ body, html { background: #fff !important; }
             <div style="font-size:12.5px;font-weight:800;color:#4a55c7;margin-bottom:11px;"><i class="fas fa-window-restore" style="font-size:11px"></i> פרסומת פופאפ</div>
             <div style="display:flex;flex-direction:column;gap:8px">
               <input id="adPopupImageUrl" type="text" placeholder="קישור לתמונה https://..." class="ap-field" style="direction:ltr;">
+              <input type="file" id="adPopupImgFile" accept="image/*" style="display:none;">
+              <button type="button" id="adPopupImgUploadBtn" onclick="document.getElementById('adPopupImgFile').click()" class="ap-btn ap-btn-soft" style="width:100%;"><i class="fas fa-upload"></i> העלאת תמונה מהמחשב</button>
               <input id="adPopupLinkUrl" type="text" placeholder="קישור ללחיצה https://..." class="ap-field" style="direction:ltr;">
               <textarea id="adPopupHtmlUrl" rows="3" placeholder="או הדבק כאן קוד HTML מלא..." class="ap-field" style="direction:ltr;font-family:monospace;"></textarea>
               <input id="adPopupTimer" type="number" placeholder="שניות השהיה (מקסימום 5)" min="0" max="5" class="ap-field">
@@ -1099,6 +1103,8 @@ body, html { background: #fff !important; }
             <div style="font-size:12.5px;font-weight:800;color:#4a55c7;margin-bottom:11px;"><i class="fas fa-columns" style="font-size:11px"></i> פרסומת עמודה צדדית</div>
             <div style="display:flex;flex-direction:column;gap:8px">
               <input id="adSideImageUrl" type="text" placeholder="קישור לתמונה https://..." class="ap-field" style="direction:ltr;">
+              <input type="file" id="adSideImgFile" accept="image/*" style="display:none;">
+              <button type="button" id="adSideImgUploadBtn" onclick="document.getElementById('adSideImgFile').click()" class="ap-btn ap-btn-soft" style="width:100%;"><i class="fas fa-upload"></i> העלאת תמונה מהמחשב</button>
               <input id="adSideLinkUrl" type="text" placeholder="קישור ללחיצה https://... (לתמונה בלבד)" class="ap-field" style="direction:ltr;">
               <textarea id="adSideHtmlUrl" rows="3" placeholder="או הדבק כאן קוד HTML מלא..." class="ap-field" style="direction:ltr;font-family:monospace;"></textarea>
               <div style="display:flex;gap:8px">
@@ -1129,6 +1135,8 @@ const STORAGE_KEY = 'bina_user';
 const AD_KEY = 'shaagat_ad';
 const AD_INTERVAL = 60 * 60 * 1000;
 const CHANNEL = 'general'; // אין יותר ערוצים - הכל בערוץ אחד קבוע
+const CLOUDINARY_CLOUD_NAME = 'xgh73omp';
+const CLOUDINARY_UPLOAD_PRESET = 'website_upload';
 
 let me = null, items = [], lastTs = 0, newCount = 0, atBottom = true;
 // מזהה אנונימי קבוע למי שלא מחובר - נשמר בדפדפן כדי שריאקציה חוזרת תבטל את הקודמת
@@ -1329,6 +1337,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(loadAd, 3000); setInterval(loadAd, 60 * 60 * 1000);
   initDark(); initNotifications();
   triggerStats(); setInterval(triggerStats, 20000);
+  wireImageUpload('composeImgFile', 'composeImgUrl', 'composeImgUploadBtn', updateComposeImg);
+  wireImageUpload('adPopupImgFile', 'adPopupImageUrl', 'adPopupImgUploadBtn');
+  wireImageUpload('adSideImgFile', 'adSideImageUrl', 'adSideImgUploadBtn');
 });
 
 /* ================= תפריט משתמש ================= */
@@ -1764,6 +1775,45 @@ function toggleCtbDropdown(id) { const el = document.getElementById(id); const w
 function composeFormat(cmd) { const ed = document.getElementById('composeEditor'); ed.focus(); requestAnimationFrame(() => { document.execCommand(cmd, false, null); onComposeChange(); }); }
 function applyTextColor(color) { document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor', false, color); closeAllCtbDropdowns(); onComposeChange(); }
 function removeTextColor() { document.execCommand('removeFormat', false, 'foreColor'); closeAllCtbDropdowns(); onComposeChange(); }
+/* ================= העלאת תמונות (Cloudinary) ================= */
+// מעלה קובץ תמונה ל-Cloudinary (unsigned upload) ומחזיר את כתובת ה-URL הציבורית.
+async function uploadImageToCloudinary(file) {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  const res = await fetch(url, { method: 'POST', body: fd });
+  const data = await res.json();
+  if (!res.ok || !data.secure_url) throw new Error(data?.error?.message || 'העלאה נכשלה');
+  return data.secure_url;
+}
+
+// מחבר <input type="file"> נסתר לשדה טקסט קיים (כתובת URL): בבחירת קובץ מעלה
+// אותו ל-Cloudinary, ממלא את שדה ה-URL בכתובת שחזרה, ומריץ afterFn (אם יש)
+// כדי לעדכן תצוגה מקדימה וכו'.
+function wireImageUpload(fileInputId, textInputId, btnId, afterFn) {
+  const fileInput = document.getElementById(fileInputId);
+  const textInput = document.getElementById(textInputId);
+  const btn = document.getElementById(btnId);
+  if (!fileInput || !textInput) return;
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    const prevLabel = btn ? btn.innerHTML : '';
+    if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> מעלה...'; btn.disabled = true; }
+    try {
+      const url = await uploadImageToCloudinary(file);
+      textInput.value = url;
+      if (afterFn) afterFn();
+    } catch (err) {
+      alert('העלאת התמונה נכשלה: ' + (err?.message || err));
+    } finally {
+      if (btn) { btn.innerHTML = prevLabel; btn.disabled = false; }
+      fileInput.value = '';
+    }
+  });
+}
+
 function updateComposeImg() { composeImgUrl = document.getElementById('composeImgUrl').value.trim(); const thumb = document.getElementById('composeImgThumb'); if (composeImgUrl) { document.getElementById('composeImgThumbImg').src = composeImgUrl; thumb.style.display = 'block'; } else { thumb.style.display = 'none'; } updateAttachPreview(); }
 function clearComposeImg() { composeImgUrl = ''; document.getElementById('composeImgUrl').value = ''; document.getElementById('composeImgThumb').style.display = 'none'; updateAttachPreview(); }
 function updateComposeVid() { composeVidUrl = document.getElementById('composeVidUrl').value.trim(); updateAttachPreview(); }
@@ -2014,14 +2064,21 @@ function showAdSide(ad) {
   if (ad.htmlCode) { if (img) img.style.display = 'none'; if (link) link.style.display = 'none'; if (frame) { frame.srcdoc = ad.htmlCode; frame.style.display = 'block'; } }
   else { if (frame) { frame.style.display = 'none'; frame.src = ''; } if (img) { img.src = ad.imageUrl || ''; img.style.display = 'block'; } if (link) link.href = ad.link || '#'; }
   if (isAdmin()) {
+    const rightSidebar = document.getElementById('rightSidebar');
     const adInChat = document.getElementById('adInChat'); const adFrame = document.getElementById('adInChatFrame'); const adImg = document.getElementById('adInChatImg'); const adLink = document.getElementById('adInChatLink');
     if (adInChat) {
+      adInChat.style.display = 'flex';
+      if (rightSidebar) rightSidebar.classList.add('show');
       if (ad.htmlCode) { if (adFrame) { adFrame.srcdoc = ad.htmlCode; adFrame.style.display = 'block'; } if (adLink) adLink.style.display = 'none'; }
       else { if (adFrame) adFrame.style.display = 'none'; if (adImg) { adImg.src = ad.imageUrl || ''; adImg.style.display = 'block'; } if (adLink) { adLink.style.display = 'block'; adLink.href = ad.link || '#'; } }
     }
   } else { if (window.innerWidth > 900) document.getElementById('adOnlySidebar').style.display = 'block'; }
 }
-function hideAdSide() { document.getElementById('adOnlySidebar').style.display = 'none'; const adInChat = document.getElementById('adInChat'); if (adInChat) adInChat.style.display = 'none'; }
+function hideAdSide() {
+  document.getElementById('adOnlySidebar').style.display = 'none';
+  const rightSidebar = document.getElementById('rightSidebar'); if (rightSidebar) rightSidebar.classList.remove('show');
+  const adInChat = document.getElementById('adInChat'); if (adInChat) adInChat.style.display = 'none';
+}
 function showAdPopup(ad) {
   if (document.getElementById('adOverlay')) return;
   const overlay = document.createElement('div'); overlay.id = 'adOverlay'; overlay.style.cssText = 'position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center';
