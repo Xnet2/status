@@ -9,9 +9,22 @@
 <meta name="google-site-verification" content="ZXEdDW4jzJU_cxuE1lL0tf76JJf3KZle2MIMjs4ua98" />
 
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png">
+
+<!-- Preconnects: open the connections we actually need as early as possible -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Assistant:wght@300;400;500;600;700;800&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+
+<!-- Fonts: trimmed to the weights actually used in the CSS below (300 was never used;
+     Assistant only needs 400/700; Noto Color Emoji dropped - it's a multi-MB webfont
+     and every OS already ships a native color-emoji font that the fallback stack below
+     picks up for free) -->
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Assistant:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome loaded non-blocking (print-media swap trick) so it can't delay first paint -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;}
@@ -703,7 +716,7 @@ body, html { background: #fff !important; }
 <div id="loginScreen" onclick="if(event.target===this)closeLoginModal()">
  <div class="login-card">
     <button class="login-close" onclick="closeLoginModal()" title="סגור">✕</button>
-    <img class="login-logo-img" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png4" onerror="this.style.display='none'">
+    <img class="login-logo-img" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png" loading="lazy" decoding="async" onerror="this.style.display='none'">
     <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים</div>
     <div class="login-sub">התחברות באמצעות גוגל</div>
     <div id="googleBtn" style="display:flex; justify-content:center;"></div>
@@ -729,7 +742,7 @@ body, html { background: #fff !important; }
 <div id="app">
   <header>
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;position:relative;">
-      <img class="hdr-avatar" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png" onerror="this.style.background='#e02020'">
+      <img class="hdr-avatar" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png" fetchpriority="high" decoding="async" onerror="this.style.background='#e02020'">
       <div id="hdrEmailCountBadge" style="position:absolute;top:-4px;left:-4px;background:#1a56db;color:#fff;border-radius:99px;font-size:9px;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;border:1.5px solid #fff;display:none;font-family:'Heebo',sans-serif;line-height:14px;"></div>
     </div>
     <div class="hdr-info">
@@ -2236,6 +2249,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (error) error.style.display = 'none';
   };
 </script>
-  <script src="https://xnet2.github.io/status/xnet-badge.js"></script>
+  <script src="https://xnet2.github.io/status/xnet-badge.js" defer></script>
 </body>
 </html>
