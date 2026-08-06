@@ -16,11 +16,9 @@
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
 
-<!-- Fonts: trimmed to the weights actually used in the CSS below (300 was never used;
-     Assistant only needs 400/700; Noto Color Emoji dropped - it's a multi-MB webfont
-     and every OS already ships a native color-emoji font that the fallback stack below
-     picks up for free) -->
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Fonts: trimmed to the weights actually used in the CSS (300 removed, unused).
+     Noto Color Emoji is included deliberately for richer emoji rendering across platforms. -->
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 
 <!-- Font Awesome loaded non-blocking (print-media swap trick) so it can't delay first paint -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -378,6 +376,14 @@ body.dark .unread-sep::before,body.dark .unread-sep::after{background:#4a1212;}
 body.dark .unread-sep span{background:#2a1010;border-color:#7f1d1d;}
 #loadMoreSpinner.show{display:flex;}
 .lm-ring{width:22px;height:22px;border-radius:50%;border:2.5px solid #e5e7eb;border-top-color:#1a56db;animation:spin .7s linear infinite;flex-shrink:0;}
+
+#feedInitialSpinner{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:60px 0;color:#aaa;font-size:13px;font-family:'Assistant','Heebo',sans-serif;}
+.feed-init-ring{width:34px;height:34px;border-radius:50%;border:3px solid #e5e7eb;border-top-color:#1a56db;animation:spin .7s linear infinite;}
+body.dark #feedInitialSpinner{color:#777;}
+body.dark .feed-init-ring{border-color:#333;border-top-color:#3b82f6;}
+
+.hdr-count-ring{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid #d1d5db;border-top-color:#1a56db;animation:spin .7s linear infinite;vertical-align:middle;}
+body.dark .hdr-count-ring{border-color:#444;border-top-color:#3b82f6;}
 
 #scrollDownBtn{position:fixed;bottom:20px;left:calc(320px + 12px);width:44px;height:44px;background:#fff;border:1.5px solid #e5e7eb;border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.15);cursor:pointer;z-index:201;transition:bottom .2s ease;}
 #scrollDownBtn.show{display:flex;}
@@ -749,7 +755,7 @@ body, html { background: #fff !important; }
       <div class="hdr-name" id="hdrChannelName">xnet פרוייקטים ועדכונים</div>
       <div class="hdr-desc">עדכוני פרוייקטים התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet</div>
       <div class="hdr-status">
-        <span id="publicUserCount">...</span> עוקבים
+        <span id="publicUserCount"><span class="hdr-count-ring"></span></span> עוקבים
       </div>
     </div>
     <div class="hdr-user">
@@ -778,6 +784,7 @@ body, html { background: #fff !important; }
   </header>
 
   <div id="feedWrap">
+    <div id="feedInitialSpinner"><div class="feed-init-ring"></div>טוען הודעות...</div>
     <div id="loadMoreSpinner"><div class="lm-ring"></div>טוען עוד...</div>
     <div id="feedInner"></div>
     <div id="empty"><i class="fas fa-satellite-dish"></i><p>ממתין לעדכונים...</p></div>
@@ -1675,6 +1682,7 @@ async function dismissReport(reportId) { await api('report_resolve', { email: me
 /* ================= פיד ================= */
 async function loadFeed() {
   const d = await api('feed', { channel: CHANNEL, limit: 20 });
+  document.getElementById('feedInitialSpinner').style.display = 'none';
   if (d.status !== 'ok') { console.error('שגיאה בטעינת הפיד'); return; }
   items = [...d.messages].reverse();
   items.forEach(e => knownIds.add(e.id));
