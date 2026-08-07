@@ -1485,6 +1485,20 @@ function editorToMarkdown(el) {
   return txt.value.trim();
 }
 
+function mdToPlain(t) {
+  if (!t) return '';
+  return t
+    .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/__([^_\n]+)__/g, '$1')
+    .replace(/_([^_\n]+)_/g, '$1')
+    .replace(/~~([^~\n]+)~~/g, '$1')
+    .replace(/---DIVIDER---/g, ' ')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function rich(t) {
   if (!t) return '';
   let s = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -1534,9 +1548,9 @@ function buildMsg(e) {
     quoteHtml = `<div class="quote-block" onclick="(function(){const el=document.querySelector('[data-id=\\"${escAttr(e.quote.id || '')}\\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='2px solid #1a56db';setTimeout(()=>el.style.outline='',1500);}})()">
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
         <i class="fas fa-reply" style="color:#1a56db;font-size:10px;transform:scaleX(-1);"></i>
-        <span style="font-size:11px;font-weight:800;color:#1a56db;">${esc(e.quote.sender)}</span>
+        <span style="font-size:11px;font-weight:800;color:#1a56db;">${esc(SITE_TITLE)}</span>
       </div>
-      <div class="quote-block-text">${esc((e.quote.text || '').substring(0, 120))}${(e.quote.text || '').length > 120 ? '...' : ''}</div>
+      <div class="quote-block-text">${esc(mdToPlain(e.quote.text || '').substring(0, 120))}${mdToPlain(e.quote.text || '').length > 120 ? '...' : ''}</div>
     </div>`;
   }
 
@@ -1609,9 +1623,9 @@ function quoteFeedMsg(id) {
   const entry = items.find(e => e.id === id); if (!entry) return;
   const ed = document.getElementById('composeEditor');
   const rawText = (entry.text || '').trim();
-  const lines = rawText.split('\n');
-  const preview = lines.slice(0, 2).join(' ').substring(0, 100) + (rawText.length > 100 ? '…' : '');
-  ed._quoteData = { id, text: rawText, preview, sender: entry.sender };
+  const cleanText = mdToPlain(rawText);
+  const preview = cleanText.substring(0, 100) + (cleanText.length > 100 ? '…' : '');
+  ed._quoteData = { id, text: rawText, preview, sender: SITE_TITLE };
   ed.innerHTML = '';
   const qDiv = document.createElement('div');
   qDiv.setAttribute('data-quote-preview', '1'); qDiv.contentEditable = 'false';
