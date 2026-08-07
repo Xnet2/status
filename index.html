@@ -1554,7 +1554,7 @@ function buildMsg(e) {
 
   let quoteHtml = '';
   if (e.quote) {
-    quoteHtml = `<div class="quote-block" onclick="(function(){const el=document.querySelector('[data-id=\\"${escAttr(e.quote.id || '')}\\"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='2px solid #1a56db';setTimeout(()=>el.style.outline='',1500);}})()">
+    quoteHtml = `<div class="quote-block" onclick="scrollToQuotedMsg('${escAttr(e.quote.id || '')}')">
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
         <i class="fas fa-reply" style="color:#1a56db;font-size:10px;transform:scaleX(-1);"></i>
         <span style="font-size:11px;font-weight:800;color:#1a56db;">${esc(SITE_TITLE)}</span>
