@@ -1522,6 +1522,11 @@ function rich(t) {
 
 const REACT_SVG = `<svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.65"/><circle cx="8.5" cy="9.5" r="1.1" fill="currentColor"/><circle cx="13.5" cy="9.5" r="1.1" fill="currentColor"/><path d="M8 13.2c.65 1.5 2 2.2 3 2.2s2.35-.72 3-2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 
+function scrollToQuotedMsg(id) {
+  const el = document.querySelector('[data-id="' + id + '"]');
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.outline = '2px solid #1a56db'; setTimeout(() => el.style.outline = '', 1500); }
+}
+
 function buildMsg(e) {
   const id = e.id;
   const role = getRole();
@@ -2277,4 +2282,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
   <script src="https://xnet2.github.io/status/xnet-badge.js" defer></script>
 </body>
-</html>ד
+</html>
