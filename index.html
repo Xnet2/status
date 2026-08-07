@@ -1480,8 +1480,12 @@ function editorToMarkdown(el) {
   html = html.replace(/<a[^>]+href="([^"]+)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)');
   html = html.replace(/<span[^>]+style="[^"]*color:\s*([^;"]+)[^"]*"[^>]*>(.*?)<\/span>/gi, '\x02color:$1\x03$2\x02/color\x03');
   html = html.replace(/<font[^>]+color="([^"]+)"[^>]*>(.*?)<\/font>/gi, '\x02color:$1\x03$2\x02/color\x03');
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  tmp.querySelectorAll('script,style').forEach(n => n.remove());
+  const stripped = tmp.textContent || '';
   const txt = document.createElement('textarea');
-  txt.innerHTML = html.replace(/<[^>]+>/g, '');
+  txt.innerHTML = stripped;
   return txt.value.trim();
 }
 
@@ -2273,4 +2277,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
   <script src="https://xnet2.github.io/status/xnet-badge.js" defer></script>
 </body>
-</html>
+</html>ד
