@@ -80,8 +80,8 @@ body.dark .channel-item { color: #d1d5db; border-color: #2a2a40; }
 body.dark .channel-item:hover { background: #2a2a45; }
 body.dark .channel-item.active { background: #2a2a45; color: #a5b4fc; border-right-color: #a5b4fc; }
 
-/* APP */
-#app{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;}
+/* APP - מוסתר כברירת מחדל: האתר דורש התחברות עם גוגל לפני כניסה לפיד */
+#app{flex:1;min-width:0;height:100%;display:none;flex-direction:column;}
 
 /* AD SIDEBAR */
 #rightSidebar{
@@ -730,12 +730,11 @@ body, html { background: #fff !important; }
   <button onclick="doLogout()" style="margin-top:30px;background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Assistant','Heebo',sans-serif;">התנתק מהמערכת</button>
 </div>
 
-<div id="loginScreen" onclick="if(event.target===this)closeLoginModal()">
+<div id="loginScreen" class="open">
  <div class="login-card">
-    <button class="login-close" onclick="closeLoginModal()" title="סגור">✕</button>
     <img class="login-logo-img" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png" loading="lazy" decoding="async" onerror="this.style.display='none'">
     <div class="login-title" id="loginSiteTitle">xnet פרוייקטים ועדכונים</div>
-    <div class="login-sub">התחברות באמצעות גוגל</div>
+    <div class="login-sub">יש להתחבר עם גוגל כדי להיכנס לפיד</div>
     <div id="googleBtn" style="display:flex; justify-content:center;"></div>
   </div>
 </div>
@@ -1257,8 +1256,8 @@ function showToast(msg, type) {
 }
 
 /* ================= התחברות (אופציונלית) ================= */
-// האתר עצמו נגיש לכולם בלי צורך בהתחברות. התחברות עם גוגל היא אופציונלית,
-// ונדרשת רק לפעולות שדורשות זיהוי משתמש (למשל שליחת דיווח, או כתיבה למי שיש לו הרשאה).
+// הכניסה לאתר מחייבת התחברות עם גוגל. לפני התחברות מוצג רק מסך הכניסה,
+// ורק לאחר login מוצלח נחשף התוכן (#app) והפיד נטען.
 let _googleReady = false, _googleBtnRendered = false;
 
 function openLoginModal() {
@@ -1273,9 +1272,10 @@ function closeLoginModal() { document.getElementById('loginScreen').classList.re
 function doLogout() {
   clearSavedUser(); me = null; _isSuper = false; _isWriter = false;
   document.getElementById('bannedScreen').style.display = 'none';
-  closeLoginModal();
-  applyGuestUI();
+  document.getElementById('app').style.display = 'none';
+  const inner = document.getElementById('feedInner'); if (inner) inner.innerHTML = '';
   try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+  openLoginModal();
 }
 
 async function verifyAndLogin(user) {
@@ -1312,6 +1312,7 @@ async function applyLogin() {
     ? `<img src="${escAttr(me.picture)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #1a56db;box-shadow:0 2px 6px rgba(0,0,0,0.1)">`
     : `<div style="width:34px;height:34px;border-radius:50%;background:#1a56db;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">${esc(me.name[0].toUpperCase())}</div>`;
   av.innerHTML = `<div style="cursor:pointer" onclick="toggleUserMenu(event)">${avatarHtml}</div><div id="userMenu" style="display:none;"></div>`;
+  document.getElementById('loginHdrBtn')?.remove();
 
   closeLoginModal();
   document.getElementById('app').style.display = 'flex';
@@ -1356,15 +1357,15 @@ function initGoogle() {
   _googleReady = true;
   const saved = loadSavedUser();
   if (saved) { verifyAndLogin(saved); return; }
-  // התחברות אופציונלית בלבד: לא פותחים מסך כניסה חוסם ולא מציגים את חלון הבחירה
-  // האוטומטי של גוגל - המשתמש יכול להתחבר ביוזמתו דרך כפתור "התחבר".
+  // הכניסה לאתר מחייבת התחברות עם גוגל - מסך ההתחברות פתוח כברירת מחדל,
+  // כאן רק מוודאים שכפתור גוגל אכן מצויר בתוכו.
+  openLoginModal();
 }
 function tryInitGoogle() { if (window.google && window.google.accounts) initGoogle(); else setTimeout(tryInitGoogle, 100); }
 if (document.readyState === 'complete') tryInitGoogle(); else window.addEventListener('load', tryInitGoogle);
 
-/* האתר פתוח לצפייה לכולם - טוענים את הפיד מיד, בלי לחכות להתחברות */
+/* האתר דורש התחברות: הפיד נטען רק אחרי login מוצלח (בתוך applyLogin) */
 document.addEventListener('DOMContentLoaded', () => {
-  loadFeed();
   setTimeout(loadAd, 3000); setInterval(loadAd, 60 * 60 * 1000);
   initDark(); initNotifications();
   triggerStats(); setInterval(triggerStats, 20000);
@@ -1546,7 +1547,7 @@ function buildMsg(e) {
 
   let content = `<div class="bubble-text">${rich(e.text || '')}</div>`;
   let media = '';
-  if (e.imgUrl) { const su = escAttr(e.imgUrl); media += `<div class="bubble-img"><img src="${su}" loading="lazy" style="cursor:pointer;border-radius:12px;display:block;" onclick="openLightbox('${su}')" onerror="this.closest('.bubble-img').remove()"></div>`; }
+  if (e.imgUrl) { media += `<div class="bubble-img" style="background:#f3f4f6;border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;color:#9ca3af;font-size:13px;font-weight:700;"><i class="fas fa-image" style="font-size:15px;"></i> תמונה מוסתרת</div>`; }
   if (e.videoUrl) {
     const vu = e.videoUrl;
     const ytMatch = vu.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -1574,7 +1575,7 @@ function buildMsg(e) {
     </div>`;
   }
 
-  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}</div></div><div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div></div></div></div>`;
+  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}</div></div></div></div>`;
 }
 
 function copyMsgLink(id, btn) {
