@@ -370,7 +370,7 @@ body.dark #searchInput{color:#e5e7eb;}
 .compose-tag-inp{border:1.5px solid #e8eaef;border-radius:20px;padding:5px 12px;font-size:11px;font-family:'Assistant','Heebo',sans-serif;outline:none;width:150px;background:#f9fafb;transition:border-color .15s,background .15s;}
 .compose-tag-inp:focus{border-color:#1a56db;background:#fff;}
 
-.ctb-dropdown{position:absolute;bottom:calc(100% + 8px);right:0;background:#fff;border:1px solid #edeef2;border-radius:16px;padding:16px;min-width:280px;box-shadow:0 -4px 6px rgba(15,23,42,.03),0 12px 32px rgba(15,23,42,.14);z-index:210;display:none;animation:pickerPop .16s cubic-bezier(.2,.8,.3,1);direction:rtl;}
+.ctb-dropdown{position:fixed;left:8px;bottom:90px;top:auto;right:auto;width:min-content;max-width:calc(100vw - 16px);max-height:calc(100vh - 110px);overflow-y:auto;box-sizing:border-box;background:#fff;border:1px solid #edeef2;border-radius:16px;padding:16px;min-width:280px;box-shadow:0 -4px 6px rgba(15,23,42,.03),0 12px 32px rgba(15,23,42,.14);z-index:210;display:none;animation:pickerPop .16s cubic-bezier(.2,.8,.3,1);direction:rtl;}
 .ctb-dropdown.open{display:block;}
 .ctb-dropdown-wrap{position:relative;}
 .ctb-inp{width:100%;border:1.5px solid #e8eaef;border-radius:11px;padding:8px 12px;font-size:13px;outline:none;direction:ltr;font-family:'Assistant','Heebo',sans-serif;margin-bottom:8px;transition:border-color .15s,box-shadow .15s;background:#f9fafb;}
@@ -1826,7 +1826,28 @@ function scrollToBottom() {
 
 /* ================= כתיבת פוסט ================= */
 function closeAllCtbDropdowns() { document.querySelectorAll('.ctb-dropdown').forEach(el => el.classList.remove('open')); }
-function toggleCtbDropdown(id) { const el = document.getElementById(id); const wasOpen = el.classList.contains('open'); closeAllCtbDropdowns(); if (!wasOpen) el.classList.add('open'); }
+function positionCtbDropdown(el) {
+  if (!el) return;
+  const wrap = el.closest('.ctb-dropdown-wrap') || el.parentElement;
+  const r = wrap.getBoundingClientRect();
+  const vw = document.documentElement.clientWidth, vh = window.innerHeight, m = 8;
+  el.style.maxWidth = (vw - m * 2) + 'px';
+  el.style.maxHeight = Math.max(140, r.top - m * 2) + 'px';
+  el.style.top = 'auto';
+  el.style.right = 'auto';
+  el.style.bottom = (vh - r.top + m) + 'px';
+  const w = el.offsetWidth;
+  let left = r.right - w;                       /* יישור לקצה הימני של הכפתור (RTL) */
+  left = Math.max(m, Math.min(left, vw - w - m)); /* לא לצאת מהמסך */
+  el.style.left = left + 'px';
+}
+function toggleCtbDropdown(id) {
+  const el = document.getElementById(id);
+  const wasOpen = el.classList.contains('open');
+  closeAllCtbDropdowns();
+  if (!wasOpen) { el.classList.add('open'); positionCtbDropdown(el); }
+}
+window.addEventListener('resize', () => { const o = document.querySelector('.ctb-dropdown.open'); if (o) positionCtbDropdown(o); });
 function composeFormat(cmd) { const ed = document.getElementById('composeEditor'); ed.focus(); requestAnimationFrame(() => { document.execCommand(cmd, false, null); onComposeChange(); }); }
 function applyTextColor(color) { document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor', false, color); closeAllCtbDropdowns(); onComposeChange(); }
 function removeTextColor() { document.execCommand('removeFormat', false, 'foreColor'); closeAllCtbDropdowns(); onComposeChange(); }
