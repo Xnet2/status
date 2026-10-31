@@ -1158,7 +1158,7 @@ body, html { background: #fff !important; }
    קובץ זה מאחד את כל הלוגיקה. אין חלוקה לערוצים ואין מערכת תגובות.
    ============================================================ */
 
-const BACKEND = "https://script.google.com/macros/s/AKfycbxD3EAna7fUJWicfB6LVjVmCH8ciqWA7Hfh3GI57WRJvjVloSJKsXElr6LNHLT_O17S/exec";
+const BACKEND = "https://dhoc97909.pythonanywhere.com/status/api";
 const GOOGLE_CLIENT_ID = '426523025549-7c50rkn7cun4vmm2r802u0ij6egjehtg.apps.googleusercontent.com';
 const LOGO = 'https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png';
 const SITE_TITLE = 'xnet פרוייקטים ועדכונים';
@@ -1208,6 +1208,8 @@ function fmtDate(ts) {
 /* קריאת API מרוכזת: תמיד דרך אותו URL, action בפרמטר */
 async function api(action, params, method) {
   method = method || 'GET';
+  // הטוקן שהשרת הנפיק בהתחברות מזהה את המשתמש. השרת לא סומך על כתובת מייל שנשלחת מהדפדפן.
+  if (me && me.token && !(params && params.token)) params = Object.assign({ token: me.token }, params || {});
   try {
     if (method === 'GET') {
       const qs = new URLSearchParams(Object.assign({ action }, params || {}));
@@ -1278,8 +1280,14 @@ function doLogout() {
   try { google.accounts.id.disableAutoSelect(); } catch (e) {}
 }
 
-async function verifyAndLogin(user) {
-  const d = await api('auth_check', { email: user.email });
+async function verifyAndLogin(user, credential) {
+  const d = await api('auth_check', credential ? { credential } : { token: user.token || '' });
+  if (d.status !== 'ok') {
+    if (credential) alert('ההתחברות נכשלה. נסה שוב.');
+    else { clearSavedUser(); applyGuestUI(); }
+    return false;
+  }
+  user.token = d.token;
   if (d.banned) {
     closeLoginModal();
     document.getElementById('app').style.display = 'none';
@@ -1348,7 +1356,7 @@ async function handleGoogle(resp) {
   if (!email || !email.includes('@')) return;
   const picture = payload.picture || '';
   const name = payload.name || email.split('@')[0];
-  await verifyAndLogin({ email, name, picture });
+  await verifyAndLogin({ email, name, picture }, resp.credential);
 }
 
 function initGoogle() {
