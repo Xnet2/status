@@ -6,6 +6,16 @@
 <title id="pageTitle">xnet פרוייקטים ועדכונים</title>
 <meta name="description" content="xnet פרוייקטים ועדכונים">
 <meta name="keywords" content="xnet פרוייקטים ועדכונים">
+<!-- תצוגה מקדימה כשמשתפים קישור לערוץ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Xnet">
+<meta property="og:title" content="xnet פרוייקטים ועדכונים">
+<meta property="og:description" content="עדכוני פרוייקטים, התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet. התחברו עם גוגל כדי לקרוא.">
+<meta property="og:url" content="https://xnet2.github.io/status/">
+<meta property="og:image" content="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png">
+<meta property="og:locale" content="he_IL">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#1a56db">
 <meta name="google-site-verification" content="ZXEdDW4jzJU_cxuE1lL0tf76JJf3KZle2MIMjs4ua98" />
 
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png">
@@ -997,6 +1007,42 @@ body.dark .ctb-inp{background:var(--canvas);border-color:var(--line);color:var(-
 /* ---------- חלונות כלליים ---------- */
 .login-card{border-radius:24px;box-shadow:var(--sh-3);}
 .utd-box{border-radius:22px;box-shadow:var(--sh-3);}
+/* ---------- תצוגה מקדימה לערוץ (למי שלא מחובר) ---------- */
+#channelPreview{display:none;position:fixed;top:78px;right:0;left:0;bottom:0;z-index:150;overflow:auto;background:var(--canvas);}
+#channelPreview.show{display:flex;align-items:center;justify-content:center;padding:28px 16px;}
+body.is-guest #feedWrap,body.is-guest #searchResults,body.is-guest #scrollDownBtn,body.is-guest #searchBtn{display:none!important;}
+.cpv-skeleton{position:absolute;inset:0;padding:30px 0;display:flex;flex-direction:column;gap:22px;max-width:780px;margin:0 60px 0 auto;
+  filter:blur(3px);opacity:.75;pointer-events:none;}
+.cpv-sk-row{display:flex;gap:10px;align-items:flex-start;padding:0 10px;}
+.cpv-sk-av{width:36px;height:36px;border-radius:10px;background:var(--line);flex-shrink:0;}
+.cpv-sk-bubble{display:block;border-radius:20px 6px 20px 20px;background:var(--surface);border:1px solid var(--line);
+  background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);background-size:200% 100%;animation:cpvShine 2.4s linear infinite;}
+body.dark .cpv-sk-bubble{background-image:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);}
+@keyframes cpvShine{from{background-position:200% 0}to{background-position:-200% 0}}
+.cpv-card{position:relative;width:100%;max-width:440px;text-align:center;padding:34px 30px 26px;border-radius:28px;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);box-shadow:var(--sh-3);animation:apPop .35s cubic-bezier(.16,1,.3,1) both;}
+.cpv-logo{width:84px;height:84px;object-fit:contain;border-radius:24px;background:#fff;padding:8px;
+  box-shadow:0 0 0 1px var(--line),0 12px 28px -10px rgba(20,26,45,.35);margin:0 auto 16px;display:block;}
+.cpv-kicker{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:var(--accent);background:var(--accent-soft);
+  padding:4px 11px;border-radius:999px;}
+.cpv-kicker i{font-size:10px;}
+.cpv-title{font-size:24px;font-weight:900;color:var(--ink);margin:12px 0 6px;letter-spacing:-.02em;font-family:'Heebo','Assistant',sans-serif;}
+.cpv-desc{font-size:14.5px;line-height:1.6;color:var(--ink-2);margin:0 auto 20px;max-width:330px;}
+.cpv-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:24px;background:var(--surface-2);}
+.cpv-stats div{padding:12px 6px;display:flex;flex-direction:column;gap:2px;}
+.cpv-stats div + div{border-right:1px solid var(--line);}
+.cpv-stats b{font-size:17px;font-weight:900;color:var(--ink);white-space:nowrap;}
+.cpv-stats span{font-size:11.5px;font-weight:700;color:var(--muted);}
+.cpv-google{display:flex;justify-content:center;min-height:44px;}
+.cpv-fallback{display:none;margin:0 auto;align-items:center;gap:9px;height:46px;padding:0 24px;border-radius:999px;border:none;cursor:pointer;
+  background:linear-gradient(140deg,var(--accent-2),var(--accent));color:#fff;font:800 15px 'Assistant','Heebo',sans-serif;box-shadow:0 8px 20px -8px rgba(26,86,219,.7);}
+.cpv-google:empty{display:none;}
+.cpv-google:empty + .cpv-fallback{display:inline-flex;}
+.cpv-note{margin-top:18px;font-size:11.5px;line-height:1.55;color:var(--muted);}
+.cpv-note i{color:var(--ok);margin-left:4px;}
+@media(max-width:600px){.cpv-skeleton{margin:0;}.cpv-card{padding:28px 20px 22px;border-radius:24px;}.cpv-title{font-size:21px;}}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 </style>
@@ -1082,6 +1128,30 @@ body.dark .ctb-inp{background:var(--canvas);border-color:var(--line);color:var(-
       <div id="userAvatar" style="position:relative; margin-right:5px;"></div>
     </div>
   </header>
+
+  <section id="channelPreview" aria-label="תצוגה מקדימה לערוץ">
+    <div class="cpv-skeleton" aria-hidden="true">
+      <div class="cpv-sk-row"><span class="cpv-sk-av"></span><span class="cpv-sk-bubble" style="width:58%;height:84px"></span></div>
+      <div class="cpv-sk-row"><span class="cpv-sk-av"></span><span class="cpv-sk-bubble" style="width:42%;height:56px"></span></div>
+      <div class="cpv-sk-row"><span class="cpv-sk-av"></span><span class="cpv-sk-bubble" style="width:64%;height:180px"></span></div>
+      <div class="cpv-sk-row"><span class="cpv-sk-av"></span><span class="cpv-sk-bubble" style="width:36%;height:56px"></span></div>
+      <div class="cpv-sk-row"><span class="cpv-sk-av"></span><span class="cpv-sk-bubble" style="width:52%;height:110px"></span></div>
+    </div>
+    <div class="cpv-card">
+      <img class="cpv-logo" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png" alt="">
+      <span class="cpv-kicker"><i class="fas fa-lock"></i> ערוץ לחברים מחוברים</span>
+      <h1 class="cpv-title">xnet פרוייקטים ועדכונים</h1>
+      <p class="cpv-desc">עדכוני פרוייקטים, התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet</p>
+      <div class="cpv-stats">
+        <div><b id="cpvFollowers">–</b><span>עוקבים</span></div>
+        <div><b id="cpvMessages">–</b><span>עדכונים</span></div>
+        <div><b id="cpvLast">–</b><span>עדכון אחרון</span></div>
+      </div>
+      <div id="cpvGoogleBtn" class="cpv-google"></div>
+      <button class="cpv-fallback" onclick="openLoginModal()"><i class="fab fa-google"></i> התחברות עם Google</button>
+      <p class="cpv-note"><i class="fas fa-shield-halved"></i> ההתחברות נעשית דרך גוגל. אנחנו מקבלים רק את השם, התמונה וכתובת המייל.</p>
+    </div>
+  </section>
 
   <div id="feedWrap">
     <div id="feedInitialSpinner"><div class="feed-init-ring"></div>טוען הודעות...</div>
@@ -1588,14 +1658,52 @@ function doLogout() {
   document.getElementById('bannedScreen').style.display = 'none';
   closeLoginModal();
   applyGuestUI();
+  items = []; knownIds.clear(); rxnCache = {}; lastTs = 0; oldestTs = 0;
+  document.getElementById('feedInner').innerHTML = '';
+  showChannelPreview();
   try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+}
+
+/* ================= תצוגה מקדימה לערוץ (למי שלא מחובר) ================= */
+function relTime(ts) {
+  if (!ts) return '';
+  const m = Math.round((Date.now() - ts) / 60000);
+  if (m < 1) return 'ממש עכשיו';
+  if (m < 60) return m === 1 ? 'לפני דקה' : `לפני ${m} דקות`;
+  const h = Math.round(m / 60);
+  if (h < 24) return h === 1 ? 'לפני שעה' : h === 2 ? 'לפני שעתיים' : `לפני ${h} שעות`;
+  const d = Math.round(h / 24);
+  if (d < 30) return d === 1 ? 'אתמול' : d === 2 ? 'לפני יומיים' : `לפני ${d} ימים`;
+  return fmtDate(ts);
+}
+async function showChannelPreview() {
+  document.body.classList.add('is-guest');
+  document.getElementById('feedInitialSpinner').style.display = 'none';
+  document.getElementById('channelPreview').classList.add('show');
+  renderPreviewGoogleBtn();
+  const d = await api('preview', { channel: CHANNEL });
+  if (d.status !== 'ok') return;
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('cpvFollowers', Number(d.followers || 0).toLocaleString('he-IL'));
+  set('cpvMessages', Number(d.messages || 0).toLocaleString('he-IL'));
+  set('cpvLast', d.lastTs ? relTime(d.lastTs) : '—');
+}
+function hideChannelPreview() {
+  document.body.classList.remove('is-guest');
+  document.getElementById('channelPreview').classList.remove('show');
+}
+function renderPreviewGoogleBtn() {
+  const box = document.getElementById('cpvGoogleBtn');
+  if (!box || !_googleReady || box.dataset.done) return;
+  google.accounts.id.renderButton(box, { theme: 'filled_blue', size: 'large', shape: 'pill', text: 'continue_with', locale: 'he', width: 280 });
+  box.dataset.done = '1';
 }
 
 async function verifyAndLogin(user, credential) {
   const d = await api('auth_check', credential ? { credential } : { token: user.token || '' });
   if (d.status !== 'ok') {
     if (credential) alert('ההתחברות נכשלה. נסה שוב.');
-    else { clearSavedUser(); applyGuestUI(); }
+    else { clearSavedUser(); applyGuestUI(); showChannelPreview(); }
     return false;
   }
   user.token = d.token;
@@ -1631,6 +1739,7 @@ async function applyLogin() {
   document.getElementById('loginHdrBtn')?.remove();
 
   closeLoginModal();
+  hideChannelPreview();
   document.getElementById('app').style.display = 'flex';
 
   api('api_log_login', { email: me.email, name: me.name, picture: me.picture }, 'POST');
@@ -1672,17 +1781,17 @@ async function handleGoogle(resp) {
 function initGoogle() {
   google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogle, auto_select: true });
   _googleReady = true;
-  const saved = loadSavedUser();
-  if (saved) { verifyAndLogin(saved); return; }
-  // התחברות אופציונלית בלבד: לא פותחים מסך כניסה חוסם ולא מציגים את חלון הבחירה
-  // האוטומטי של גוגל - המשתמש יכול להתחבר ביוזמתו דרך כפתור "התחבר".
+  // מי שלא מחובר רואה את התצוגה המקדימה: מציגים בה את כפתור גוגל ואת חלון הבחירה המהירה
+  if (!me && document.body.classList.contains('is-guest')) { renderPreviewGoogleBtn(); try { google.accounts.id.prompt(); } catch (e) {} }
 }
 function tryInitGoogle() { if (window.google && window.google.accounts) initGoogle(); else setTimeout(tryInitGoogle, 100); }
 if (document.readyState === 'complete') tryInitGoogle(); else window.addEventListener('load', tryInitGoogle);
 
-/* האתר פתוח לצפייה לכולם - טוענים את הפיד מיד, בלי לחכות להתחברות */
+/* תוכן הערוץ פתוח רק למחוברים. מי שנכנס בעבר מאומת מיד מול השרת, וכל השאר רואים תצוגה מקדימה */
 document.addEventListener('DOMContentLoaded', () => {
-  loadFeed();
+  const saved = loadSavedUser();
+  if (saved && saved.token) verifyAndLogin(saved);
+  else { clearSavedUser(); showChannelPreview(); }
   setTimeout(loadAd, 3000); setInterval(loadAd, 60 * 60 * 1000);
   initDark(); initNotifications();
   triggerStats(); setInterval(triggerStats, 20000);
@@ -2111,6 +2220,7 @@ async function deleteReportedMsg(msgId, reportId) {
 async function loadFeed() {
   const d = await api('feed', { channel: CHANNEL, limit: 20 });
   document.getElementById('feedInitialSpinner').style.display = 'none';
+  if (d.auth === false) { clearSavedUser(); me = null; applyGuestUI(); showChannelPreview(); return; }
   if (d.status !== 'ok') { console.error('שגיאה בטעינת הפיד'); return; }
   items = [...d.messages].reverse();
   items.forEach(e => knownIds.add(e.id));
@@ -2174,7 +2284,7 @@ async function loadMore() {
 }
 
 async function pollAll() {
-  if (!items.length || pollPending) return; pollPending = true;
+  if (!me || !items.length || pollPending) return; pollPending = true;
   const d = await api('feed_poll', { channel: CHANNEL, msgIds: items.map(e => e.id), since: lastTs }, 'POST');
   pollPending = false;
   if (d.status !== 'ok') return;
