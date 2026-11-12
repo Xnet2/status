@@ -710,6 +710,295 @@ body, html { background: #fff !important; }
   .ap-nav-item{width:auto; white-space:nowrap; margin-bottom:0;}
 }
 
+
+/* =====================================================================
+   עיצוב מחודש: צבעים משותפים, כותרת, פיד, סרגל הכתיבה והחלונות שלו,
+   תפריט המשתמש, פאנל הניהול והתראת הדיווחים. בא אחרון ולכן גובר על הישן.
+   ===================================================================== */
+:root{
+  --accent:#1a56db; --accent-2:#2563eb; --accent-soft:#eef3ff; --accent-line:#cfdcff;
+  --ink:#151a2d; --ink-2:#454c63; --muted:#8a90a6; --faint:#b4b9c8;
+  --line:#e8eaf1; --line-2:#f1f2f7;
+  --surface:#ffffff; --surface-2:#f7f8fb; --canvas:#f4f5f9;
+  --danger:#e5484d; --danger-soft:#fdeeee; --danger-line:#f7d2d3;
+  --ok:#12a150; --ok-soft:#eafaf0;
+  --r-sm:10px; --r-md:14px; --r-lg:20px;
+  --sh-1:0 1px 2px rgba(20,26,45,.06),0 1px 1px rgba(20,26,45,.03);
+  --sh-2:0 10px 30px -8px rgba(20,26,45,.18),0 2px 6px rgba(20,26,45,.05);
+  --sh-3:0 28px 70px -12px rgba(20,26,45,.32);
+}
+body.dark{
+  --accent:#6b9bff; --accent-2:#82aaff; --accent-soft:#1f2a47; --accent-line:#2e3d66;
+  --ink:#eef0f6; --ink-2:#c3c8d6; --muted:#8a91a6; --faint:#5d6378;
+  --line:#2a2e40; --line-2:#22263a;
+  --surface:#181b29; --surface-2:#1e2233; --canvas:#10121c;
+  --danger:#ff6b70; --danger-soft:#3a1d22; --danger-line:#5a2a30;
+  --ok:#3ccf7a; --ok-soft:#173326;
+  --sh-1:0 1px 2px rgba(0,0,0,.35);
+  --sh-2:0 12px 32px -8px rgba(0,0,0,.6);
+  --sh-3:0 28px 70px -12px rgba(0,0,0,.7);
+}
+
+/* ---------- בסיס ---------- */
+body,html{background:var(--canvas)!important;}
+html:has(body.dark){background:#10121c!important;}
+body.dark{background:var(--canvas)!important;}
+body.dark #app,body.dark #feedWrap{background:var(--canvas);}
+::selection{background:rgba(26,86,219,.18);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.ap-content-body,.ctb-dropdown,#userMenu,.ap-nav{scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+
+/* ---------- כותרת ---------- */
+header{background:rgba(255,255,255,.86)!important;backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)!important;}
+body.dark header{background:rgba(24,27,41,.86)!important;border-color:var(--line)!important;}
+.hdr-avatar{border-radius:12px;}
+.hdr-name{color:var(--ink);font-size:16px;letter-spacing:-.01em;}
+.hdr-desc,.hdr-status{color:var(--muted);}
+body.dark .hdr-name{color:var(--ink)!important;}
+.hdr-icon-group{background:var(--surface);border-color:var(--line);box-shadow:var(--sh-1);gap:2px;}
+body.dark .hdr-icon-group{background:var(--surface);border-color:var(--line);}
+#searchBtn,#darkBtn,#notifBtn{width:32px;height:32px;color:var(--muted);}
+#searchBtn:hover,#darkBtn:hover,#notifBtn:hover{background:var(--accent-soft);color:var(--accent);}
+#loginHdrBtn{width:32px;height:32px;box-shadow:none;border:none;background:var(--accent-soft);color:var(--accent);}
+
+/* כפתור המשתמש בכותרת + נקודת הדיווחים */
+.hdr-me{position:relative;display:block;background:none;border:none;padding:0;cursor:pointer;border-radius:50%;}
+.hdr-me-av{width:36px;height:36px;border-radius:50%;object-fit:cover;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent-line);transition:box-shadow .15s,transform .15s;}
+.hdr-me:hover .hdr-me-av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent);}
+.hdr-me:active .hdr-me-av{transform:scale(.94);}
+.is-letter{background:linear-gradient(140deg,var(--accent-2),var(--accent));color:#fff;font-weight:800;font-size:15px;}
+.rep-dot{position:absolute;top:-4px;left:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;
+  background:var(--danger);color:#fff;font:800 11px/19px 'Assistant','Heebo',sans-serif;text-align:center;
+  box-shadow:0 0 0 2.5px var(--surface);display:none;}
+.rep-dot.show{display:block;animation:repPop .35s cubic-bezier(.34,1.56,.64,1);}
+.rep-dot.show::after{content:'';position:absolute;inset:0;border-radius:inherit;background:var(--danger);z-index:-1;animation:repPulse 2s ease-out infinite;}
+@keyframes repPop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes repPulse{0%{transform:scale(1);opacity:.55}80%,100%{transform:scale(2.1);opacity:0}}
+
+/* ---------- תפריט משתמש ---------- */
+#userMenu{top:50px;left:0;min-width:250px;padding:6px;border-radius:18px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--sh-2);}
+body.dark #userMenu{background:var(--surface);border-color:var(--line);}
+.um-head{display:flex;align-items:center;gap:11px;padding:10px 10px 12px;}
+.um-av{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.um-who{min-width:0;flex:1;}
+.um-name{font-size:14.5px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.um-mail{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right;}
+.um-role{display:inline-block;margin-top:4px;font-size:10.5px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:1px 8px;border-radius:999px;}
+.um-sec{border-top:1px solid var(--line-2);padding:6px 0 0;margin-top:2px;display:flex;flex-direction:column;gap:2px;}
+.um-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;border:none;background:none;border-radius:11px;cursor:pointer;
+  font:700 13.5px 'Assistant','Heebo',sans-serif;color:var(--ink-2);text-align:right;transition:background .12s,color .12s;}
+.um-item i{width:18px;text-align:center;color:var(--muted);font-size:13px;}
+.um-item:hover{background:var(--surface-2);color:var(--ink);}
+.um-primary{color:var(--accent);}
+.um-primary i{color:var(--accent);}
+.um-primary:hover{background:var(--accent-soft);color:var(--accent);}
+.um-count{margin-right:auto;min-width:22px;height:22px;padding:0 7px;border-radius:999px;font:800 11.5px/22px 'Assistant','Heebo',sans-serif;text-align:center;background:var(--line-2);color:var(--muted);}
+.um-reports.has{color:var(--danger);}
+.um-reports.has i{color:var(--danger);}
+.um-reports.has .um-count{background:var(--danger);color:#fff;}
+.um-out{color:var(--danger);}
+.um-out i{color:var(--danger);}
+.um-out:hover{background:var(--danger-soft);color:var(--danger);}
+
+/* ---------- פיד ---------- */
+#feedInner{gap:20px;}
+.bubble{background:var(--surface);border:1px solid var(--line);box-shadow:var(--sh-1);border-radius:20px 6px 20px 20px;padding:12px 16px 10px;}
+body.dark .bubble{background:var(--surface)!important;border-color:var(--line);}
+.bubble.is-red{background:#fff8f8;border-color:#f5d0d0;border-right:3px solid #e02020;}
+.bubble-text{color:var(--ink);}
+body.dark .bubble-text{color:var(--ink-2)!important;}
+.bubble-text a{color:var(--accent);text-underline-offset:3px;}
+.msg-meta-name{color:var(--ink);font-size:12.5px;}
+.msg-meta-time{color:var(--faint);}
+.msg-av{border-radius:10px;}
+.lnk-btn{background:var(--accent-soft);color:var(--accent);font-weight:700;border:1px solid var(--accent-line);transition:background .15s,transform .1s;}
+.lnk-btn:hover{background:var(--accent);color:#fff;}
+.vid-btn{box-shadow:0 4px 12px -4px rgba(26,86,219,.5);}
+.quote-block{background:var(--accent-soft);border-right-color:var(--accent);border-radius:10px;}
+.rxn-chip{border-radius:999px;border-color:var(--line);background:var(--surface);height:27px;}
+.rxn-chip:hover{background:var(--surface-2);}
+.rxn-chip.mine{background:var(--accent-soft);border-color:var(--accent-line);}
+body.dark .rxn-chip{background:var(--surface-2);border-color:var(--line);}
+body.dark .rxn-chip.mine{background:var(--accent-soft);border-color:var(--accent-line);}
+.post-tag{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--ink-2);}
+.bubble-top-actions{background:var(--surface);border-color:var(--line);box-shadow:var(--sh-2);}
+.unread-sep span{box-shadow:var(--sh-1);}
+.msg-flash .bubble{box-shadow:0 0 0 3px rgba(229,72,77,.45),var(--sh-1);transition:box-shadow .3s;}
+#scrollDownBtn{background:var(--surface);border-color:var(--line);box-shadow:var(--sh-2);}
+#emojiPicker{border-radius:16px;border-color:var(--line);box-shadow:var(--sh-2);padding:10px;}
+
+/* ---------- סרגל הכתיבה ---------- */
+#adminComposeBar{background:var(--surface);box-shadow:0 -1px 0 var(--line),0 -16px 40px -12px rgba(20,26,45,.14);}
+body.dark #adminComposeBar{background:var(--surface)!important;}
+.compose-toolbar{gap:6px;padding:10px 14px 8px;border-bottom:1px solid var(--line-2);align-items:center;}
+body.dark .compose-toolbar{border-color:var(--line-2);}
+.composer-badge{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);
+  font-size:12px;font-weight:800;white-space:nowrap;margin-left:4px;}
+.composer-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(18,161,80,.18);}
+.composer-badge:empty{display:none;}
+.ctb-group{display:flex;align-items:center;gap:2px;padding:3px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line-2);}
+.ctb-btn{height:30px;padding:0 10px;border-radius:9px;font-size:12.5px;color:var(--ink-2);gap:6px;background:transparent;}
+.ctb-btn i{font-size:12px;color:var(--muted);transition:color .15s;}
+.ctb-btn:hover{background:var(--surface);color:var(--accent);box-shadow:var(--sh-1);}
+.ctb-btn:hover i{color:var(--accent);}
+.ctb-icon{width:30px;padding:0;justify-content:center;}
+.ctb-dropdown-wrap:has(.ctb-dropdown.open) > .ctb-btn{background:var(--accent);color:#fff;box-shadow:0 4px 12px -4px rgba(26,86,219,.6);}
+.ctb-dropdown-wrap:has(.ctb-dropdown.open) > .ctb-btn i{color:#fff;}
+.ctb-btn.has-val{background:var(--ok-soft);color:var(--ok);}
+.ctb-btn.has-val i{color:var(--ok);}
+body.dark .ctb-btn{background:transparent;color:var(--ink-2);}
+body.dark .ctb-btn:hover{background:var(--surface);}
+.ctb-end{margin-right:auto;display:flex;align-items:center;gap:8px;}
+.compose-tag-inp{height:32px;width:170px;border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:0 13px;font-size:12px;color:var(--ink);}
+.compose-tag-inp:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+.ctb-count{font-size:11px;font-weight:700;color:var(--faint);min-width:18px;text-align:center;}
+.ctb-clear i{color:var(--danger)!important;}
+.ctb-clear:hover{background:var(--danger-soft)!important;}
+#composeEditor{border-color:var(--line);background:var(--surface-2);border-radius:16px;}
+body.dark #composeEditor{background:var(--canvas)!important;border-color:var(--line)!important;}
+@media(max-width:760px){
+  .ctb-lbl{display:none;}
+  .ctb-dropdown-wrap > .ctb-btn{width:30px;padding:0;justify-content:center;}
+  .compose-tag-inp{width:120px;}
+  .composer-badge{display:none;}
+}
+
+/* ---------- חלונות הקופצים של סרגל הכתיבה ---------- */
+.ctb-dropdown{width:310px;min-width:0;padding:0 16px 16px;border-radius:18px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--sh-2);}
+.ctb-dropdown-wide{width:380px;}
+#colorDrop{width:260px;}
+body.dark .ctb-dropdown{background:var(--surface);border-color:var(--line);}
+.ctb-pop-hdr{display:flex;align-items:center;gap:10px;margin:0 -16px 14px;padding:13px 14px 12px 16px;border-bottom:1px solid var(--line-2);
+  position:sticky;top:0;background:inherit;border-radius:18px 18px 0 0;z-index:1;}
+.ctb-pop-ico{width:34px;height:34px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);color:var(--accent);font-size:14px;}
+.ctb-pop-txt{flex:1;min-width:0;}
+.ctb-pop-title{font-size:14px;font-weight:800;color:var(--ink);}
+.ctb-pop-sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.ctb-pop-x{width:30px;height:30px;border-radius:9px;border:none;background:none;color:var(--muted);cursor:pointer;flex-shrink:0;transition:background .12s,color .12s;}
+.ctb-pop-x:hover{background:var(--surface-2);color:var(--ink);}
+.ctb-inp-label{font-size:11.5px;font-weight:700;color:var(--ink-2);margin:0 2px 6px;display:block;}
+.ctb-inp{height:40px;border:1.5px solid var(--line);background:var(--surface-2);border-radius:12px;padding:0 12px;font-size:13.5px;color:var(--ink);margin-bottom:12px;}
+.ctb-inp:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 4px rgba(26,86,219,.1);}
+body.dark .ctb-inp{background:var(--canvas);border-color:var(--line);color:var(--ink);}
+.ctb-code{height:auto;min-height:130px;padding:10px 12px;font:12.5px/1.55 ui-monospace,Consolas,monospace;direction:ltr;resize:vertical;}
+.ctb-add-btn{height:40px;border-radius:12px;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px;
+  background:linear-gradient(140deg,var(--accent-2),var(--accent));box-shadow:0 6px 16px -6px rgba(26,86,219,.6);}
+.ctb-row{display:flex;gap:8px;}
+.ctb-row .ctb-add-btn{flex:1;}
+.ctb-danger-btn{height:40px;padding:0 16px;border-radius:12px;border:1px solid var(--danger-line);background:var(--danger-soft);color:var(--danger);
+  font:700 13px 'Assistant','Heebo',sans-serif;cursor:pointer;}
+.ctb-danger-btn:hover{filter:brightness(.97);}
+.ctb-ghost-btn{width:100%;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);
+  font:700 12.5px 'Assistant','Heebo',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+.ctb-ghost-btn:hover{background:var(--surface);border-color:var(--accent-line);color:var(--accent);}
+.ctb-upload{width:100%;height:56px;border-radius:14px;border:1.5px dashed var(--accent-line);background:var(--accent-soft);color:var(--accent);
+  font:800 13px 'Assistant','Heebo',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:border-color .15s,filter .15s;}
+.ctb-upload i{font-size:16px;}
+.ctb-upload:hover{border-color:var(--accent);filter:brightness(.98);}
+.ctb-thumb{margin-top:12px;border-radius:14px;overflow:hidden;border:1px solid var(--line);flex-direction:column;background:var(--surface-2);}
+.ctb-thumb img{width:100%;max-height:140px;object-fit:contain;display:block;}
+.ctb-thumb button{width:100%;border:none;border-top:1px solid var(--line);background:var(--surface);color:var(--danger);
+  font:700 12px 'Assistant','Heebo',sans-serif;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.ctb-thumb button:hover{background:var(--danger-soft);}
+.ctb-swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:14px;}
+.ctb-swatch{aspect-ratio:1;border-radius:50%;border:none;cursor:pointer;background:var(--sw);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transition:transform .12s,box-shadow .12s;}
+.ctb-swatch:hover{transform:scale(1.12);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--sw);}
+.ctb-ok-badge{margin-top:10px;align-items:center;gap:7px;padding:9px 12px;border-radius:12px;background:var(--ok-soft);color:var(--ok);font-size:12px;font-weight:700;}
+.ctb-ok-badge button{margin-right:auto;border:none;background:none;color:var(--danger);cursor:pointer;}
+.ctb-btn-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.ctb-btn-list:empty{display:none;}
+
+/* ---------- פאנל ניהול ---------- */
+#adminPanelModal{background:rgba(16,20,36,.45);}
+.ap-box{max-width:900px;height:min(90vh,680px);border-radius:24px;background:var(--surface);box-shadow:var(--sh-3);}
+.ap-sidebar{width:248px;min-width:248px;background:var(--surface-2);border-left:1px solid var(--line);}
+.ap-sidebar-user{padding:22px 18px 18px;border-bottom:1px solid var(--line);}
+.ap-sidebar-user img,.ap-sidebar-avatar-fallback{width:42px;height:42px;border-radius:50%;}
+.ap-sidebar-avatar-fallback{background:linear-gradient(140deg,var(--accent-2),var(--accent));}
+.ap-sidebar-name{color:var(--ink);font-size:14px;}
+.ap-sidebar-role{color:var(--accent);font-weight:800;}
+.ap-nav{padding:12px;}
+.ap-nav-item{padding:9px 10px;border-radius:12px;color:var(--ink-2);font-size:13.5px;margin-bottom:4px;}
+.ap-nav-item:hover{background:var(--surface);color:var(--ink);}
+.ap-nav-item.active{background:var(--surface);color:var(--accent);box-shadow:var(--sh-1);}
+.ap-nav-icon{width:32px;height:32px;border-radius:10px;background:var(--surface);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);}
+.ap-nav-item:hover .ap-nav-icon{background:var(--surface);color:var(--accent);}
+.ap-nav-item.active .ap-nav-icon{background:var(--accent);color:#fff;box-shadow:0 4px 10px -3px rgba(26,86,219,.6);}
+.ap-nav-txt{flex:1;}
+.ap-nav-badge{display:none;min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:var(--danger);color:#fff;font:800 11px/21px 'Assistant','Heebo',sans-serif;text-align:center;}
+.ap-nav-badge.show{display:inline-block;}
+.ap-content{background:var(--surface);}
+.ap-content-hdr{padding:20px 26px;border-bottom:1px solid var(--line-2);}
+.ap-content-title{font-size:18px;color:var(--ink);letter-spacing:-.01em;}
+.ap-hdr-close{background:var(--surface-2);color:var(--muted);border-radius:11px;width:34px;height:34px;}
+.ap-hdr-close:hover{background:var(--line-2);color:var(--ink);}
+.ap-content-body{padding:22px 26px 30px;}
+.ap-stat-card{background:var(--surface-2);border:1px solid var(--line-2);border-radius:16px;padding:18px 16px;text-align:right;}
+.ap-stat-num{font-size:28px;color:var(--ink);margin:8px 0 2px;letter-spacing:-.02em;}
+.ap-stat-lbl{color:var(--muted);font-size:12px;}
+#ap-sec-stats > .ap-stat-card{text-align:right;background:linear-gradient(135deg,var(--accent-soft),var(--surface-2));border-color:var(--accent-line);}
+#ap-sec-stats > .ap-stat-card .ap-stat-num{color:var(--accent);}
+.ap-field{border:1.5px solid var(--line);background:var(--surface-2);border-radius:12px;padding:10px 13px;font-size:13.5px;color:var(--ink);}
+.ap-field:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 4px rgba(26,86,219,.1);}
+.ap-btn{border-radius:12px;padding:10px 16px;display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+.ap-btn-primary{background:linear-gradient(140deg,var(--accent-2),var(--accent));color:#fff;box-shadow:0 6px 16px -6px rgba(26,86,219,.6);}
+.ap-btn-soft{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);}
+.ap-btn-soft:hover{background:var(--line-2);}
+.ap-btn-danger{background:var(--danger-soft);color:var(--danger);border:1px solid var(--danger-line);}
+.ap-card{border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;background:var(--surface);}
+.ap-card-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--ink);margin-bottom:14px;}
+.ap-card-title i{width:28px;height:28px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:12px;}
+.ap-label{font-size:12.5px;font-weight:800;color:var(--ink-2);margin-bottom:10px;}
+.ap-divider{border-top:1px solid var(--line-2);padding-top:18px;margin-top:4px;}
+.ap-hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
+.ap-empty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:46px 16px;color:var(--muted);}
+.ap-empty i{font-size:30px;color:var(--ok);opacity:.85;margin-bottom:4px;}
+.ap-empty div{font-size:15px;font-weight:800;color:var(--ink-2);}
+.ap-empty small{font-size:12px;font-weight:600;}
+.ap-loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:40px;color:var(--muted);font-weight:700;font-size:13px;}
+.ap-row-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;}
+.ap-person-av{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.ap-person-name{font-size:13.5px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ap-person-mail{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ap-tag{display:inline-block;margin-top:3px;font-size:10.5px;font-weight:800;padding:1px 8px;border-radius:999px;background:var(--ok-soft);color:var(--ok);}
+.ap-icon-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--danger-line);background:var(--danger-soft);color:var(--danger);cursor:pointer;flex-shrink:0;}
+.ap-blocked{display:flex;align-items:center;gap:10px;padding:9px 12px;margin-bottom:6px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);font-size:13px;color:var(--ink-2);}
+.ap-blocked i{color:var(--danger);}
+.ap-blocked span{flex:1;direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;}
+.ap-blocked button{border:none;background:none;color:var(--accent);font:700 12px 'Assistant','Heebo',sans-serif;cursor:pointer;}
+/* דיווחים */
+.ap-report{border:1px solid var(--danger-line);background:linear-gradient(180deg,var(--danger-soft),var(--surface) 70%);border-radius:18px;padding:14px 16px;}
+.ap-report-top{display:flex;align-items:center;gap:10px;}
+.ap-report-ico{width:34px;height:34px;border-radius:11px;background:var(--danger);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.ap-report-who{flex:1;min-width:0;}
+.ap-report-mail{font-size:13px;font-weight:800;color:var(--ink);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ap-report-when{font-size:11.5px;color:var(--muted);}
+.ap-chip-link{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--accent);background:var(--accent-soft);
+  padding:6px 11px;border-radius:999px;text-decoration:none;}
+.ap-chip-link i{font-size:10px;}
+.ap-report-reason{margin:12px 0 0;font-size:14px;line-height:1.6;color:var(--ink);font-weight:600;}
+.ap-report-msg{margin-top:10px;padding:9px 12px;border-radius:12px;background:var(--surface-2);border-right:3px solid var(--line);font-size:12.5px;color:var(--muted);line-height:1.55;}
+.ap-report-msg i{font-size:9px;opacity:.6;margin-left:4px;}
+.ap-report-actions{display:flex;gap:8px;margin-top:14px;}
+.ap-report-actions .ap-btn{flex:1;}
+@media(max-width:680px){
+  .ap-box{border-radius:20px;}
+  .ap-sidebar{width:100%;min-width:0;height:auto;}
+  .ap-box{height:min(92vh,720px);}
+  .ap-sidebar-user{display:none;}
+  .ap-nav-item{padding:7px 10px;}
+  .ap-nav-icon{width:28px;height:28px;}
+  .ap-content-hdr,.ap-content-body{padding-left:18px;padding-right:18px;}
+}
+
+/* ---------- חלונות כלליים ---------- */
+.login-card{border-radius:24px;box-shadow:var(--sh-3);}
+.utd-box{border-radius:22px;box-shadow:var(--sh-3);}
+/* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
+@media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -825,105 +1114,126 @@ body, html { background: #fff !important; }
   </div>
   <div id="blockNotice">✋ אין לך הרשאת כתיבה בערוץ זה — עברת למצב צפייה בלבד</div>
   <div class="compose-toolbar">
-    <div id="composerNameBadge" style="background:#eff6ff; color:#1a56db; padding:4px 10px; border-radius:8px; font-size:12px; font-weight:800; border:1px solid #bfdbfe; margin-left:10px;"></div>
-    
-    <button class="ctb-btn" onmousedown="event.preventDefault()" onclick="composeFormat('bold')" title="מודגש"><i class="fas fa-bold"></i></button>
-    <button class="ctb-btn" onmousedown="event.preventDefault()" onclick="composeFormat('italic')" title="נטוי"><i class="fas fa-italic"></i></button>
-    <div style="width:1px;height:16px;background:#e5e7eb;margin:0 2px;"></div>
-    
-    <div class="ctb-dropdown-wrap" id="imgDropWrap">
-      <button class="ctb-btn" id="imgDropBtn" onclick="toggleCtbDropdown('imgDrop')" title="תמונה">
-        <i class="fas fa-image"></i> תמונה
-      </button>
-      <div class="ctb-dropdown" id="imgDrop">
-        <span class="ctb-inp-label">הדבק כתובת URL של תמונה</span>
-        <input class="ctb-inp" id="composeImgUrl" type="text" placeholder="https://..." oninput="updateComposeImg()">
-        <input type="file" id="composeImgFile" accept="image/*" style="display:none;">
-        <button type="button" id="composeImgUploadBtn" onclick="document.getElementById('composeImgFile').click()" style="width:100%;margin-top:6px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px;color:#374151;font-size:11px;font-weight:700;cursor:pointer;padding:6px;font-family:'Assistant','Heebo',sans-serif;"><i class="fas fa-upload"></i> העלאת תמונה מהמחשב</button>
-        <div id="composeImgThumb" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:1px solid #e5e7eb;">
-          <img id="composeImgThumbImg" style="width:100%;max-height:100px;object-fit:contain;display:block;">
-          <button onclick="clearComposeImg()" style="width:100%;background:#fef2f2;border:none;border-top:1px solid #fecaca;color:#dc2626;font-size:11px;font-weight:700;cursor:pointer;padding:4px;font-family:'Assistant','Heebo',sans-serif;">הסר תמונה</button>
-        </div>
-      </div>
-    </div> <div class="ctb-dropdown-wrap" id="vidDropWrap">
-      <button class="ctb-btn" id="vidDropBtn" onclick="toggleCtbDropdown('vidDrop')" title="סרטון">
-        <i class="fas fa-video"></i> סרטון
-      </button>
-      <div class="ctb-dropdown" id="vidDrop">
-        <span class="ctb-inp-label">קישור לסרטון מכל מקור (URL)</span>
-        <input class="ctb-inp" id="composeVidUrl" type="text" placeholder="https://..." oninput="updateComposeVid()">
-      </div>
-    </div>
-    <div class="ctb-dropdown-wrap" id="btnDropWrap">
-      <button class="ctb-btn" id="btnDropBtn" onclick="toggleCtbDropdown('btnDrop')" title="כפתור">
-        <i class="fas fa-mouse-pointer"></i> כפתור
-      </button>
-      <div class="ctb-dropdown" id="btnDrop">
-        <span class="ctb-inp-label">טקסט כפתור</span>
-        <input class="ctb-inp" id="composeBtnText" placeholder="לחץ כאן" style="direction:rtl;">
-        <span class="ctb-inp-label">קישור</span>
-        <input class="ctb-inp" id="composeBtnUrl" placeholder="https://...">
-        <button class="ctb-add-btn" onclick="addComposeButton()">+ הוסף כפתור</button>
-        <div id="composeBtnList" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"></div>
-      </div>
-    </div>
-    <div class="ctb-dropdown-wrap" id="colorDropWrap">
-      <button class="ctb-btn" id="colorDropBtn" onclick="toggleCtbDropdown('colorDrop')" title="צבע טקסט">
-        <i class="fas fa-palette" style="font-size:11px"></i> צבע
-      </button>
-      <div class="ctb-dropdown" id="colorDrop" style="min-width:220px;">
-        <span class="ctb-inp-label">בחר צבע לטקסט הנבחר</span>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#e02020')" style="width:28px;height:28px;border-radius:6px;background:#e02020;border:2px solid transparent;cursor:pointer;" title="אדום"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#1a56db')" style="width:28px;height:28px;border-radius:6px;background:#1a56db;border:2px solid transparent;cursor:pointer;" title="כחול"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#059669')" style="width:28px;height:28px;border-radius:6px;background:#059669;border:2px solid transparent;cursor:pointer;" title="ירוק"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#d97706')" style="width:28px;height:28px;border-radius:6px;background:#d97706;border:2px solid transparent;cursor:pointer;" title="כתום"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#7c3aed')" style="width:28px;height:28px;border-radius:6px;background:#7c3aed;border:2px solid transparent;cursor:pointer;" title="סגול"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#db2777')" style="width:28px;height:28px;border-radius:6px;background:#db2777;border:2px solid transparent;cursor:pointer;" title="ורוד"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#0891b2')" style="width:28px;height:28px;border-radius:6px;background:#0891b2;border:2px solid transparent;cursor:pointer;" title="תכלת"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#374151')" style="width:28px;height:28px;border-radius:6px;background:#374151;border:2px solid transparent;cursor:pointer;" title="כהה"></button>
-          <button onmousedown="event.preventDefault()" onclick="applyTextColor('#9ca3af')" style="width:28px;height:28px;border-radius:6px;background:#9ca3af;border:2px solid transparent;cursor:pointer;" title="אפור"></button>
-        </div>
-        <button onmousedown="event.preventDefault()" onclick="removeTextColor()" style="width:100%;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;border-radius:10px;padding:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Assistant','Heebo',sans-serif;">✕ הסר צבע</button>
-      </div>
-    </div>
-    <button class="ctb-btn" onmousedown="event.preventDefault()" onclick="insertDivider()" title="קו מפריד">
-      <i class="fas fa-minus" style="font-size:11px"></i> קו
-    </button>
-    <div class="ctb-dropdown-wrap" id="linkDropWrap">
-      <button class="ctb-btn" id="linkDropBtn" onclick="saveLinkSelection();toggleCtbDropdown('linkDrop')" title="הוסף קישור">
-        <i class="fas fa-link" style="font-size:11px"></i> קישור
-      </button>
-      <div class="ctb-dropdown" id="linkDrop" style="min-width:260px;">
-        <span class="ctb-inp-label">טקסט הקישור</span>
-        <input class="ctb-inp" id="composeLinkText" placeholder="לחץ כאן..." style="direction:rtl;margin-bottom:8px;">
-        <span class="ctb-inp-label">כתובת URL</span>
-        <input class="ctb-inp" id="composeLinkUrl" placeholder="https://..." style="margin-bottom:8px;">
-        <button class="ctb-add-btn" onmousedown="event.preventDefault()" onclick="insertComposeLink()">הוסף קישור</button>
-      </div>
-    </div>
-    <div class="ctb-dropdown-wrap" id="htmlDropWrap">
-      <button class="ctb-btn" id="htmlDropBtn" onclick="toggleCtbDropdown('htmlDrop')" title="הטמע דף HTML">
-        <i class="fas fa-code" style="font-size:11px"></i> HTML
-      </button>
-      <div class="ctb-dropdown" id="htmlDrop" style="min-width:320px;">
-        <span class="ctb-inp-label">הדבק קוד HTML מלא</span>
-        <textarea id="composeHtmlCode" rows="6" placeholder="<!DOCTYPE html>..." style="width:100%;border:1.5px solid #e5e7eb;border-radius:10px;padding:8px 11px;font-size:12px;font-family:monospace;outline:none;resize:vertical;direction:ltr;margin-bottom:8px;min-height:100px;transition:border-color .15s;"></textarea>
-        <div style="display:flex;gap:6px;">
-          <button class="ctb-add-btn" onclick="applyHtmlCode()" style="flex:1;">הטמע</button>
-          <button onclick="clearHtmlCode()" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Assistant','Heebo',sans-serif;">נקה</button>
-        </div>
-        <div id="htmlPreviewBadge" style="display:none;margin-top:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;color:#16a34a;display:flex;align-items:center;gap:5px;">
-          <i class="fas fa-check-circle"></i> <span>קוד HTML מוכן לשליחה</span>
-          <button onclick="clearHtmlCode()" style="margin-right:auto;background:none;border:none;cursor:pointer;color:#dc2626;font-size:11px;">✕</button>
+    <div id="composerNameBadge" class="composer-badge"></div>
+
+    <div class="ctb-group">
+      <button class="ctb-btn ctb-icon" onmousedown="event.preventDefault()" onclick="composeFormat('bold')" title="מודגש"><i class="fas fa-bold"></i></button>
+      <button class="ctb-btn ctb-icon" onmousedown="event.preventDefault()" onclick="composeFormat('italic')" title="נטוי"><i class="fas fa-italic"></i></button>
+      <div class="ctb-dropdown-wrap" id="colorDropWrap">
+        <button class="ctb-btn ctb-icon" id="colorDropBtn" onclick="toggleCtbDropdown('colorDrop')" title="צבע טקסט"><i class="fas fa-palette"></i></button>
+        <div class="ctb-dropdown" id="colorDrop">
+          <div class="ctb-pop-hdr">
+            <span class="ctb-pop-ico"><i class="fas fa-palette"></i></span>
+            <div class="ctb-pop-txt"><div class="ctb-pop-title">צבע טקסט</div><div class="ctb-pop-sub">מסמנים טקסט ובוחרים צבע</div></div>
+            <button class="ctb-pop-x" onclick="closeAllCtbDropdowns()" title="סגור"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="ctb-swatches">
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#e02020')" style="--sw:#e02020" title="אדום"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#1a56db')" style="--sw:#1a56db" title="כחול"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#059669')" style="--sw:#059669" title="ירוק"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#d97706')" style="--sw:#d97706" title="כתום"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#7c3aed')" style="--sw:#7c3aed" title="סגול"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#db2777')" style="--sw:#db2777" title="ורוד"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#0891b2')" style="--sw:#0891b2" title="תכלת"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#374151')" style="--sw:#374151" title="כהה"></button>
+            <button class="ctb-swatch" onmousedown="event.preventDefault()" onclick="applyTextColor('#9ca3af')" style="--sw:#9ca3af" title="אפור"></button>
+          </div>
+          <button class="ctb-ghost-btn" onmousedown="event.preventDefault()" onclick="removeTextColor()"><i class="fas fa-eraser"></i> הסר צבע</button>
         </div>
       </div>
     </div>
-    
-    <div style="margin-right:auto; display:flex; align-items:center; gap:8px;">
-        <input id="composeTagsInput" type="text" placeholder="הוסף תוויות (מופרדות בפסיק)..." style="border:1px solid #e5e7eb; border-radius:8px; padding:4px 8px; font-size:11px; font-family:'Assistant','Heebo'; outline:none; width:150px;">
-        <span id="composeCharCount" style="font-size:10px;color:#aaa;font-weight:600;">0</span>
-        <button class="ctb-btn" onclick="clearCompose()" title="נקה"><i class="fas fa-trash-alt" style="color:#e02020;"></i></button>
+
+    <div class="ctb-group">
+      <div class="ctb-dropdown-wrap" id="imgDropWrap">
+        <button class="ctb-btn" id="imgDropBtn" onclick="toggleCtbDropdown('imgDrop')" title="תמונה"><i class="fas fa-image"></i><span class="ctb-lbl">תמונה</span></button>
+        <div class="ctb-dropdown" id="imgDrop">
+          <div class="ctb-pop-hdr">
+            <span class="ctb-pop-ico"><i class="fas fa-image"></i></span>
+            <div class="ctb-pop-txt"><div class="ctb-pop-title">הוספת תמונה</div><div class="ctb-pop-sub">קישור לתמונה או העלאה מהמחשב</div></div>
+            <button class="ctb-pop-x" onclick="closeAllCtbDropdowns()" title="סגור"><i class="fas fa-times"></i></button>
+          </div>
+          <label class="ctb-inp-label" for="composeImgUrl">כתובת התמונה</label>
+          <input class="ctb-inp" id="composeImgUrl" type="text" placeholder="https://..." oninput="updateComposeImg()">
+          <input type="file" id="composeImgFile" accept="image/*" style="display:none;">
+          <button type="button" id="composeImgUploadBtn" class="ctb-upload" onclick="document.getElementById('composeImgFile').click()"><i class="fas fa-cloud-arrow-up"></i> העלאת תמונה מהמחשב</button>
+          <div id="composeImgThumb" class="ctb-thumb" style="display:none;">
+            <img id="composeImgThumbImg" alt="">
+            <button onclick="clearComposeImg()"><i class="fas fa-trash-alt"></i> הסר תמונה</button>
+          </div>
+        </div>
+      </div>
+      <div class="ctb-dropdown-wrap" id="vidDropWrap">
+        <button class="ctb-btn" id="vidDropBtn" onclick="toggleCtbDropdown('vidDrop')" title="סרטון"><i class="fas fa-video"></i><span class="ctb-lbl">סרטון</span></button>
+        <div class="ctb-dropdown" id="vidDrop">
+          <div class="ctb-pop-hdr">
+            <span class="ctb-pop-ico"><i class="fas fa-video"></i></span>
+            <div class="ctb-pop-txt"><div class="ctb-pop-title">הוספת סרטון</div><div class="ctb-pop-sub">יוטיוב, דרייב או קישור ישיר לקובץ</div></div>
+            <button class="ctb-pop-x" onclick="closeAllCtbDropdowns()" title="סגור"><i class="fas fa-times"></i></button>
+          </div>
+          <label class="ctb-inp-label" for="composeVidUrl">קישור לסרטון</label>
+          <input class="ctb-inp" id="composeVidUrl" type="text" placeholder="https://..." oninput="updateComposeVid()">
+        </div>
+      </div>
+      <div class="ctb-dropdown-wrap" id="htmlDropWrap">
+        <button class="ctb-btn" id="htmlDropBtn" onclick="toggleCtbDropdown('htmlDrop')" title="הטמע דף HTML"><i class="fas fa-code"></i><span class="ctb-lbl">HTML</span></button>
+        <div class="ctb-dropdown ctb-dropdown-wide" id="htmlDrop">
+          <div class="ctb-pop-hdr">
+            <span class="ctb-pop-ico"><i class="fas fa-code"></i></span>
+            <div class="ctb-pop-txt"><div class="ctb-pop-title">הטמעת דף HTML</div><div class="ctb-pop-sub">הקוד יוצג בתוך ההודעה במסגרת נפרדת</div></div>
+            <button class="ctb-pop-x" onclick="closeAllCtbDropdowns()" title="סגור"><i class="fas fa-times"></i></button>
+          </div>
+          <textarea id="composeHtmlCode" class="ctb-inp ctb-code" rows="6" placeholder="<!DOCTYPE html>..."></textarea>
+          <div class="ctb-row">
+            <button class="ctb-add-btn" onclick="applyHtmlCode()">הטמע</button>
+            <button class="ctb-danger-btn" onclick="clearHtmlCode()">נקה</button>
+          </div>
+          <div id="htmlPreviewBadge" class="ctb-ok-badge" style="display:none;">
+            <i class="fas fa-check-circle"></i> <span>קוד HTML מוכן לשליחה</span>
+            <button onclick="clearHtmlCode()" title="הסר"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctb-group">
+      <div class="ctb-dropdown-wrap" id="linkDropWrap">
+        <button class="ctb-btn" id="linkDropBtn" onclick="saveLinkSelection();toggleCtbDropdown('linkDrop')" title="הוסף קישור"><i class="fas fa-link"></i><span class="ctb-lbl">קישור</span></button>
+        <div class="ctb-dropdown" id="linkDrop">
+          <div class="ctb-pop-hdr">
+            <span class="ctb-pop-ico"><i class="fas fa-link"></i></span>
+            <div class="ctb-pop-txt"><div class="ctb-pop-title">הוספת קישור</div><div class="ctb-pop-sub">הקישור ייכנס במקום הסמן</div></div>
+            <button class="ctb-pop-x" onclick="closeAllCtbDropdowns()" title="סגור"><i class="fas fa-times"></i></button>
+          </div>
+          <label class="ctb-inp-label" for="composeLinkText">טקסט הקישור</label>
+          <input class="ctb-inp" id="composeLinkText" placeholder="לחץ כאן..." style="direction:rtl;">
+          <label class="ctb-inp-label" for="composeLinkUrl">כתובת</label>
+          <input class="ctb-inp" id="composeLinkUrl" placeholder="https://...">
+          <button class="ctb-add-btn" onmousedown="event.preventDefault()" onclick="insertComposeLink()">הוסף קישור</button>
+        </div>
+      </div>
+      <div class="ctb-dropdown-wrap" id="btnDropWrap">
+        <button class="ctb-btn" id="btnDropBtn" onclick="toggleCtbDropdown('btnDrop')" title="כפתור"><i class="fas fa-arrow-pointer"></i><span class="ctb-lbl">כפתור</span></button>
+        <div class="ctb-dropdown" id="btnDrop">
+          <div class="ctb-pop-hdr">
+            <span class="ctb-pop-ico"><i class="fas fa-arrow-pointer"></i></span>
+            <div class="ctb-pop-txt"><div class="ctb-pop-title">כפתורי קישור</div><div class="ctb-pop-sub">יופיעו בתחתית ההודעה</div></div>
+            <button class="ctb-pop-x" onclick="closeAllCtbDropdowns()" title="סגור"><i class="fas fa-times"></i></button>
+          </div>
+          <label class="ctb-inp-label" for="composeBtnText">טקסט הכפתור</label>
+          <input class="ctb-inp" id="composeBtnText" placeholder="לחץ כאן" style="direction:rtl;">
+          <label class="ctb-inp-label" for="composeBtnUrl">קישור</label>
+          <input class="ctb-inp" id="composeBtnUrl" placeholder="https://...">
+          <button class="ctb-add-btn" onclick="addComposeButton()"><i class="fas fa-plus"></i> הוסף כפתור</button>
+          <div id="composeBtnList" class="ctb-btn-list"></div>
+        </div>
+      </div>
+      <button class="ctb-btn ctb-icon" onmousedown="event.preventDefault()" onclick="insertDivider()" title="קו מפריד"><i class="fas fa-minus"></i></button>
+    </div>
+
+    <div class="ctb-end">
+      <input id="composeTagsInput" class="compose-tag-inp" type="text" placeholder="תוויות, מופרדות בפסיק">
+      <span id="composeCharCount" class="ctb-count">0</span>
+      <button class="ctb-btn ctb-icon ctb-clear" onclick="clearCompose()" title="נקה הכל"><i class="fas fa-trash-alt"></i></button>
     </div>
   </div>
 
@@ -1087,12 +1397,12 @@ body, html { background: #fff !important; }
 
         <div class="ap-sec" id="ap-sec-writers" style="display:none;">
           <div id="adminsList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
-          <div style="border-top:1px solid #f1f2f6;padding-top:16px;">
-            <div style="font-size:12px;font-weight:800;color:#5b6072;margin-bottom:9px;">הוספת יוצר / איש צוות חדש</div>
+          <div class="ap-divider">
+            <div class="ap-label">הוספת יוצר / איש צוות חדש</div>
             <div style="display:flex;flex-direction:column;gap:8px;">
               <input id="newAdminEmail" type="email" placeholder="אימייל Google..." class="ap-field" style="direction:ltr;">
               <input id="newAdminName" type="text" placeholder="שם תצוגה (יופיע בפוסטים)..." class="ap-field">
-              <div style="font-size:11px;color:#a3a8b8;line-height:1.5;">הוספה כאן נותנת הרשאת כתיבה כללית (writer). כדי להעניק הרשאת ניהול מלאה (admin) יש להוסיף את המייל בגיליון עצמו, בטאב Admins.</div>
+              <div class="ap-hint">הוספה כאן נותנת הרשאת כתיבה (writer). הרשאת ניהול מלאה מוגדרת בשרת, ברשימה SUPER_ADMINS בקובץ app.py.</div>
               <button onclick="addAdmin()" class="ap-btn ap-btn-primary">+ הוסף משתמש</button>
             </div>
             <div id="adminMsgResult" style="display:none;margin-top:10px;font-size:12px;font-weight:700;text-align:center;"></div>
@@ -1101,22 +1411,22 @@ body, html { background: #fff !important; }
 
         <div class="ap-sec" id="ap-sec-blocking" style="display:none;">
           <div style="margin-bottom:22px;">
-            <div style="font-size:12px;font-weight:800;color:#5b6072;margin-bottom:9px;">חסימת משתמשים</div>
+            <div class="ap-label">חסימת משתמשים</div>
             <div style="display:flex;gap:8px;margin-bottom:10px;">
               <input type="email" id="settingsBlockEmail" class="ap-field" placeholder="הכנס אימייל לחסימה...">
               <button class="ap-btn ap-btn-danger" style="flex-shrink:0;" onclick="blockUser()">חסום</button>
             </div>
             <div id="blockedUsersList" style="font-size:12px;color:#8a90a6;"></div>
           </div>
-          <div style="border-top:1px solid #f1f2f6;padding-top:16px;">
-            <div style="font-size:12px;font-weight:800;color:#5b6072;margin-bottom:9px;">ייצוא נתונים</div>
+          <div class="ap-divider">
+            <div class="ap-label">ייצוא נתונים</div>
             <button class="ap-btn ap-btn-soft" onclick="exportEmailsToGroups()"><i class="fas fa-download" style="font-size:11px;"></i> הורד רשימת אימיילים (TXT)</button>
           </div>
         </div>
 
         <div class="ap-sec" id="ap-sec-ads" style="display:none;">
-          <div style="border:1.5px solid #eef0f5;border-radius:14px;padding:16px;margin-bottom:14px;">
-            <div style="font-size:12.5px;font-weight:800;color:#4a55c7;margin-bottom:11px;"><i class="fas fa-window-restore" style="font-size:11px"></i> פרסומת פופאפ</div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-window-restore" style="font-size:11px"></i> פרסומת פופאפ</div>
             <div style="display:flex;flex-direction:column;gap:8px">
               <input id="adPopupImageUrl" type="text" placeholder="קישור לתמונה https://..." class="ap-field" style="direction:ltr;">
               <input type="file" id="adPopupImgFile" accept="image/*" style="display:none;">
@@ -1130,8 +1440,8 @@ body, html { background: #fff !important; }
               </div>
             </div>
           </div>
-          <div style="border:1.5px solid #eef0f5;border-radius:14px;padding:16px;">
-            <div style="font-size:12.5px;font-weight:800;color:#4a55c7;margin-bottom:11px;"><i class="fas fa-columns" style="font-size:11px"></i> פרסומת עמודה צדדית</div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-columns" style="font-size:11px"></i> פרסומת עמודה צדדית</div>
             <div style="display:flex;flex-direction:column;gap:8px">
               <input id="adSideImageUrl" type="text" placeholder="קישור לתמונה https://..." class="ap-field" style="direction:ltr;">
               <input type="file" id="adSideImgFile" accept="image/*" style="display:none;">
@@ -1274,6 +1584,7 @@ function closeLoginModal() { document.getElementById('loginScreen').classList.re
 
 function doLogout() {
   clearSavedUser(); me = null; _isSuper = false; _isWriter = false;
+  _openReports = 0; renderReportsBadge();
   document.getElementById('bannedScreen').style.display = 'none';
   closeLoginModal();
   applyGuestUI();
@@ -1316,10 +1627,8 @@ async function applyLogin() {
   const logT = document.getElementById('loginSiteTitle'); if (logT) logT.innerText = SITE_TITLE;
 
   const av = document.getElementById('userAvatar');
-  const avatarHtml = me.picture
-    ? `<img src="${escAttr(me.picture)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #1a56db;box-shadow:0 2px 6px rgba(0,0,0,0.1)">`
-    : `<div style="width:34px;height:34px;border-radius:50%;background:#1a56db;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">${esc(me.name[0].toUpperCase())}</div>`;
-  av.innerHTML = `<div style="cursor:pointer" onclick="toggleUserMenu(event)">${avatarHtml}</div><div id="userMenu" style="display:none;"></div>`;
+  av.innerHTML = `<button class="hdr-me" onclick="toggleUserMenu(event)" title="החשבון שלי">${userAvatarHtml('hdr-me-av')}<span class="rep-dot" id="avReportDot"></span></button><div id="userMenu" style="display:none;"></div>`;
+  document.getElementById('loginHdrBtn')?.remove();
 
   closeLoginModal();
   document.getElementById('app').style.display = 'flex';
@@ -1336,6 +1645,7 @@ async function applyLogin() {
 
   if (isAdmin()) {
     pingSitePresence(); setInterval(pingSitePresence, 15000);
+    startReportsWatch();
     pollUpdateMode(); setInterval(pollUpdateMode, 8000);
     document.getElementById('feedWrap').style.paddingBottom = '120px';
   }
@@ -1390,32 +1700,78 @@ function toggleUserMenu(e) {
   if (!isOpen) setTimeout(() => document.addEventListener('click', () => { menu.style.display = 'none'; }, { once: true }), 0);
 }
 
+function userAvatarHtml(cls) {
+  return me.picture
+    ? `<img class="${cls}" src="${escAttr(me.picture)}" alt="">`
+    : `<span class="${cls} is-letter">${esc((me.name || '?')[0].toUpperCase())}</span>`;
+}
+
 function refreshUserMenu() {
   if (!me) return;
   const role = getRole();
-  const avatarHtml = me.picture
-    ? `<img src="${escAttr(me.picture)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #1a56db;box-shadow:0 2px 6px rgba(0,0,0,0.1)">`
-    : `<div style="width:34px;height:34px;border-radius:50%;background:#1a56db;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">${esc(me.name[0].toUpperCase())}</div>`;
   let adminMenuHtml = '';
   if (isAdmin()) {
-    adminMenuHtml += `<div style="border-top:1px solid #e5e7eb; margin-top:8px; padding:8px 10px 2px;">
-      <button onclick="openAdminPanel()" style="width:100%;padding:11px 14px;text-align:right;background:linear-gradient(135deg,#1a56db,#6d28d9);border:none;border-radius:12px;cursor:pointer;font-size:13.5px;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px -4px rgba(26,86,219,.6);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 18px -4px rgba(26,86,219,.7)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 14px -4px rgba(26,86,219,.6)'"><i class="fas fa-shield-halved" style="width:16px;"></i> פאנל ניהול</button>
+    adminMenuHtml = `<div class="um-sec">
+      <button class="um-item um-primary" onclick="openAdminPanel()"><i class="fas fa-shield-halved"></i><span>פאנל ניהול</span></button>
+      ${isSuperAdmin() ? `<button class="um-item um-reports${_openReports ? ' has' : ''}" onclick="openAdminPanel('reports')"><i class="fas fa-flag"></i><span>דיווחים פתוחים</span><b class="um-count" id="umReportCount">${_openReports || ''}</b></button>` : ''}
     </div>`;
   }
   const menu = document.getElementById('userMenu'); if (!menu) return;
   menu.innerHTML = `
-    <div style="padding:16px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f3f4f6;">
-      ${avatarHtml}
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:14px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(me.name)}</div>
-        <div style="font-size:11px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(me.email)}</div>
-        <div style="font-size:10px;font-weight:800;color:#1a56db;">${role === 'super' ? 'מנהל ראשי' : role === 'writer' ? 'כותב מורשה' : 'משתמש'}</div>
+    <div class="um-head">
+      ${userAvatarHtml('um-av')}
+      <div class="um-who">
+        <div class="um-name">${esc(me.name)}</div>
+        <div class="um-mail">${esc(me.email)}</div>
+        <span class="um-role">${role === 'super' ? 'מנהל ראשי' : role === 'writer' ? 'כותב מורשה' : 'משתמש'}</span>
       </div>
     </div>
     ${adminMenuHtml}
-    <div style="border-top:1px solid #e5e7eb; margin-top:4px; padding:4px 0;">
-      <button onclick="doLogout()" style="width:100%;padding:10px 16px;text-align:right;background:none;border:none;cursor:pointer;font-size:13px;font-weight:700;color:#dc2626;display:flex;align-items:center;gap:10px;"><i class="fas fa-sign-out-alt" style="width:16px;"></i> התנתק</button>
+    <div class="um-sec">
+      <button class="um-item um-out" onclick="doLogout()"><i class="fas fa-arrow-right-from-bracket"></i><span>התנתק</span></button>
     </div>`;
+}
+
+/* ================= התראה על דיווחים פתוחים ================= */
+// נקודה אדומה על התמונה בכותרת, מספר בתפריט ובפאנל, ומספר בכותרת הלשונית.
+// כשהלשונית ברקע ונוסף דיווח חדש - נשלחת גם התראת דפדפן (אם ההתראות מופעלות).
+let _openReports = 0, _reportsWatch = null, _reportsKnown = null;
+
+function startReportsWatch() {
+  if (!isSuperAdmin() || _reportsWatch) return;
+  checkReports();
+  _reportsWatch = setInterval(checkReports, 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkReports(); });
+}
+
+async function checkReports() {
+  if (!me || !isSuperAdmin()) return;
+  const d = await api('reports_get', {});
+  if (d.status !== 'ok') return;
+  setReportsFrom(d.reports || []);
+}
+
+function setReportsFrom(reports) {
+  const ids = reports.map(r => r.id);
+  if (_reportsKnown) {
+    const fresh = ids.filter(id => !_reportsKnown.has(id)).length;
+    if (fresh) sendNotification('דיווח חדש באתר', fresh === 1 ? 'התקבל דיווח חדש על הודעה' : `התקבלו ${fresh} דיווחים חדשים`);
+  }
+  _reportsKnown = new Set(ids);
+  _openReports = ids.length;
+  renderReportsBadge();
+}
+
+function renderReportsBadge() {
+  const n = _openReports;
+  const txt = n > 9 ? '9+' : String(n);
+  const dot = document.getElementById('avReportDot');
+  if (dot) { dot.textContent = n ? txt : ''; dot.classList.toggle('show', n > 0); dot.title = n ? `${n} דיווחים פתוחים` : ''; }
+  const um = document.getElementById('umReportCount');
+  if (um) { um.textContent = n || ''; um.closest('.um-item').classList.toggle('has', n > 0); }
+  const nav = document.querySelector('.ap-nav-item[data-sec="reports"] .ap-nav-badge');
+  if (nav) { nav.textContent = n ? txt : ''; nav.classList.toggle('show', n > 0); }
+  document.title = (n ? `(${n}) ` : '') + SITE_TITLE;
 }
 
 /* ================= פאנל ניהול (עדין ובהיר, עם סרגל צד) ================= */
@@ -1428,7 +1784,7 @@ const AP_SECTIONS = [
   { key: 'ads', icon: 'fa-rectangle-ad', title: 'פרסומות', superOnly: true },
 ];
 
-function openAdminPanel() {
+function openAdminPanel(startSec) {
   if (!me || !isAdmin()) return;
   document.getElementById('userMenu') && (document.getElementById('userMenu').style.display = 'none');
   const role = getRole();
@@ -1444,11 +1800,13 @@ function openAdminPanel() {
   document.getElementById('apNav').innerHTML = visible.map(s => `
     <button class="ap-nav-item" data-sec="${s.key}" onclick="switchAdminSection('${s.key}')">
       <span class="ap-nav-icon"><i class="fas ${s.icon}"></i></span>
-      <span>${s.title}</span>
+      <span class="ap-nav-txt">${s.title}</span>
+      ${s.key === 'reports' ? '<span class="ap-nav-badge"></span>' : ''}
     </button>`).join('');
+  renderReportsBadge();
 
   document.getElementById('adminPanelModal').classList.add('open');
-  switchAdminSection(visible[0].key);
+  switchAdminSection(visible.some(s => s.key === startSec) ? startSec : visible[0].key);
 }
 function closeAdminPanel() {
   document.getElementById('adminPanelModal').classList.remove('open');
@@ -1611,6 +1969,11 @@ document.addEventListener('click', e => {
   if (!e.target.closest('#emojiPicker') && !e.target.closest('.rxn-add-btn')) document.getElementById('emojiPicker')?.classList.remove('show');
   if (!e.target.closest('.ctb-dropdown') && !e.target.closest('.ctb-dropdown-wrap')) closeAllCtbDropdowns();
 });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (document.querySelector('.ctb-dropdown.open')) { closeAllCtbDropdowns(); return; }
+  if (document.getElementById('adminPanelModal')?.classList.contains('open')) closeAdminPanel();
+});
 
 function openPicker(ev, msgId) {
   ev.stopPropagation(); activePicker = msgId;
@@ -1696,30 +2059,53 @@ async function submitReport() {
 }
 
 async function openReportsModal() {
-  document.getElementById('reportsList').innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-spinner fa-spin"></i> טוען דיווחים...</div>';
-  const d = await api('reports_get', { email: me.email });
+  const list = document.getElementById('reportsList');
+  list.innerHTML = '<div class="ap-loading"><span class="lm-ring"></span> טוען דיווחים...</div>';
+  const d = await api('reports_get', {});
   const reports = d.reports || [];
-  if (!reports.length) { document.getElementById('reportsList').innerHTML = '<div class="ap-empty">אין דיווחים פתוחים.</div>'; return; }
-  document.getElementById('reportsList').innerHTML = reports.map(r => `
-    <div class="ap-row-card" style="flex-direction:column;align-items:stretch;background:#fdf6f6;border-color:#f6dede;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="display:flex;align-items:center;gap:6px;"><i class="fas fa-flag" style="color:#c94b4b;font-size:11px;"></i><span style="font-weight:800;color:#b1483f;font-size:13px;">דיווח על הודעה</span></div>
-        <a href="#" onclick="scrollToReportedMsg('${r.msgId}'); closeReportsModal(); return false;" style="font-size:11px;font-weight:700;color:#4a55c7;text-decoration:none;background:#eef1fd;padding:3px 9px;border-radius:6px;border:1px solid #d9deed;"><i class="fas fa-arrow-left" style="font-size:9px;"></i> עבור להודעה</a>
+  if (d.status === 'ok') setReportsFrom(reports);
+  if (!reports.length) {
+    list.innerHTML = '<div class="ap-empty"><i class="fas fa-circle-check"></i><div>אין דיווחים פתוחים</div><small>כשמישהו ידווח על הודעה, תופיע כאן נקודה אדומה.</small></div>';
+    return;
+  }
+  list.innerHTML = reports.map(r => {
+    const msg = items.find(e => e.id === r.msgId);
+    const preview = msg ? mdToPlain(msg.text || '').trim().slice(0, 140) : '';
+    const when = r.ts ? `${fmtDate(r.ts)} · ${fmtTime(r.ts)}` : '';
+    return `
+    <div class="ap-report">
+      <div class="ap-report-top">
+        <span class="ap-report-ico"><i class="fas fa-flag"></i></span>
+        <div class="ap-report-who">
+          <div class="ap-report-mail">${esc(r.reporterEmail || r.email || '')}</div>
+          <div class="ap-report-when">${when}</div>
+        </div>
+        <a href="#" class="ap-chip-link" onclick="closeReportsModal(); scrollToReportedMsg('${escAttr(r.msgId)}'); return false;"><i class="fas fa-arrow-left"></i> להודעה</a>
       </div>
-      <div style="font-size:12px;color:#7a7f92;margin-bottom:4px;"><b>מדווח:</b> ${esc(r.reporterEmail || r.email)}</div>
-      <div style="font-size:12px;color:#7a7f92;margin-bottom:10px;"><b>סיבה:</b> ${esc(r.reason)}</div>
-      <div style="display:flex;gap:8px;">
-        <button onclick="deleteFeedMsg('${r.msgId}');dismissReport('${r.id}')" class="ap-btn ap-btn-danger" style="flex:1;"><i class="fas fa-trash" style="font-size:10px;"></i> מחק פוסט</button>
-        <button onclick="dismissReport('${r.id}')" class="ap-btn ap-btn-soft" style="flex:1;"><i class="fas fa-check" style="font-size:10px;"></i> טופל</button>
+      <div class="ap-report-reason">${esc(r.reason)}</div>
+      ${preview ? `<div class="ap-report-msg"><i class="fas fa-quote-right"></i> ${esc(preview)}${preview.length >= 140 ? '…' : ''}</div>` : ''}
+      <div class="ap-report-actions">
+        <button onclick="dismissReport('${escAttr(r.id)}')" class="ap-btn ap-btn-soft"><i class="fas fa-check"></i> טופל</button>
+        <button onclick="deleteReportedMsg('${escAttr(r.msgId)}','${escAttr(r.id)}')" class="ap-btn ap-btn-danger"><i class="fas fa-trash"></i> מחק את ההודעה</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function closeReportsModal() { closeAdminPanel(); }
 function scrollToReportedMsg(msgId) {
   const el = document.querySelector('[data-id="' + msgId + '"]');
-  if (el) { el.id = 'msg-link-' + msgId; el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.outline = '2px solid #dc2626'; setTimeout(() => el.style.outline = '', 1800); }
+  if (el) { el.id = 'msg-link-' + msgId; el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('msg-flash'); setTimeout(() => el.classList.remove('msg-flash'), 1800); }
+  else showToast('ההודעה לא נטענה בפיד או שכבר נמחקה', 'error');
 }
-async function dismissReport(reportId) { await api('report_resolve', { email: me.email, reportId }, 'POST'); openReportsModal(); }
+async function dismissReport(reportId) { await api('report_resolve', { reportId }, 'POST'); openReportsModal(); }
+async function deleteReportedMsg(msgId, reportId) {
+  if (!confirm('למחוק את ההודעה לצמיתות ולסגור את הדיווח?')) return;
+  const d = await api('feed_delete', { id: msgId }, 'POST');
+  if (d.status !== 'ok') { showToast('המחיקה נכשלה', 'error'); return; }
+  document.querySelector(`.msg-row[data-id="${msgId}"]`)?.remove();
+  items = items.filter(i => i.id !== msgId);
+  dismissReport(reportId);
+}
 
 /* ================= פיד ================= */
 async function loadFeed() {
@@ -2118,8 +2504,8 @@ async function blockUser() {
 }
 function renderBlockedUsers() {
   const el = document.getElementById('blockedUsersList');
-  if (!siteBlockedEmails.length) { el.innerHTML = 'אין משתמשים חסומים.'; return; }
-  el.innerHTML = siteBlockedEmails.map(email => `<div style="display:flex;align-items:center;justify-content:space-between;background:#fdf6f6;padding:8px 11px;margin-bottom:6px;border:1px solid #f6dede;border-radius:10px;font-size:12.5px;color:#5b6072;"><span>${esc(email)}</span><button onclick="unblockUser('${escAttr(email)}')" style="color:#c94b4b;background:none;border:none;cursor:pointer;font-weight:700;font-size:12px;font-family:'Assistant','Heebo',sans-serif;">הסר חסימה</button></div>`).join('');
+  if (!siteBlockedEmails.length) { el.innerHTML = '<div class="ap-hint">אין משתמשים חסומים.</div>'; return; }
+  el.innerHTML = siteBlockedEmails.map(email => `<div class="ap-blocked"><i class="fas fa-ban"></i><span>${esc(email)}</span><button onclick="unblockUser('${escAttr(email)}')">הסר חסימה</button></div>`).join('');
 }
 async function unblockUser(email) {
   siteBlockedEmails = siteBlockedEmails.filter(e => e !== email); renderBlockedUsers();
@@ -2202,21 +2588,20 @@ async function openManageAdmins() { document.getElementById('adminMsgResult').st
 function closeManageAdmins() { closeAdminPanel(); }
 async function renderAdminsList() {
   const list = document.getElementById('adminsList'); if (!list) return;
-  list.innerHTML = '<div style="text-align:center;padding:20px;color:#a3a8b8;"><i class="fas fa-spinner fa-spin"></i> טוען...</div>';
+  list.innerHTML = '<div class="ap-loading"><span class="lm-ring"></span> טוען...</div>';
   const d = await api('allowed_list', {});
   const users = d.list || [];
   if (!users.length) { list.innerHTML = '<div class="ap-empty">אין כותבים מורשים עדיין</div>'; return; }
   list.innerHTML = users.map(u => {
-    const pic = `<div style="width:36px;height:36px;border-radius:50%;background:#4a55c7;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${esc((u.name || u.email || '?')[0].toUpperCase())}</div>`;
     const isMe = u.email === me?.email?.toLowerCase();
     return `<div class="ap-row-card">
-      ${pic}
+      <span class="ap-person-av is-letter">${esc((u.name || u.email || '?')[0].toUpperCase())}</span>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:13px;font-weight:800;color:#1f2430;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(u.name || u.email)}${isMe ? ' <span style="font-size:10px;color:#a3a8b8;">(אני)</span>' : ''}</div>
-        <div style="font-size:11px;color:#8a90a6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(u.email)}</div>
-        <div style="font-size:10px;font-weight:800;color:#5fa980;margin-top:2px;">כותב מורשה</div>
+        <div class="ap-person-name">${esc(u.name || u.email)}${isMe ? ' <span class="ap-hint">(אני)</span>' : ''}</div>
+        <div class="ap-person-mail">${esc(u.email)}</div>
+        <span class="ap-tag">כותב מורשה</span>
       </div>
-      ${isSuperAdmin() ? `<button onclick="removeAdmin('${escAttr(u.email)}')" title="הסר" style="background:#fdf1f1;border:1px solid #f6dede;border-radius:8px;padding:5px 10px;cursor:pointer;color:#c94b4b;font-size:11px;font-weight:700;font-family:'Assistant','Heebo',sans-serif;flex-shrink:0;"><i class="fas fa-trash" style="font-size:10px;"></i></button>` : ''}
+      ${isSuperAdmin() ? `<button class="ap-icon-btn" onclick="removeAdmin('${escAttr(u.email)}')" title="הסר"><i class="fas fa-trash"></i></button>` : ''}
     </div>`;
   }).join('');
 }
