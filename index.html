@@ -1653,6 +1653,7 @@ function openLoginModal() {
 function closeLoginModal() { document.getElementById('loginScreen').classList.remove('open'); }
 
 function doLogout() {
+  pushUnsubscribe(); setNotifUI(false);
   clearSavedUser(); me = null; _isSuper = false; _isWriter = false;
   _openReports = 0; renderReportsBadge();
   document.getElementById('bannedScreen').style.display = 'none';
@@ -1751,6 +1752,7 @@ async function applyLogin() {
 
   // רשימת הכותבים (לשמות תצוגה + פאנל יוצרים) נטענת במקביל ולא חוסמת את הפיד
   loadWritersMap().then(() => { refreshUserMenu(); applyWritePerm(); });
+  syncPushAfterLogin();
 
   if (isAdmin()) {
     pingSitePresence(); setInterval(pingSitePresence, 15000);
@@ -2762,15 +2764,83 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
 function openLightbox(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').classList.add('show'); }
 function toggleDark() { const on = document.body.classList.toggle('dark'); document.getElementById('darkBtn').classList.toggle('active', on); localStorage.setItem('shaagat_dark', on ? '1' : '0'); }
 function initDark() { if (localStorage.getItem('shaagat_dark') === '1') { document.body.classList.add('dark'); document.getElementById('darkBtn')?.classList.add('active'); } }
-let notificationsOn = false;
-async function toggleNotifications() {
-  if (!('Notification' in window)) { alert('הדפדפן לא תומך בהתראות'); return; }
-  if (notificationsOn) { notificationsOn = false; document.getElementById('notifBtn').classList.remove('active'); localStorage.setItem('shaagat_notif', '0'); return; }
-  const perm = await Notification.requestPermission();
-  if (perm === 'granted') { notificationsOn = true; document.getElementById('notifBtn').classList.add('active'); localStorage.setItem('shaagat_notif', '1'); new Notification(SITE_TITLE, { body: 'התראות מופעלות ✓', icon: LOGO }); }
+/* ================= התראות ופושים =================
+   הפעמון רושם את הדפדפן לפושים דרך sw.js. השרת שולח פוש על כל הודעה חדשה (ולמנהל גם על דיווח),
+   וההתראה מגיעה גם כשהאתר סגור. ההרשמה משויכת למשתמש המחובר ומתחדשת בכל התחברות. */
+let notificationsOn = false, _pushActive = false;
+const PUSH_SUPPORTED = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+
+function setNotifUI(on) {
+  notificationsOn = on;
+  const b = document.getElementById('notifBtn');
+  if (b) { b.classList.toggle('active', on); b.title = on ? 'התראות פועלות (לחץ לכיבוי)' : 'הפעלת התראות'; }
 }
-function initNotifications() { if (localStorage.getItem('shaagat_notif') === '1' && Notification.permission === 'granted') { notificationsOn = true; document.getElementById('notifBtn')?.classList.add('active'); } }
-function sendNotification(title, body) { if (notificationsOn && Notification.permission === 'granted' && document.visibilityState !== 'visible') new Notification(title || SITE_TITLE, { body: body || 'הודעה חדשה', icon: LOGO }); }
+function b64ToBytes(s) {
+  const b = atob(s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - s.length % 4) % 4));
+  return Uint8Array.from(b, c => c.charCodeAt(0));
+}
+async function pushSubscribe() {
+  const k = await api('push_key', {});
+  if (k.status !== 'ok') throw new Error(k.message || 'push_key');
+  const reg = await navigator.serviceWorker.register('sw.js');
+  await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  // מנוי שנוצר עם מפתח שרת אחר לא יעבוד - מחליפים אותו
+  if (sub && sub.options && sub.options.applicationServerKey) {
+    const cur = new Uint8Array(sub.options.applicationServerKey), want = b64ToBytes(k.key);
+    if (cur.length !== want.length || cur.some((x, i) => x !== want[i])) { await sub.unsubscribe(); sub = null; }
+  }
+  if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(k.key) });
+  const d = await api('push_subscribe', { subscription: sub.toJSON() }, 'POST');
+  if (d.status !== 'ok') throw new Error(d.message || 'push_subscribe');
+  _pushActive = true;
+}
+async function pushUnsubscribe() {
+  _pushActive = false;
+  if (!PUSH_SUPPORTED) return;
+  try {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) { await api('push_unsubscribe', { endpoint: sub.endpoint }, 'POST'); await sub.unsubscribe(); }
+  } catch (e) { console.warn('push unsubscribe', e); }
+}
+async function toggleNotifications() {
+  if (notificationsOn) {
+    setNotifUI(false); localStorage.setItem('shaagat_notif', '0');
+    await pushUnsubscribe();
+    showToast('ההתראות כובו');
+    return;
+  }
+  if (!('Notification' in window)) { showToast('הדפדפן הזה לא תומך בהתראות', 'error'); return; }
+  if (!me) { showToast('יש להתחבר כדי לקבל התראות', 'error'); return; }
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') { showToast('ההתראות חסומות בדפדפן. אפשר לאשר אותן בהגדרות האתר (סמל המנעול)', 'error'); return; }
+  setNotifUI(true); localStorage.setItem('shaagat_notif', '1');
+  if (!PUSH_SUPPORTED) { showToast('הדפדפן תומך רק בהתראות כשהאתר פתוח'); return; }
+  try {
+    await pushSubscribe();
+    const t = await api('push_test', {}, 'POST');
+    if (t.sent) showToast('ההתראות הופעלו. שלחנו התראת ניסיון');
+    else showToast('ההתראות הופעלו, אבל התראת הניסיון לא הגיעה לשירות הפושים של הדפדפן', 'error');
+  } catch (e) {
+    console.warn('push subscribe', e);
+    showToast('ההתראות יפעלו רק כשהאתר פתוח. לא הצלחנו לרשום את הדפדפן לפושים', 'error');
+  }
+}
+function initNotifications() {
+  if ('Notification' in window && localStorage.getItem('shaagat_notif') === '1' && Notification.permission === 'granted') setNotifUI(true);
+}
+// נקרא אחרי התחברות: מחדש את ההרשמה ומשייך אותה למשתמש הנוכחי
+function syncPushAfterLogin() {
+  if (!PUSH_SUPPORTED || localStorage.getItem('shaagat_notif') !== '1' || Notification.permission !== 'granted') return;
+  setNotifUI(true);
+  pushSubscribe().catch(e => console.warn('push sync', e));
+}
+// התראה מקומית (כשאין פושים): רק כשהלשונית ברקע
+function sendNotification(title, body) {
+  if (_pushActive) return;
+  if (notificationsOn && Notification.permission === 'granted' && document.visibilityState !== 'visible') new Notification(title || SITE_TITLE, { body: body || 'הודעה חדשה', icon: LOGO });
+}
 
 /* ================= סרגל צד - תפריט מובייל ================= */
 
