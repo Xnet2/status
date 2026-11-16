@@ -260,13 +260,9 @@ body.dark #loginHdrBtn:hover{background:#26314f;}
 .hdr-icon-btn,#searchBtn,#darkBtn,#notifBtn,#adBtn,#siteSettingsBtn,#manageAdminsBtn,#writePermBtn,#updateModeHdrBtn,#leaderboardBtn{background:none;border:none;cursor:pointer;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#888;transition:background .12s ease,color .12s ease,transform .1s ease;flex-shrink:0;text-decoration:none;position:relative;}
 .hdr-icon-btn:hover,#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#adBtn:hover,#siteSettingsBtn:hover,#manageAdminsBtn:hover,#writePermBtn:hover,#updateModeHdrBtn:hover,#leaderboardBtn:hover{background:#eff6ff;color:#1a56db;}
 .hdr-icon-btn:active,#searchBtn:active,#darkBtn:active,#notifBtn:active,#adBtn:active{transform:scale(.92);}
-#darkBtn.active{background:#1e1e30;color:#a5b4fc;}
-#darkBtn.active:hover{background:#2a2a45;color:#c4b5fd;}
-#notifBtn.active{background:#fef3c7;color:#d97706;}
-#notifBtn.active:hover{background:#fde68a;color:#b45309;}
-#notifBtn.active::after,#darkBtn.active::after{ content:'';position:absolute;top:5px;right:5px; width:6px;height:6px;border-radius:50%; border:1.5px solid #fff;}
-#notifBtn.active::after{background:#d97706;}
-#darkBtn.active::after{background:#a5b4fc;}
+/* כפתור פעיל (התראות / מצב כהה): רקע כחול עדין ואייקון כחול, בלי נקודות */
+#darkBtn.active,#notifBtn.active{background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent-line);}
+#darkBtn.active:hover,#notifBtn.active:hover{background:var(--accent-soft);color:var(--accent-2);}
 #writePermBtn.has-granted{background:#eff6ff;color:#1a56db;}
 #updateModeHdrBtn{display:none;}
 #updateModeHdrBtn.is-on{background:#dcfce7;color:#16a34a;}
@@ -770,6 +766,7 @@ body.dark .hdr-icon-group{background:var(--surface);border-color:var(--line);}
 #searchBtn,#darkBtn,#notifBtn{width:32px;height:32px;color:var(--muted);}
 #searchBtn:hover,#darkBtn:hover,#notifBtn:hover{background:var(--accent-soft);color:var(--accent);}
 #loginHdrBtn{width:32px;height:32px;box-shadow:none;border:none;background:var(--accent-soft);color:var(--accent);}
+body.dark #notifBtn.active,body.dark #darkBtn.active{color:var(--accent);background:var(--accent-soft);}
 
 /* כפתור המשתמש בכותרת + נקודת הדיווחים */
 .hdr-me{position:relative;display:block;background:none;border:none;padding:0;cursor:pointer;border-radius:50%;}
