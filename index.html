@@ -2821,7 +2821,11 @@ async function toggleNotifications() {
     await pushSubscribe();
     const t = await api('push_test', {}, 'POST');
     if (t.sent) showToast('ההתראות הופעלו. שלחנו התראת ניסיון');
-    else showToast('ההתראות הופעלו, אבל התראת הניסיון לא הגיעה לשירות הפושים של הדפדפן', 'error');
+    else {
+      const why = t.status !== 'ok' ? (t.message || 'שגיאת שרת') : (t.reason || (t.results || []).join(' | ') || 'סיבה לא ידועה');
+      console.warn('push test', t);
+      showToast('התראת הניסיון לא נשלחה: ' + why, 'error');
+    }
   } catch (e) {
     console.warn('push subscribe', e);
     showToast('ההתראות יפעלו רק כשהאתר פתוח. לא הצלחנו לרשום את הדפדפן לפושים', 'error');
