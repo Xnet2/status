@@ -1040,6 +1040,15 @@ body.dark .cpv-sk-bubble{background-image:linear-gradient(90deg,transparent,rgba
 .cpv-note i{color:var(--ok);margin-left:4px;}
 @media(max-width:600px){.cpv-skeleton{margin:0;}.cpv-card{padding:28px 20px 22px;border-radius:24px;}.cpv-title{font-size:21px;}}
 
+/* מונה צפיות (מנהלים) */
+.msg-views{margin-right:auto;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;
+  font-size:11.5px;color:var(--muted);background:var(--surface);border:1px solid var(--line);cursor:default;user-select:none;}
+.msg-views i{font-size:10.5px;}
+.msg-views b{font-weight:800;color:var(--ink-2);}
+.msg-views.bump{animation:vwBump .5s ease;}
+@keyframes vwBump{40%{transform:scale(1.15);border-color:var(--accent-line);}}
+body.dark .msg-views{background:var(--surface-2);}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 </style>
@@ -2048,8 +2057,54 @@ function buildMsg(e) {
     </div>`;
   }
 
-  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}</div></div><div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div></div></div></div>`;
+  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}</div></div><div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div>${viewsHtml(e)}</div></div></div>`;
 }
+
+/* ================= צפיות בהודעות =================
+   הודעה נחשבת "נצפתה" אחרי שנייה על המסך כשהלשונית פתוחה: חצי ממנה גלוי, או (בהודעה ארוכה) היא ממלאת חצי מסך.
+   השרת סופר כל משתמש פעם אחת להודעה. המנהלים והכותבים רואים את המספר מתחת להודעה. */
+function viewsLabel(n) { return n === 1 ? 'משתמש אחד צפה בהודעה' : `${n} משתמשים שונים צפו בהודעה`; }
+function viewsHtml(e) {
+  if (!isAdmin() || typeof e.views !== 'number') return '';
+  return `<span class="msg-views" id="views-${escAttr(e.id)}" title="${viewsLabel(e.views)}"><i class="fas fa-eye"></i><b>${e.views}</b></span>`;
+}
+function updateViews(e) {
+  if (typeof e.views !== 'number') return;
+  const el = document.getElementById('views-' + e.id);
+  if (!el) return;
+  const b = el.querySelector('b');
+  if (b.textContent !== String(e.views)) { b.textContent = e.views; el.title = viewsLabel(e.views); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+}
+const _viewSent = new Set(), _viewQueue = new Set(), _viewTimers = new Map();
+let _viewObserver = null;
+function flushViews() {
+  if (!me || !_viewQueue.size) return;
+  const ids = [..._viewQueue].slice(0, 50);
+  ids.forEach(id => { _viewQueue.delete(id); _viewSent.add(id); });
+  api('views_mark', { msgIds: ids }, 'POST');
+}
+setInterval(flushViews, 3000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushViews(); });
+function watchViews() {
+  if (!('IntersectionObserver' in window)) return;
+  if (!_viewObserver) {
+    _viewObserver = new IntersectionObserver(entries => entries.forEach(en => {
+      const id = en.target.dataset.id;
+      if (!id || _viewSent.has(id)) return;
+      const root = en.rootBounds ? en.rootBounds.height : window.innerHeight;
+      const seen = en.isIntersecting && (en.intersectionRatio >= 0.5 || en.intersectionRect.height >= root * 0.5);
+      if (seen) {
+        if (!_viewTimers.has(id)) _viewTimers.set(id, setTimeout(() => {
+          _viewTimers.delete(id);
+          if (document.visibilityState === 'visible' && me) _viewQueue.add(id);
+        }, 1000));
+      } else { clearTimeout(_viewTimers.get(id)); _viewTimers.delete(id); }
+    }), { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1] });
+  }
+  document.querySelectorAll('#feedInner .msg-row:not([data-vw])').forEach(r => { r.dataset.vw = '1'; _viewObserver.observe(r); });
+}
+// כל שינוי בפיד (טעינה, טעינת הודעות ישנות, הודעה חדשה) מוסיף את השורות החדשות למעקב
+new MutationObserver(() => watchViews()).observe(document.getElementById('feedInner'), { childList: true });
 
 function copyMsgLink(id, btn) {
   const el = document.querySelector(`.msg-row[data-id="${id}"]`); if (el) el.id = 'msg-link-' + id;
@@ -2298,6 +2353,7 @@ async function pollAll() {
   (d.updated || []).forEach(e => {
     const idx = items.findIndex(i => i.id === e.id);
     if (idx >= 0) items[idx] = e;
+    updateViews(e);
     if (e.reactions && !_pendingReactMsgIds.has(e.id) && JSON.stringify(e.reactions) !== JSON.stringify(rxnCache[e.id] || {})) renderRxn(e.id, e.reactions);
   });
   (d.removedIds || []).forEach(id => {
