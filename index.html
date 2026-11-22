@@ -1049,6 +1049,153 @@ body.dark .cpv-sk-bubble{background-image:linear-gradient(90deg,transparent,rgba
 @keyframes vwBump{40%{transform:scale(1.15);border-color:var(--accent-line);}}
 body.dark .msg-views{background:var(--surface-2);}
 
+/* ---------- פאנל ניהול הערוץ: רכיבי טופס ---------- */
+.ap-intro{font-size:13.5px;line-height:1.6;color:var(--ink-2);margin:0 0 16px;}
+.ap-label{display:flex;align-items:center;gap:8px;margin:14px 0 7px;}
+.ap-card > .ap-label:first-child,.ap-sub > .ap-label:first-child{margin-top:0;}
+.ap-opt{font-size:11px;font-weight:700;color:var(--faint);}
+.ap-count{margin-right:auto;font-size:11px;font-weight:700;color:var(--faint);direction:ltr;}
+.ap-hint code{font-size:11px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:1px 5px;}
+.ap-hint{margin-top:6px;}
+.ltr{direction:ltr;text-align:left;}
+.ap-row{display:flex;gap:8px;align-items:stretch;}
+.ap-row .ap-field{flex:1;min-width:0;}
+.ap-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+select.ap-field{cursor:pointer;appearance:auto;}
+textarea.ap-field{resize:vertical;line-height:1.55;}
+.ap-btn.ap-icon{width:40px;padding:0;flex-shrink:0;}
+.ap-logo-row{display:flex;gap:14px;align-items:flex-start;}
+.ap-logo-prev{width:72px;height:72px;border-radius:18px;object-fit:contain;background:#fff;padding:6px;flex-shrink:0;
+  box-shadow:0 0 0 1px var(--line),0 8px 20px -10px rgba(20,26,45,.3);}
+.ap-toggle-row{display:flex;align-items:center;gap:14px;margin-top:16px;padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line-2);}
+.ap-toggle-row.flat{margin-top:0;}
+.ap-toggle-row > div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.ap-toggle-row b{font-size:13.5px;color:var(--ink);}
+.ap-toggle-row span{font-size:12px;color:var(--muted);line-height:1.5;}
+.ap-switch{position:relative;width:46px;height:26px;flex-shrink:0;cursor:pointer;}
+.ap-switch input{position:absolute;opacity:0;width:0;height:0;}
+.ap-switch span{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:background .2s;}
+.ap-switch span::after{content:'';position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s cubic-bezier(.34,1.4,.64,1);}
+.ap-switch input:checked + span{background:var(--accent);}
+.ap-switch input:checked + span::after{transform:translateX(-20px);}
+.ap-switch input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px;}
+.ap-more{margin-top:14px;}
+.ap-more > summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--accent);list-style:none;display:flex;align-items:center;gap:7px;user-select:none;}
+.ap-more > summary::-webkit-details-marker{display:none;}
+.ap-more > summary::before{content:'\f104';font-family:'Font Awesome 6 Free';font-weight:900;font-size:11px;transition:transform .2s;}
+.ap-more[open] > summary::before{transform:rotate(-90deg);}
+.ap-more[open] > summary{margin-bottom:12px;}
+details.ap-card.ap-more{margin-top:0;}
+.ap-sub{padding:14px 0;border-top:1px solid var(--line-2);}
+.ap-sub:first-of-type{border-top:none;padding-top:4px;}
+.ap-savebar{position:sticky;bottom:-30px;margin:6px -26px -30px;padding:14px 26px 18px;background:linear-gradient(to top,var(--surface) 70%,transparent);
+  display:flex;justify-content:flex-start;z-index:2;}
+.ap-savebar.inline{position:static;margin:14px 0 0;padding:0;background:none;}
+.ap-savebar .ap-btn{min-width:130px;height:42px;}
+.ap-log-row{display:flex;gap:10px;font-size:12px;padding:6px 10px;border-radius:9px;background:var(--surface-2);margin-top:5px;color:var(--ink-2);}
+.ap-log-row b{margin-right:auto;}
+.ap-log-row.ok b{color:var(--ok);}
+.ap-log-row.bad b{color:var(--danger);}
+.ap-repl{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ap-repl .ap-field{flex:1;min-width:0;}
+.ap-repl > i{color:var(--faint);font-size:11px;}
+/* צוות */
+.ap-roles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.ap-roles div{padding:11px 12px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line-2);display:flex;flex-direction:column;gap:3px;}
+.ap-roles b{font-size:13px;color:var(--ink);}
+.ap-roles span{font-size:11.5px;line-height:1.5;color:var(--muted);}
+.ap-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.ap-person{flex:1;min-width:0;}
+.ap-role-tag{font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent);}
+.ap-role-sel{width:auto;padding:7px 10px;font-size:13px;}
+/* סטטיסטיקות */
+.ap-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.ap-stats .ap-stat-card{padding:16px;}
+.ap-stats .ap-stat-lbl{display:flex;align-items:center;gap:6px;color:var(--ink-2);font-weight:800;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(18,161,80,.18);}
+.ap-chart-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.ap-seg{display:inline-flex;padding:3px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line-2);gap:2px;}
+.ap-seg button{border:none;background:none;padding:6px 14px;border-radius:9px;font:700 12.5px 'Assistant','Heebo',sans-serif;color:var(--ink-2);cursor:pointer;display:flex;align-items:center;gap:6px;}
+.ap-seg button.on{background:var(--surface);color:var(--accent);box-shadow:var(--sh-1);}
+.ap-seg button b{min-width:18px;padding:0 5px;border-radius:999px;background:var(--line-2);font-size:11px;line-height:18px;}
+.ap-seg button b:empty{display:none;}
+.ap-seg.wide{display:flex;}
+.ap-seg.wide button{flex:1;justify-content:center;}
+.ap-chart{position:relative;direction:ltr;min-height:220px;}
+.ap-chart svg{display:block;overflow:visible;}
+.ap-chart .g{stroke:var(--line-2);stroke-width:1;}
+.ap-chart .yl{font:600 10.5px 'Assistant',sans-serif;fill:var(--faint);text-anchor:end;}
+.ap-chart .xl{font:600 10.5px 'Assistant',sans-serif;fill:var(--faint);text-anchor:middle;}
+.ap-chart .l{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;}
+.ap-chart .a{fill:var(--accent);opacity:.1;}
+.ap-chart .cx{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3;}
+.ap-chart .cd{fill:var(--accent);stroke:var(--surface);stroke-width:2;}
+.ap-chart .empty{font:700 13px 'Assistant',sans-serif;fill:var(--muted);text-anchor:middle;}
+.ap-tip{position:absolute;top:0;pointer-events:none;direction:rtl;background:var(--ink);color:var(--surface);padding:7px 10px;border-radius:10px;
+  font-size:12px;line-height:1.45;white-space:nowrap;box-shadow:var(--sh-2);}
+.ap-tip b{font-size:15px;}
+.ap-tip .sub{opacity:.7;font-size:11px;}
+.ap-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.ap-table th,.ap-table td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line-2);color:var(--ink-2);}
+.ap-table th{font-weight:800;color:var(--muted);font-size:11.5px;}
+/* אימוג'ים */
+.em-list,.tg-list{display:flex;flex-wrap:wrap;gap:8px;}
+.em-chip{display:inline-flex;align-items:center;gap:4px;font-size:22px;padding:4px 6px 4px 10px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);
+  font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+.em-chip button,.tg-list .post-tag button{border:none;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;}
+.em-chip button:hover,.tg-list .post-tag button:hover{color:var(--danger);}
+.em-palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px;}
+.em-pick{height:40px;border-radius:11px;border:1px solid var(--line-2);background:var(--surface-2);font-size:20px;cursor:pointer;
+  font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;transition:transform .1s,background .12s;}
+.em-pick:hover{transform:scale(1.08);}
+.em-pick.on{background:var(--accent-soft);border-color:var(--accent);}
+/* תגיות */
+.tg-colors{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.tg-color{width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;background:var(--sw);transition:transform .1s;}
+.tg-color.on{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--sw);}
+.post-tag{--tc:#64748b;display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:999px;font:800 12px 'Assistant','Heebo',sans-serif;
+  color:var(--tc);background:color-mix(in srgb,var(--tc) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--tc) 28%,transparent);cursor:pointer;}
+body.dark .post-tag{color:color-mix(in srgb,var(--tc) 60%,#fff);background:color-mix(in srgb,var(--tc) 22%,var(--surface));border-color:color-mix(in srgb,var(--tc) 40%,transparent);}
+.tag-bar{position:sticky;top:0;z-index:6;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px;margin-bottom:6px;
+  background:color-mix(in srgb,var(--canvas) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2);}
+.tag-bar[hidden],.tag-pick[hidden]{display:none;}
+.tf-chip{--tc:var(--accent);flex-shrink:0;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:6px 14px;
+  font:800 12.5px 'Assistant','Heebo',sans-serif;cursor:pointer;transition:background .12s,color .12s;}
+.tf-chip:hover{border-color:color-mix(in srgb,var(--tc) 40%,transparent);color:var(--tc);}
+.tf-chip.on{background:var(--tc);border-color:var(--tc);color:#fff;}
+.tf-chip.sm{padding:4px 11px;font-size:11.5px;}
+.tag-empty{text-align:center;padding:30px 16px;color:var(--muted);font-weight:700;}
+.tag-pick{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.tag-pick-lbl{color:var(--faint);font-size:12px;margin-left:2px;}
+body.no-rxn .rxn-add-btn{display:none!important;}
+/* כפתור צור קשר בכותרת */
+.hdr-contact{display:inline-flex;align-items:center;gap:5px;margin-right:6px;padding:1px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);
+  font-size:11.5px;font-weight:800;text-decoration:none;}
+.hdr-contact[hidden]{display:none;}
+/* תצוגה מקדימה למי שאין לו הרשאה בערוץ נעול */
+.cpv-denied{display:none;}
+#channelPreview.denied .cpv-denied{display:block;}
+#channelPreview.denied .cpv-google,#channelPreview.denied .cpv-google + .cpv-fallback,#channelPreview.denied .cpv-note{display:none!important;}
+.cpv-denied p{font-size:13.5px;line-height:1.6;color:var(--ink-2);margin:0 0 14px;}
+.cpv-denied .cpv-fallback{display:inline-flex;}
+/* מדריך */
+.ap-guide{margin:0 0 16px;padding:0;list-style:none;counter-reset:g;display:flex;flex-direction:column;gap:8px;}
+.ap-guide li{counter-increment:g;position:relative;padding:12px 52px 12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line-2);font-size:13.5px;line-height:1.6;color:var(--ink-2);}
+.ap-guide li::before{content:counter(g);position:absolute;right:14px;top:11px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;
+  font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.ap-guide b,.ap-guide-more b{color:var(--ink);}
+.ap-guide-more p{font-size:13.5px;line-height:1.6;color:var(--ink-2);margin:0 0 10px;}
+.ap-guide-more p:last-child{margin:0;}
+.g-tag{display:inline-block;font-size:10.5px;font-weight:800;padding:0 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-inline:4px;}
+.ap-report.done{border-color:var(--line);background:var(--surface);}
+.ap-report.done .ap-report-ico{background:var(--ok);}
+@media(max-width:680px){
+  .ap-roles,.ap-stats{grid-template-columns:1fr;}
+  .ap-grid2{grid-template-columns:1fr;}
+  .ap-savebar{margin:6px -18px -30px;padding:14px 18px 18px;}
+}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 </style>
@@ -1108,6 +1255,7 @@ body.dark .msg-views{background:var(--surface-2);}
       <div class="hdr-desc">עדכוני פרוייקטים התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet</div>
       <div class="hdr-status">
         <span id="publicUserCount"><span class="hdr-count-ring"></span></span> עוקבים
+        <a id="hdrContact" class="hdr-contact" target="_blank" rel="noopener" hidden></a>
       </div>
     </div>
     <div class="hdr-user">
@@ -1145,7 +1293,7 @@ body.dark .msg-views{background:var(--surface-2);}
     </div>
     <div class="cpv-card">
       <img class="cpv-logo" src="https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png" alt="">
-      <span class="cpv-kicker"><i class="fas fa-lock"></i> ערוץ לחברים מחוברים</span>
+      <span class="cpv-kicker" id="cpvKicker"><i class="fas fa-lock"></i> ערוץ לחברים מחוברים</span>
       <h1 class="cpv-title">xnet פרוייקטים ועדכונים</h1>
       <p class="cpv-desc">עדכוני פרוייקטים, התקדמויות וסטטוסים לכל הפרוייקטים של דוד / xnet</p>
       <div class="cpv-stats">
@@ -1155,11 +1303,15 @@ body.dark .msg-views{background:var(--surface-2);}
       </div>
       <div id="cpvGoogleBtn" class="cpv-google"></div>
       <button class="cpv-fallback" onclick="openLoginModal()"><i class="fab fa-google"></i> התחברות עם Google</button>
+      <div class="cpv-denied"><p>החשבון <b id="cpvWho" class="ltr"></b> לא נמצא ברשימת המורשים של הערוץ. אפשר לבקש גישה מהנהלת הערוץ.</p>
+        <button class="cpv-fallback" onclick="doLogout()"><i class="fas fa-right-left"></i> התחברות עם חשבון אחר</button></div>
       <p class="cpv-note"><i class="fas fa-shield-halved"></i> ההתחברות נעשית דרך גוגל. אנחנו מקבלים רק את השם, התמונה וכתובת המייל.</p>
     </div>
   </section>
 
   <div id="feedWrap">
+    <div id="tagFilterBar" class="tag-bar" hidden></div>
+    <div id="tagEmpty" class="tag-empty" hidden>אין בהודעות שנטענו הודעות עם התגית הזו</div>
     <div id="feedInitialSpinner"><div class="feed-init-ring"></div>טוען הודעות...</div>
     <div id="loadMoreSpinner"><div class="lm-ring"></div>טוען עוד...</div>
     <div id="feedInner"></div>
@@ -1307,7 +1459,7 @@ body.dark .msg-views{background:var(--surface-2);}
     </div>
 
     <div class="ctb-end">
-      <input id="composeTagsInput" class="compose-tag-inp" type="text" placeholder="תוויות, מופרדות בפסיק">
+      <div id="composeTagPick" class="tag-pick" hidden></div><input id="composeTagsInput" type="hidden">
       <span id="composeCharCount" class="ctb-count">0</span>
       <button class="ctb-btn ctb-icon ctb-clear" onclick="clearCompose()" title="נקה הכל"><i class="fas fa-trash-alt"></i></button>
     </div>
@@ -1449,58 +1601,61 @@ body.dark .msg-views{background:var(--surface-2);}
 
     <div class="ap-content">
       <div class="ap-content-hdr">
-        <span class="ap-content-title" id="apContentTitle">פאנל ניהול</span>
-        <button class="ap-hdr-close" onclick="closeAdminPanel()"><i class="fas fa-times"></i></button>
+        <span class="ap-content-title" id="apContentTitle">ניהול הערוץ</span>
+        <button class="ap-hdr-close" onclick="closeAdminPanel()" title="סגור"><i class="fas fa-times"></i></button>
       </div>
       <div class="ap-content-body" id="apContentBody">
 
-        <div class="ap-sec" id="ap-sec-stats">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-            <div class="ap-stat-card"><i class="fas fa-circle" style="color:#5fc98d;font-size:8px;"></i><div class="ap-stat-num" id="statOnline">-</div><div class="ap-stat-lbl">מחוברים כעת</div></div>
-            <div class="ap-stat-card"><i class="fas fa-trophy" style="color:#d8b45a;font-size:12px;"></i><div class="ap-stat-num" id="statPeak">-</div><div class="ap-stat-lbl">שיא משתמשים</div></div>
-            <div class="ap-stat-card"><i class="fas fa-clock" style="color:#a3a8b8;font-size:12px;"></i><div class="ap-stat-num" id="statHour">-</div><div class="ap-stat-lbl">בשעה האחרונה</div></div>
-            <div class="ap-stat-card"><i class="fas fa-calendar-day" style="color:#a3a8b8;font-size:12px;"></i><div class="ap-stat-num" id="statDay">-</div><div class="ap-stat-lbl">ביממה האחרונה</div></div>
-          </div>
-          <div class="ap-stat-card" style="text-align:center;">
-            <div class="ap-stat-num" id="statWeek">-</div>
-            <div class="ap-stat-lbl">משתמשים ייחודיים בשבוע האחרון</div>
-          </div>
-        </div>
-
-        <div class="ap-sec" id="ap-sec-reports" style="display:none;">
-          <div id="reportsList" style="display:flex;flex-direction:column;gap:10px;"></div>
-        </div>
-
-        <div class="ap-sec" id="ap-sec-writers" style="display:none;">
-          <div id="adminsList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;"></div>
-          <div class="ap-divider">
-            <div class="ap-label">הוספת יוצר / איש צוות חדש</div>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <input id="newAdminEmail" type="email" placeholder="אימייל Google..." class="ap-field" style="direction:ltr;">
-              <input id="newAdminName" type="text" placeholder="שם תצוגה (יופיע בפוסטים)..." class="ap-field">
-              <div class="ap-hint">הוספה כאן נותנת הרשאת כתיבה (writer). הרשאת ניהול מלאה מוגדרת בשרת, ברשימה SUPER_ADMINS בקובץ app.py.</div>
-              <button onclick="addAdmin()" class="ap-btn ap-btn-primary">+ הוסף משתמש</button>
+        <!-- 1. פרטי הערוץ -->
+        <div class="ap-sec" id="ap-sec-info">
+          <p class="ap-intro">מה שהקוראים רואים בראש הערוץ.</p>
+          <div class="ap-card">
+            <div class="ap-logo-row">
+              <img id="ciLogoPrev" class="ap-logo-prev" alt="">
+              <div style="flex:1;min-width:0;">
+                <label class="ap-label" for="ciLogo">לוגו</label>
+                <div class="ap-row">
+                  <input id="ciLogo" class="ap-field ltr" placeholder="https://..." oninput="document.getElementById('ciLogoPrev').src=this.value">
+                  <input type="file" id="ciLogoFile" accept="image/*" style="display:none;">
+                  <button type="button" id="ciLogoBtn" class="ap-btn ap-btn-soft" onclick="document.getElementById('ciLogoFile').click()"><i class="fas fa-upload"></i> העלאה</button>
+                </div>
+                <div class="ap-hint">מומלץ ריבועי (JPG, PNG או WebP). מתחלף לקוראים אחרי "שמירה".</div>
+              </div>
             </div>
-            <div id="adminMsgResult" style="display:none;margin-top:10px;font-size:12px;font-weight:700;text-align:center;"></div>
-          </div>
-        </div>
-
-        <div class="ap-sec" id="ap-sec-blocking" style="display:none;">
-          <div style="margin-bottom:22px;">
-            <div class="ap-label">חסימת משתמשים</div>
-            <div style="display:flex;gap:8px;margin-bottom:10px;">
-              <input type="email" id="settingsBlockEmail" class="ap-field" placeholder="הכנס אימייל לחסימה...">
-              <button class="ap-btn ap-btn-danger" style="flex-shrink:0;" onclick="blockUser()">חסום</button>
+            <label class="ap-label" for="ciName">שם הערוץ <span class="ap-count" data-for="ciName"></span></label>
+            <input id="ciName" class="ap-field" maxlength="80" oninput="apCount(this)">
+            <label class="ap-label" for="ciDesc">תיאור <span class="ap-opt">לא חובה</span> <span class="ap-count" data-for="ciDesc"></span></label>
+            <textarea id="ciDesc" class="ap-field" rows="3" maxlength="2000" oninput="apCount(this)"></textarea>
+            <label class="ap-label" for="ciContact">קישור ליצירת קשר <span class="ap-opt">לא חובה</span></label>
+            <input id="ciContact" class="ap-field ltr" placeholder="https://wa.me/972...  או  mailto:...">
+            <div class="ap-hint">כשהשדה מלא מופיע בראש הערוץ כפתור "צור קשר". ריק = מוסתר.</div>
+            <div class="ap-toggle-row">
+              <div><b>מוצג בגוגל</b><span>כשכבוי, מנועי חיפוש מתבקשים לא להציג את הערוץ בתוצאות.</span></div>
+              <label class="ap-switch"><input type="checkbox" id="ciGoogle"><span></span></label>
             </div>
-            <div id="blockedUsersList" style="font-size:12px;color:#8a90a6;"></div>
+            <details class="ap-more">
+              <summary>הגדרות נוספות</summary>
+              <label class="ap-label" for="ciSeoTitle">כותרת לגוגל <span class="ap-opt">לא חובה</span></label>
+              <input id="ciSeoTitle" class="ap-field" maxlength="70" placeholder="ברירת מחדל: שם הערוץ">
+              <label class="ap-label" for="ciSeoDesc">תיאור לגוגל <span class="ap-opt">לא חובה</span></label>
+              <textarea id="ciSeoDesc" class="ap-field" rows="2" maxlength="300" placeholder="ברירת מחדל: תיאור הערוץ"></textarea>
+            </details>
           </div>
-          <div class="ap-divider">
-            <div class="ap-label">ייצוא נתונים</div>
-            <button class="ap-btn ap-btn-soft" onclick="exportEmailsToGroups()"><i class="fas fa-download" style="font-size:11px;"></i> הורד רשימת אימיילים (TXT)</button>
-          </div>
+          <div class="ap-savebar"><button class="ap-btn ap-btn-primary" onclick="saveInfo(this)">שמירה</button></div>
         </div>
 
-        <div class="ap-sec" id="ap-sec-ads" style="display:none;">
+        <!-- 2. הגדרות -->
+        <div class="ap-sec" id="ap-sec-settings" style="display:none;">
+          <p class="ap-intro">התראות, פרסומות וחיבור למערכות חיצוניות.</p>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-bell"></i> התראות לנייד ולדפדפן</div>
+            <div class="ap-toggle-row flat">
+              <div><b>לשלוח התראה על כל הודעה חדשה</b><span>הקוראים מאשרים התראות דרך הפעמון שבכותרת.</span></div>
+              <label class="ap-switch"><input type="checkbox" id="stPush"><span></span></label>
+            </div>
+          </div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-rectangle-ad"></i> פרסומות</div>
           <div class="ap-card">
             <div class="ap-card-title"><i class="fas fa-window-restore" style="font-size:11px"></i> פרסומת פופאפ</div>
             <div style="display:flex;flex-direction:column;gap:8px">
@@ -1531,6 +1686,181 @@ body.dark .msg-views{background:var(--surface-2);}
             </div>
           </div>
           <div id="adMsg" style="display:none;margin-top:12px;font-size:12px;font-weight:700;text-align:center"></div>
+          </div>
+          <details class="ap-more ap-card">
+            <summary>הגדרות נוספות (למתקדמים)</summary>
+            <div class="ap-sub">
+              <label class="ap-label" for="stApiKey">מפתח לפרסום הודעות מבחוץ</label>
+              <div class="ap-row">
+                <input id="stApiKey" class="ap-field ltr" type="password" autocomplete="off" placeholder="ריק = סגור">
+                <button class="ap-btn ap-btn-soft ap-icon" onclick="genKey('stApiKey')" title="יצירת מפתח אקראי"><i class="fas fa-bolt"></i></button>
+                <button class="ap-btn ap-btn-soft ap-icon" onclick="toggleSecret('stApiKey', this)" title="הצג"><i class="fas fa-eye"></i></button>
+                <button class="ap-btn ap-btn-soft ap-icon" onclick="copyField('stApiKey')" title="העתק"><i class="fas fa-copy"></i></button>
+              </div>
+              <div class="ap-hint">מערכת חיצונית ששולחת את המפתח יכולה לפרסם בלי להתחבר. לפחות 16 תווים.<br>
+                שליחה: <code class="ltr">POST https://dhoc97909.pythonanywhere.com/status/api?action=ext_post</code> עם <code class="ltr">{"key": "...", "text": "..."}</code></div>
+            </div>
+            <div class="ap-sub">
+              <label class="ap-label" for="stHook">כתובת Webhook לעדכון על שינויים</label>
+              <input id="stHook" class="ap-field ltr" placeholder="https://...  (ריק = לא נשלח דבר)">
+              <label class="ap-label" for="stHookSecret">מחרוזת אימות סודית</label>
+              <div class="ap-row">
+                <input id="stHookSecret" class="ap-field ltr" type="password" autocomplete="off">
+                <button class="ap-btn ap-btn-soft ap-icon" onclick="genKey('stHookSecret')" title="יצירה אקראית"><i class="fas fa-bolt"></i></button>
+                <button class="ap-btn ap-btn-soft ap-icon" onclick="toggleSecret('stHookSecret', this)" title="הצג"><i class="fas fa-eye"></i></button>
+                <button class="ap-btn ap-btn-soft ap-icon" onclick="copyField('stHookSecret')" title="העתק"><i class="fas fa-copy"></i></button>
+              </div>
+              <div class="ap-hint">בכל פרסום, עריכה או מחיקה נשלחת בקשה לכתובת. המחרוזת מצורפת בכותרת X-Webhook-Secret, וחתימה בכותרת X-Signature-256.</div>
+              <div id="stHookLog" class="ap-log"></div>
+            </div>
+            <div class="ap-sub">
+              <label class="ap-label">החלפות אוטומטיות בטקסט (Regex)</label>
+              <div id="stRepl"></div>
+              <button class="ap-btn ap-btn-soft" onclick="addReplRow()"><i class="fas fa-plus"></i> הוספת החלפה</button>
+              <div class="ap-hint">כל הודעה שמתפרסמת עוברת את ההחלפות לפי הסדר.</div>
+            </div>
+          </details>
+          <div class="ap-savebar"><button class="ap-btn ap-btn-primary" onclick="saveSettings(this)">שמירה</button></div>
+        </div>
+
+        <!-- 3. צוות והרשאות -->
+        <div class="ap-sec" id="ap-sec-team" style="display:none;">
+          <p class="ap-intro">מוסיפים אנשים לפי המייל שאיתו הם מתחברים לגוגל. ההרשאה נכנסת לתוקף כשהם מתחברים לאתר עם אותו חשבון, אין צורך בהזמנה.</p>
+          <div class="ap-roles">
+            <div><b>בעלים</b><span>הכול: הגדרות, צוות, מי יכול לצפות ופרסומות.</span></div>
+            <div><b>מנהל</b><span>כל ההודעות, פרטי הערוץ, אימוג'ים, תגיות, סטטיסטיקות ודיווחים.</span></div>
+            <div><b>כותב</b><span>פרסום הודעות, ועריכה ומחיקה של ההודעות שלו בלבד.</span></div>
+          </div>
+          <div id="adminsList" class="ap-list"></div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-user-plus"></i> הוספה לצוות</div>
+            <div class="ap-grid2">
+              <input id="newAdminEmail" type="email" placeholder="מייל של חשבון גוגל" class="ap-field ltr">
+              <input id="newAdminName" type="text" placeholder="שם תצוגה" class="ap-field">
+            </div>
+            <div class="ap-row" style="margin-top:10px;">
+              <select id="newAdminRole" class="ap-field"><option value="writer">כותב</option><option value="admin">מנהל</option></select>
+              <button onclick="addAdmin()" class="ap-btn ap-btn-primary"><i class="fas fa-plus"></i> הוספה</button>
+            </div>
+            <div class="ap-hint">בעלי הערוץ מוגדרים בשרת (SUPER_ADMINS בקובץ app.py).</div>
+            <div id="adminMsgResult" style="display:none;margin-top:10px;font-size:12px;font-weight:700;text-align:center;"></div>
+          </div>
+        </div>
+
+        <!-- 4. מי יכול לצפות -->
+        <div class="ap-sec" id="ap-sec-viewers" style="display:none;">
+          <p class="ap-intro">כשהערוץ נעול, רק מי שמתחבר עם מייל מהרשימה יכול לקרוא. הקישור לבד לא מספיק.</p>
+          <div class="ap-card">
+            <div class="ap-toggle-row flat">
+              <div><b>ערוץ נעול למורשים בלבד</b><span>כבוי = כל מי שמתחבר עם גוגל יכול לקרוא. הצוות תמיד רואה הכול.</span></div>
+              <label class="ap-switch"><input type="checkbox" id="vwLocked"><span></span></label>
+            </div>
+            <label class="ap-label" for="vwAllowed">כתובות מורשות <span class="ap-opt" id="vwCount"></span></label>
+            <textarea id="vwAllowed" class="ap-field ltr" rows="5" placeholder="name@gmail.com&#10;other@gmail.com" oninput="vwCountUpdate()"></textarea>
+            <div class="ap-hint">מייל של חשבון גוגל בכל שורה, או כמה מופרדים בפסיק.</div>
+            <div class="ap-savebar inline"><button class="ap-btn ap-btn-primary" onclick="saveViewers(this)">שמירה</button></div>
+          </div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-user-slash"></i> חסימת משתמשים</div>
+          <div>
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <input type="email" id="settingsBlockEmail" class="ap-field" placeholder="הכנס אימייל לחסימה...">
+              <button class="ap-btn ap-btn-danger" style="flex-shrink:0;" onclick="blockUser()">חסום</button>
+            </div>
+            <div id="blockedUsersList" style="font-size:12px;color:#8a90a6;"></div>
+          </div>
+          <div class="ap-divider">
+            <div class="ap-label">ייצוא נתונים</div>
+            <button class="ap-btn ap-btn-soft" onclick="exportEmailsToGroups()"><i class="fas fa-download" style="font-size:11px;"></i> הורד רשימת אימיילים (TXT)</button>
+          </div>
+          </div>
+        </div>
+
+        <!-- 5. סטטיסטיקות -->
+        <div class="ap-sec" id="ap-sec-stats" style="display:none;">
+          <div class="ap-stats">
+            <div class="ap-stat-card"><div class="ap-stat-lbl">משתתפים</div><div class="ap-stat-num" id="stParticipants">–</div><div class="ap-hint">מחוברים לגוגל שפתחו את הערוץ</div></div>
+            <div class="ap-stat-card"><div class="ap-stat-lbl"><span class="live-dot"></span> מחוברים עכשיו</div><div class="ap-stat-num" id="statOnline">–</div><div class="ap-hint">בדקה האחרונה</div></div>
+            <div class="ap-stat-card"><div class="ap-stat-lbl">שיא מחוברים בו־זמנית</div><div class="ap-stat-num" id="statPeak">–</div><div class="ap-hint" id="statPeakTs">&nbsp;</div></div>
+          </div>
+          <div class="ap-card">
+            <div class="ap-chart-hdr">
+              <div><div class="ap-card-title" style="margin:0;">משתמשים באתר לאורך זמן</div><div class="ap-hint">כמה משתמשים שונים היו באתר בכל שעה</div></div>
+              <div class="ap-seg" id="stRange">
+                <button data-days="1" onclick="loadStatsChart(1)">יום</button>
+                <button data-days="7" onclick="loadStatsChart(7)" class="on">שבוע</button>
+                <button data-days="30" onclick="loadStatsChart(30)">חודש</button>
+              </div>
+            </div>
+            <div id="statChart" class="ap-chart"></div>
+            <details class="ap-more"><summary>הצג כטבלה</summary><div id="statTable"></div></details>
+          </div>
+        </div>
+
+        <!-- 6. תגובות אימוג'י -->
+        <div class="ap-sec" id="ap-sec-emojis" style="display:none;">
+          <p class="ap-intro">בוחרים באילו אימוג'ים הקוראים יכולים להגיב על הודעות. רשימה ריקה מבטלת תגובות לגמרי.</p>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-face-smile"></i> אימוג'ים פעילים <span class="ap-opt" id="emCount"></span></div>
+            <div id="emList" class="em-list"></div>
+          </div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-plus"></i> הוספה</div>
+            <div id="emPalette" class="em-palette"></div>
+            <div class="ap-row" style="margin-top:12px;">
+              <input id="emCustom" class="ap-field" placeholder="או הדביקו כאן אימוג'י אחר">
+              <button class="ap-btn ap-btn-soft" onclick="emAddCustom()">הוספה</button>
+            </div>
+          </div>
+          <div class="ap-savebar"><button class="ap-btn ap-btn-primary" onclick="saveEmojis(this)">שמירה</button></div>
+        </div>
+
+        <!-- 7. תגיות -->
+        <div class="ap-sec" id="ap-sec-tags" style="display:none;">
+          <p class="ap-intro">תוויות צבעוניות להודעות (עד 30). הכותב מצמיד תגית להודעה, והקוראים מסננים לפיהן בפס שבראש הערוץ. כשאין תגיות, הפס לא מוצג.</p>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-tags"></i> התגיות של הערוץ <span class="ap-opt" id="tgCount"></span></div>
+            <div id="tgList" class="tg-list"></div>
+          </div>
+          <div class="ap-card">
+            <div class="ap-card-title"><i class="fas fa-plus"></i> תגית חדשה</div>
+            <input id="tgName" class="ap-field" maxlength="30" placeholder="שם התגית" oninput="tgPreview()">
+            <div id="tgColors" class="tg-colors"></div>
+            <div class="ap-row" style="margin-top:12px;align-items:center;">
+              <span class="ap-hint" style="margin:0;">תצוגה מקדימה:</span>
+              <span id="tgPrev" class="post-tag"></span>
+              <button class="ap-btn ap-btn-soft" style="margin-right:auto;" onclick="tgAdd()"><i class="fas fa-plus"></i> הוספה לרשימה</button>
+            </div>
+          </div>
+          <div class="ap-savebar"><button class="ap-btn ap-btn-primary" onclick="saveTags(this)">שמירה</button></div>
+        </div>
+
+        <!-- 8. דיווחים -->
+        <div class="ap-sec" id="ap-sec-reports" style="display:none;">
+          <div class="ap-seg wide" id="repTabs">
+            <button data-f="open" class="on" onclick="setRepFilter('open')">פתוחים <b id="repOpenN"></b></button>
+            <button data-f="resolved" onclick="setRepFilter('resolved')">טופלו <b id="repDoneN"></b></button>
+            <button data-f="all" onclick="setRepFilter('all')">כל הדיווחים</button>
+          </div>
+          <div id="reportsList" style="display:flex;flex-direction:column;gap:10px;margin-top:14px;"></div>
+        </div>
+
+        <!-- 9. מדריך למנהל -->
+        <div class="ap-sec" id="ap-sec-guide" style="display:none;">
+          <p class="ap-intro">חמשת הצעדים הראשונים, ואחריהם מה יש בכל מסך.</p>
+          <ol class="ap-guide">
+            <li><b>שיתוף הקישור.</b> שולחים לקוראים את כתובת הערוץ. הם מתחברים עם גוגל ונכנסים.</li>
+            <li><b>פרטי הערוץ.</b> לוגו, שם, תיאור וקישור ליצירת קשר. <span class="g-tag">מנהל</span></li>
+            <li><b>ההודעה הראשונה.</b> כותבים בתיבת הכתיבה שבתחתית הערוץ עצמו, לא כאן.</li>
+            <li><b>צוות.</b> מוסיפים מנהלים וכותבים לפי המייל שלהם. <span class="g-tag">בעלים</span></li>
+            <li><b>הגדרות.</b> התראות, פרסומות וחיבורים חיצוניים. <span class="g-tag">בעלים</span></li>
+          </ol>
+          <div class="ap-card ap-guide-more">
+            <p><b>מי יכול לצפות</b> <span class="g-tag">בעלים</span> נועלים את הערוץ לרשימת מיילים, וחוסמים משתמשים.</p>
+            <p><b>סטטיסטיקות</b> <span class="g-tag">מנהל</span> משתתפים, מחוברים עכשיו, שיא וגרף לאורך זמן. מתחת לכל הודעה יש גם עין עם מספר הצופים.</p>
+            <p><b>תגובות אימוג'י ותגיות</b> <span class="g-tag">מנהל</span> קובעים במה מגיבים ואיך ממיינים הודעות.</p>
+            <p><b>דיווחים</b> <span class="g-tag">מנהל</span> הודעות שקוראים סימנו. כשיש דיווח פתוח מופיעה נקודה אדומה על התמונה שלך בכותרת.</p>
+          </div>
         </div>
 
       </div>
@@ -1546,9 +1876,111 @@ body.dark .msg-views{background:var(--surface-2);}
 
 const BACKEND = "https://dhoc97909.pythonanywhere.com/status/api";
 const GOOGLE_CLIENT_ID = '426523025549-7c50rkn7cun4vmm2r802u0ij6egjehtg.apps.googleusercontent.com';
-const LOGO = 'https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png';
-const SITE_TITLE = 'xnet פרוייקטים ועדכונים';
+let LOGO = 'https://raw.githubusercontent.com/Xnet2/GOOGLE-MY/refs/heads/main/image-removebg-preview%20(2).png';
+let SITE_TITLE = 'xnet פרוייקטים ועדכונים';
 const STORAGE_KEY = 'bina_user';
+/* ================= פרטי הערוץ, אימוג'ים ותגיות (מההגדרות בשרת) ================= */
+const LOGO_DEFAULT = LOGO;
+let CH = null, _tagFilter = '';
+
+function applyChannel(ch) {
+  if (!ch) return;
+  CH = ch;
+  SITE_TITLE = ch.name || SITE_TITLE;
+  LOGO = ch.logo || LOGO_DEFAULT;
+  const txt = (sel, v) => document.querySelectorAll(sel).forEach(el => { el.textContent = v; });
+  const src = (sel, v) => document.querySelectorAll(sel).forEach(el => { if (el.getAttribute('src') !== v) el.src = v; });
+  txt('#hdrChannelName, #loginSiteTitle, .cpv-title', SITE_TITLE);
+  txt('.hdr-desc, .cpv-desc', ch.description || '');
+  src('.hdr-avatar, .login-logo-img, .cpv-logo', LOGO);
+  const contact = document.getElementById('hdrContact');
+  if (contact) {
+    contact.hidden = !ch.contact;
+    if (ch.contact) {
+      contact.href = ch.contact;
+      contact.innerHTML = `<i class="${/wa\.me|whatsapp/.test(ch.contact) ? 'fab fa-whatsapp' : ch.contact.startsWith('mailto:') ? 'fas fa-envelope' : 'fas fa-link'}"></i> צור קשר`;
+    }
+  }
+  const meta = (name, content) => {
+    let m = document.querySelector(`meta[name="${name}"]`);
+    if (!content) { m?.remove(); return; }
+    if (!m) { m = document.createElement('meta'); m.name = name; document.head.appendChild(m); }
+    m.content = content;
+  };
+  meta('description', ch.seoDesc || ch.description || '');
+  meta('robots', ch.inGoogle === false ? 'noindex, nofollow' : '');
+  const kicker = document.getElementById('cpvKicker');
+  if (kicker) kicker.innerHTML = ch.locked ? '<i class="fas fa-lock"></i> ערוץ נעול למורשים בלבד' : '<i class="fas fa-lock"></i> ערוץ לחברים מחוברים';
+  renderReportsBadge();
+  renderEmojiPicker();
+  renderTagBar();
+  renderComposeTags();
+  try { localStorage.setItem('xs_channel', JSON.stringify(ch)); } catch (e) {}
+}
+async function loadChannel() {
+  try { const c = JSON.parse(localStorage.getItem('xs_channel') || 'null'); if (c) applyChannel(c); } catch (e) {}
+  const d = await api('channel_get', {});
+  if (d.status === 'ok') applyChannel(d.channel);
+}
+
+function renderEmojiPicker() {
+  const list = (CH && CH.emojis) || [];
+  document.body.classList.toggle('no-rxn', !list.length);
+  const p = document.getElementById('emojiPicker');
+  if (!p) return;
+  p.querySelectorAll('.ep-btn').forEach(b => b.remove());
+  list.forEach(e => {
+    const b = document.createElement('button');
+    b.className = 'ep-btn'; b.textContent = e;
+    b.addEventListener('click', () => pickEmoji(e));
+    p.appendChild(b);
+  });
+}
+
+function tagColor(name) { const t = ((CH && CH.tags) || []).find(t => t.name === name); return t ? t.color : '#64748b'; }
+function renderTagBar() {
+  const bar = document.getElementById('tagFilterBar'); if (!bar) return;
+  const tags = (CH && CH.tags) || [];
+  bar.hidden = !tags.length;
+  if (_tagFilter && !tags.some(t => t.name === _tagFilter)) { _tagFilter = ''; applyTagFilter(); }
+  bar.innerHTML = tags.length ? `<button class="tf-chip${_tagFilter ? '' : ' on'}" onclick="setTagFilter('')">הכל</button>` +
+    tags.map(t => `<button class="tf-chip${_tagFilter === t.name ? ' on' : ''}" style="--tc:${t.color}" data-tag="${escAttr(t.name)}" onclick="setTagFilter(this.dataset.tag)">${esc(t.name)}</button>`).join('') : '';
+}
+function setTagFilter(name) {
+  _tagFilter = name && name !== _tagFilter ? name : '';
+  renderTagBar(); applyTagFilter();
+  if (_tagFilter) document.getElementById('feedWrap').scrollTop = document.getElementById('feedWrap').scrollHeight;
+}
+function applyTagFilter() {
+  let shown = 0;
+  document.querySelectorAll('#feedInner .msg-row').forEach(row => {
+    const it = items.find(i => i.id === row.dataset.id);
+    const ok = !_tagFilter || (it && (it.tags || []).includes(_tagFilter));
+    row.style.display = ok ? '' : 'none';
+    if (ok) shown++;
+  });
+  const empty = document.getElementById('tagEmpty');
+  if (empty) empty.hidden = !_tagFilter || shown > 0;
+}
+
+function renderComposeTags() {
+  const box = document.getElementById('composeTagPick'), inp = document.getElementById('composeTagsInput');
+  if (!box || !inp) return;
+  const tags = (CH && CH.tags) || [];
+  const sel = inp.value ? inp.value.split(',') : [];
+  box.hidden = !tags.length;
+  box.innerHTML = tags.length ? '<span class="tag-pick-lbl"><i class="fas fa-tag"></i></span>' + tags.map(t =>
+    `<button type="button" class="tf-chip sm${sel.includes(t.name) ? ' on' : ''}" style="--tc:${t.color}" data-tag="${escAttr(t.name)}" onclick="toggleComposeTag(this.dataset.tag)">${esc(t.name)}</button>`).join('') : '';
+}
+function toggleComposeTag(name) {
+  const inp = document.getElementById('composeTagsInput');
+  const sel = inp.value ? inp.value.split(',') : [];
+  const i = sel.indexOf(name);
+  if (i >= 0) sel.splice(i, 1); else sel.push(name);
+  inp.value = sel.join(',');
+  renderComposeTags();
+}
+
 const AD_KEY = 'shaagat_ad';
 const AD_INTERVAL = 60 * 60 * 1000;
 const CHANNEL = 'general'; // אין יותר ערוצים - הכל בערוץ אחד קבוע
@@ -1568,7 +2000,7 @@ let rxnCache = {};
 const knownIds = new Set();
 let oldestTs = 0, allLoaded = false, loadingMore = false, pollPending = false;
 let _writersMap = {}; // email(lower) -> {name}
-let _isSuper = false, _isWriter = false;
+let _isSuper = false, _isWriter = false, _role = 'user', _canRead = true, _presenceTimer = null;
 
 let composeImgUrl = '', composeVidUrl = '', composeBtns = [], composeHtmlCode = '';
 let _pendingReactMsgIds = new Set();
@@ -1615,14 +2047,11 @@ async function api(action, params, method) {
   }
 }
 
-function getRole() {
-  if (!me) return 'visitor';
-  if (_isSuper) return 'super';
-  if (_isWriter) return 'writer';
-  return 'user';
-}
-function isAdmin() { const r = getRole(); return r === 'super' || r === 'writer'; }
-function isSuperAdmin() { return _isSuper; }
+// 'super' = בעלים, 'admin' = מנהל, 'writer' = כותב. isAdmin = יכול לכתוב, isManager = רואה את ניהול הערוץ
+function getRole() { return me ? (_role || 'user') : 'visitor'; }
+function isAdmin() { return ['super', 'admin', 'writer'].includes(getRole()); }
+function isManager() { return ['super', 'admin'].includes(getRole()); }
+function isSuperAdmin() { return getRole() === 'super'; }
 
 function getDisplayName(email, fallback) {
   const entry = _writersMap[(email || '').toLowerCase()];
@@ -1660,7 +2089,7 @@ function closeLoginModal() { document.getElementById('loginScreen').classList.re
 
 function doLogout() {
   pushUnsubscribe(); setNotifUI(false);
-  clearSavedUser(); me = null; _isSuper = false; _isWriter = false;
+  clearSavedUser(); me = null; _isSuper = false; _isWriter = false; _role = 'user'; _canRead = true;
   _openReports = 0; renderReportsBadge();
   document.getElementById('bannedScreen').style.display = 'none';
   closeLoginModal();
@@ -1683,13 +2112,16 @@ function relTime(ts) {
   if (d < 30) return d === 1 ? 'אתמול' : d === 2 ? 'לפני יומיים' : `לפני ${d} ימים`;
   return fmtDate(ts);
 }
-async function showChannelPreview() {
+async function showChannelPreview(denied) {
   document.body.classList.add('is-guest');
+  document.getElementById('channelPreview').classList.toggle('denied', !!denied);
+  const who = document.getElementById('cpvWho'); if (who) who.textContent = denied && me ? me.email : '';
   document.getElementById('feedInitialSpinner').style.display = 'none';
   document.getElementById('channelPreview').classList.add('show');
   renderPreviewGoogleBtn();
   const d = await api('preview', { channel: CHANNEL });
   if (d.status !== 'ok') return;
+  if (d.channel) applyChannel(Object.assign({}, CH || {}, d.channel));
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('cpvFollowers', Number(d.followers || 0).toLocaleString('he-IL'));
   set('cpvMessages', Number(d.messages || 0).toLocaleString('he-IL'));
@@ -1722,6 +2154,8 @@ async function verifyAndLogin(user, credential) {
   }
   _isSuper = !!d.admin;
   _isWriter = !!d.writer;
+  _role = d.role || (d.admin ? 'super' : d.writer ? 'writer' : 'user');
+  _canRead = d.canRead !== false;
   me = user; saveUser(user);
   await applyLogin();
   return true;
@@ -1754,15 +2188,16 @@ async function applyLogin() {
   // מציגים מיד את מה שאפשר בלי לחכות לשרת - הרשאות הכתיבה כבר ידועות מ-auth_check
   applyWritePerm();
   refreshUserMenu();
+  pingSitePresence(); if (!_presenceTimer) _presenceTimer = setInterval(pingSitePresence, 30000);
+  if (!_canRead) { showChannelPreview(true); return; }
   loadFeed();
 
   // רשימת הכותבים (לשמות תצוגה + פאנל יוצרים) נטענת במקביל ולא חוסמת את הפיד
   loadWritersMap().then(() => { refreshUserMenu(); applyWritePerm(); });
   syncPushAfterLogin();
 
+  if (isManager()) startReportsWatch();
   if (isAdmin()) {
-    pingSitePresence(); setInterval(pingSitePresence, 15000);
-    startReportsWatch();
     pollUpdateMode(); setInterval(pollUpdateMode, 8000);
     document.getElementById('feedWrap').style.paddingBottom = '120px';
   }
@@ -1797,6 +2232,7 @@ if (document.readyState === 'complete') tryInitGoogle(); else window.addEventLis
 
 /* תוכן הערוץ פתוח רק למחוברים. מי שנכנס בעבר מאומת מיד מול השרת, וכל השאר רואים תצוגה מקדימה */
 document.addEventListener('DOMContentLoaded', () => {
+  loadChannel();
   const saved = loadSavedUser();
   if (saved && saved.token) verifyAndLogin(saved);
   else { clearSavedUser(); showChannelPreview(); }
@@ -1827,10 +2263,10 @@ function refreshUserMenu() {
   if (!me) return;
   const role = getRole();
   let adminMenuHtml = '';
-  if (isAdmin()) {
+  if (isManager()) {
     adminMenuHtml = `<div class="um-sec">
-      <button class="um-item um-primary" onclick="openAdminPanel()"><i class="fas fa-shield-halved"></i><span>פאנל ניהול</span></button>
-      ${isSuperAdmin() ? `<button class="um-item um-reports${_openReports ? ' has' : ''}" onclick="openAdminPanel('reports')"><i class="fas fa-flag"></i><span>דיווחים פתוחים</span><b class="um-count" id="umReportCount">${_openReports || ''}</b></button>` : ''}
+      <button class="um-item um-primary" onclick="openAdminPanel()"><i class="fas fa-sliders"></i><span>ניהול הערוץ</span></button>
+      ${isManager() ? `<button class="um-item um-reports${_openReports ? ' has' : ''}" onclick="openAdminPanel('reports')"><i class="fas fa-flag"></i><span>דיווחים פתוחים</span><b class="um-count" id="umReportCount">${_openReports || ''}</b></button>` : ''}
     </div>`;
   }
   const menu = document.getElementById('userMenu'); if (!menu) return;
@@ -1840,7 +2276,7 @@ function refreshUserMenu() {
       <div class="um-who">
         <div class="um-name">${esc(me.name)}</div>
         <div class="um-mail">${esc(me.email)}</div>
-        <span class="um-role">${role === 'super' ? 'מנהל ראשי' : role === 'writer' ? 'כותב מורשה' : 'משתמש'}</span>
+        <span class="um-role">${roleLabel(role)}</span>
       </div>
     </div>
     ${adminMenuHtml}
@@ -1855,14 +2291,14 @@ function refreshUserMenu() {
 let _openReports = 0, _reportsWatch = null, _reportsKnown = null;
 
 function startReportsWatch() {
-  if (!isSuperAdmin() || _reportsWatch) return;
+  if (!isManager() || _reportsWatch) return;
   checkReports();
   _reportsWatch = setInterval(checkReports, 60 * 1000);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkReports(); });
 }
 
 async function checkReports() {
-  if (!me || !isSuperAdmin()) return;
+  if (!me || !isManager()) return;
   const d = await api('reports_get', {});
   if (d.status !== 'ok') return;
   setReportsFrom(d.reports || []);
@@ -1893,27 +2329,32 @@ function renderReportsBadge() {
 
 /* ================= פאנל ניהול (עדין ובהיר, עם סרגל צד) ================= */
 let _adminPanelActiveSection = null;
+// סדר המדורים כמו בפאנל הניהול של ארוץ. perm: 'manager' = בעלים ומנהלים, 'owner' = בעלים בלבד
 const AP_SECTIONS = [
-  { key: 'stats', icon: 'fa-chart-line', title: 'סטטיסטיקות קהילה', superOnly: false },
-  { key: 'reports', icon: 'fa-flag', title: 'דיווחי משתמשים', superOnly: true },
-  { key: 'writers', icon: 'fa-user-group', title: 'מורשי כתיבה', superOnly: true },
-  { key: 'blocking', icon: 'fa-user-slash', title: 'חסימת משתמשים', superOnly: true },
-  { key: 'ads', icon: 'fa-rectangle-ad', title: 'פרסומות', superOnly: true },
+  { key: 'info', icon: 'fa-circle-info', title: 'פרטי הערוץ', perm: 'manager' },
+  { key: 'settings', icon: 'fa-gear', title: 'הגדרות', perm: 'owner' },
+  { key: 'team', icon: 'fa-user-group', title: 'צוות והרשאות', perm: 'owner' },
+  { key: 'viewers', icon: 'fa-lock', title: 'מי יכול לצפות', perm: 'owner' },
+  { key: 'stats', icon: 'fa-chart-line', title: 'סטטיסטיקות', perm: 'manager' },
+  { key: 'emojis', icon: 'fa-face-smile', title: 'תגובות אימוג\'י', perm: 'manager' },
+  { key: 'tags', icon: 'fa-tags', title: 'תגיות', perm: 'manager' },
+  { key: 'reports', icon: 'fa-flag', title: 'דיווחים', perm: 'manager' },
+  { key: 'guide', icon: 'fa-book-open', title: 'מדריך למנהל', perm: 'manager' },
 ];
+let _apCh = null;   // הגדרות הערוץ כפי שנטענו לפאנל (לבעלים כולל השדות הסודיים)
+
+function roleLabel(r) { return r === 'super' ? 'בעלים' : r === 'admin' ? 'מנהל' : r === 'writer' ? 'כותב' : 'קורא'; }
 
 function openAdminPanel(startSec) {
-  if (!me || !isAdmin()) return;
+  if (!me || !isManager()) return;
   document.getElementById('userMenu') && (document.getElementById('userMenu').style.display = 'none');
   const role = getRole();
-
-  const avWrap = document.getElementById('apHdrAvatarWrap');
-  avWrap.innerHTML = me.picture
+  document.getElementById('apHdrAvatarWrap').innerHTML = me.picture
     ? `<img src="${escAttr(me.picture)}">`
     : `<div class="ap-sidebar-avatar-fallback">${esc(me.name[0].toUpperCase())}</div>`;
   document.getElementById('apHdrName').innerText = me.name;
-  document.getElementById('apHdrRole').innerText = role === 'super' ? 'מנהל ראשי' : 'כותב מורשה';
-
-  const visible = AP_SECTIONS.filter(s => role === 'super' || !s.superOnly);
+  document.getElementById('apHdrRole').innerText = roleLabel(role);
+  const visible = AP_SECTIONS.filter(s => s.perm === 'manager' || role === 'super');
   document.getElementById('apNav').innerHTML = visible.map(s => `
     <button class="ap-nav-item" data-sec="${s.key}" onclick="switchAdminSection('${s.key}')">
       <span class="ap-nav-icon"><i class="fas ${s.icon}"></i></span>
@@ -1921,7 +2362,6 @@ function openAdminPanel(startSec) {
       ${s.key === 'reports' ? '<span class="ap-nav-badge"></span>' : ''}
     </button>`).join('');
   renderReportsBadge();
-
   document.getElementById('adminPanelModal').classList.add('open');
   switchAdminSection(visible.some(s => s.key === startSec) ? startSec : visible[0].key);
 }
@@ -1929,18 +2369,179 @@ function closeAdminPanel() {
   document.getElementById('adminPanelModal').classList.remove('open');
   _adminPanelActiveSection = null;
 }
-function switchAdminSection(sec) {
+async function switchAdminSection(sec) {
   _adminPanelActiveSection = sec;
   document.querySelectorAll('.ap-nav-item').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
   document.querySelectorAll('.ap-sec').forEach(s => s.style.display = (s.id === 'ap-sec-' + sec) ? 'block' : 'none');
   const found = AP_SECTIONS.find(s => s.key === sec);
-  document.getElementById('apContentTitle').innerText = found ? found.title : 'פאנל ניהול';
-  if (sec === 'stats') openSiteStats();
+  document.getElementById('apContentTitle').innerText = found ? found.title : 'ניהול הערוץ';
+  document.getElementById('apContentBody').scrollTop = 0;
+  if (['info', 'settings', 'viewers', 'emojis', 'tags'].includes(sec)) {
+    const d = await api('channel_get', {});
+    if (d.status === 'ok') _apCh = d.channel;
+  }
+  if (sec === 'info') fillInfo();
+  else if (sec === 'settings') { fillSettings(); openAdPanel(); }
+  else if (sec === 'team') openManageAdmins();
+  else if (sec === 'viewers') { fillViewers(); openSiteSettings(); }
+  else if (sec === 'stats') openSiteStats();
+  else if (sec === 'emojis') fillEmojis();
+  else if (sec === 'tags') fillTags();
   else if (sec === 'reports') openReportsModal();
-  else if (sec === 'writers') openManageAdmins();
-  else if (sec === 'blocking') openSiteSettings();
-  else if (sec === 'ads') openAdPanel();
 }
+
+/* ---------- עזרים משותפים לפאנל ---------- */
+async function saveChannel(patch, btn) {
+  const old = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> שומר...'; }
+  const d = await api('channel_set', { patch }, 'POST');
+  if (btn) { btn.disabled = false; btn.innerHTML = old; }
+  if (d.status !== 'ok') { showToast(d.message || 'השמירה נכשלה', 'error'); return false; }
+  _apCh = d.channel;
+  applyChannel(Object.assign({}, CH || {}, d.channel));
+  showToast('נשמר ✓');
+  return true;
+}
+function apCount(el) {
+  const c = document.querySelector(`.ap-count[data-for="${el.id}"]`);
+  if (c) c.textContent = `${el.value.length}/${el.maxLength}`;
+}
+function genKey(id) {
+  const a = new Uint8Array(24); crypto.getRandomValues(a);
+  const el = document.getElementById(id);
+  el.value = Array.from(a, b => b.toString(16).padStart(2, '0')).join('');
+  el.type = 'text';
+}
+function toggleSecret(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = `<i class="fas fa-eye${el.type === 'text' ? '-slash' : ''}"></i>`;
+}
+function copyField(id) {
+  const v = document.getElementById(id).value;
+  if (!v) return;
+  navigator.clipboard.writeText(v).then(() => showToast('הועתק'), () => {});
+}
+
+/* ---------- 1. פרטי הערוץ ---------- */
+function fillInfo() {
+  const c = _apCh || CH || {};
+  const set = (id, v) => { const el = document.getElementById(id); el.value = v || ''; if (el.maxLength > 0) apCount(el); };
+  set('ciName', c.name); set('ciDesc', c.description); set('ciContact', c.contact);
+  set('ciLogo', c.logo); set('ciSeoTitle', c.seoTitle); set('ciSeoDesc', c.seoDesc);
+  document.getElementById('ciLogoPrev').src = c.logo || LOGO;
+  document.getElementById('ciGoogle').checked = c.inGoogle !== false;
+}
+function saveInfo(btn) {
+  const v = id => document.getElementById(id).value.trim();
+  saveChannel({ name: v('ciName'), description: v('ciDesc'), contact: v('ciContact'), logo: v('ciLogo'),
+    seoTitle: v('ciSeoTitle'), seoDesc: v('ciSeoDesc'), inGoogle: document.getElementById('ciGoogle').checked }, btn);
+}
+
+/* ---------- 2. הגדרות ---------- */
+function fillSettings() {
+  const c = _apCh || {};
+  document.getElementById('stPush').checked = c.pushOnPost !== false;
+  ['stApiKey', 'stHookSecret'].forEach(id => { document.getElementById(id).type = 'password'; });
+  document.getElementById('stApiKey').value = c.apiKey || '';
+  document.getElementById('stHook').value = c.webhookUrl || '';
+  document.getElementById('stHookSecret').value = c.webhookSecret || '';
+  document.getElementById('stRepl').innerHTML = '';
+  (c.replacements || []).forEach(r => addReplRow(r.find, r.replace));
+  const log = c.webhookLog || [];
+  document.getElementById('stHookLog').innerHTML = log.length
+    ? '<div class="ap-label" style="margin-top:10px;">שליחות אחרונות</div>' + log.slice(0, 5).map(l =>
+      `<div class="ap-log-row ${/^HTTP 2/.test(l.result) ? 'ok' : 'bad'}"><span>${fmtDate(l.ts)} ${fmtTime(l.ts)}</span><span>${esc(l.event)}</span><b class="ltr">${esc(l.result)}</b></div>`).join('')
+    : '';
+}
+function addReplRow(find, repl) {
+  const row = document.createElement('div');
+  row.className = 'ap-repl';
+  row.innerHTML = `<input class="ap-field ltr r-find" placeholder="מה לחפש (Regex)"><i class="fas fa-arrow-left"></i><input class="ap-field r-repl" placeholder="במה להחליף"><button class="ap-icon-btn" title="הסר" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>`;
+  row.querySelector('.r-find').value = find || '';
+  row.querySelector('.r-repl').value = repl || '';
+  document.getElementById('stRepl').appendChild(row);
+}
+function saveSettings(btn) {
+  const replacements = [...document.querySelectorAll('#stRepl .ap-repl')]
+    .map(r => ({ find: r.querySelector('.r-find').value, replace: r.querySelector('.r-repl').value }))
+    .filter(r => r.find);
+  saveChannel({ pushOnPost: document.getElementById('stPush').checked,
+    apiKey: document.getElementById('stApiKey').value.trim(),
+    webhookUrl: document.getElementById('stHook').value.trim(),
+    webhookSecret: document.getElementById('stHookSecret').value.trim(), replacements }, btn);
+}
+
+/* ---------- 4. מי יכול לצפות ---------- */
+function fillViewers() {
+  const c = _apCh || {};
+  document.getElementById('vwLocked').checked = !!c.locked;
+  document.getElementById('vwAllowed').value = (c.allowed || []).join('\n');
+  vwCountUpdate();
+}
+function vwCountUpdate() {
+  const n = document.getElementById('vwAllowed').value.split(/[\s,;]+/).filter(e => e.includes('@')).length;
+  document.getElementById('vwCount').textContent = n ? `${n} כתובות` : '';
+}
+async function saveViewers(btn) {
+  const locked = document.getElementById('vwLocked').checked;
+  const allowed = document.getElementById('vwAllowed').value;
+  if (locked && !allowed.includes('@') && !confirm('הערוץ יינעל ואין אף כתובת ברשימה. רק הצוות יוכל לקרוא. להמשיך?')) return;
+  if (await saveChannel({ locked, allowed }, btn)) fillViewers();
+}
+
+/* ---------- 6. תגובות אימוג'י ---------- */
+const EMOJI_PALETTE = ['❤️', '👍', '😂', '😭', '🔥', '🙏', '😍', '😮', '💯', '👎', '😊', '😢', '🤬', '💥', '🥳', '😕', '🍿', '💪', '🚀', '😉',
+  '🥵', '🤑', '🎯', '🌀', '😌', '💔', '😨', '🤣', '📖', '👏', '🎉', '✅', '❌', '⭐', '💡', '🤔', '😎', '🙌', '👀', '💙', '🤝', '📌', '⚡', '🕯️', '📣'];
+let _emSel = [];
+function fillEmojis() { _emSel = [...((_apCh || CH || {}).emojis || [])]; renderEmojiEditor(); }
+function renderEmojiEditor() {
+  document.getElementById('emCount').textContent = _emSel.length ? `${_emSel.length}` : 'כבוי';
+  document.getElementById('emList').innerHTML = _emSel.length
+    ? _emSel.map((e, i) => `<span class="em-chip">${esc(e)}<button onclick="emRemove(${i})" title="הסר">×</button></span>`).join('')
+    : '<div class="ap-hint">אין אימוג\'ים פעילים: התגובות כבויות בערוץ.</div>';
+  document.getElementById('emPalette').innerHTML = EMOJI_PALETTE.map(e =>
+    `<button class="em-pick${_emSel.includes(e) ? ' on' : ''}" onclick="emToggle('${e}')">${e}</button>`).join('');
+}
+function emRemove(i) { _emSel.splice(i, 1); renderEmojiEditor(); }
+function emToggle(e) { const i = _emSel.indexOf(e); if (i >= 0) _emSel.splice(i, 1); else _emSel.push(e); renderEmojiEditor(); }
+function emAddCustom() {
+  const inp = document.getElementById('emCustom');
+  const found = [...(inp.value.match(/\p{Extended_Pictographic}(?:️|‍\p{Extended_Pictographic})*/gu) || [])];
+  if (!found.length) { showToast('לא נמצא אימוג\'י בטקסט', 'error'); return; }
+  found.forEach(e => { if (!_emSel.includes(e)) _emSel.push(e); });
+  inp.value = ''; renderEmojiEditor();
+}
+function saveEmojis(btn) { saveChannel({ emojis: _emSel }, btn); }
+
+/* ---------- 7. תגיות ---------- */
+const TAG_COLORS = ['#1a56db', '#0891b2', '#059669', '#65a30d', '#d97706', '#dc2626', '#db2777', '#7c3aed', '#475569'];
+let _tgSel = [], _tgColor = TAG_COLORS[0];
+function fillTags() { _tgSel = ((_apCh || CH || {}).tags || []).map(t => ({ ...t })); renderTagEditor(); }
+function renderTagEditor() {
+  document.getElementById('tgCount').textContent = `${_tgSel.length}/30`;
+  document.getElementById('tgList').innerHTML = _tgSel.length
+    ? _tgSel.map((t, i) => `<span class="post-tag" style="--tc:${t.color}">${esc(t.name)}<button onclick="tgRemove(${i})" title="הסר">×</button></span>`).join('')
+    : '<div class="ap-hint">אין עדיין תגיות. פס הסינון לא מוצג לקוראים.</div>';
+  document.getElementById('tgColors').innerHTML = TAG_COLORS.map(c =>
+    `<button class="tg-color${c === _tgColor ? ' on' : ''}" style="--sw:${c}" onclick="_tgColor='${c}';renderTagEditor()" title="${c}"></button>`).join('');
+  tgPreview();
+}
+function tgPreview() {
+  const p = document.getElementById('tgPrev');
+  p.textContent = document.getElementById('tgName').value.trim() || 'תגית';
+  p.style.setProperty('--tc', _tgColor);
+}
+function tgAdd() {
+  const inp = document.getElementById('tgName');
+  const name = inp.value.trim();
+  if (!name) return;
+  if (_tgSel.some(t => t.name === name)) { showToast('התגית כבר קיימת', 'error'); return; }
+  if (_tgSel.length >= 30) { showToast('אפשר עד 30 תגיות', 'error'); return; }
+  _tgSel.push({ name, color: _tgColor }); inp.value = ''; renderTagEditor();
+}
+function tgRemove(i) { _tgSel.splice(i, 1); renderTagEditor(); }
+function saveTags(btn) { saveChannel({ tags: _tgSel }, btn); }
 
 async function loadWritersMap() {
   const d = await api('allowed_list', {});
@@ -2044,7 +2645,7 @@ function buildMsg(e) {
   if (e.htmlCode) { const safeHtml = e.htmlCode.replace(/`/g, '&#96;'); media += `<div class="bubble-html" style="margin-top:9px;border-radius:12px;overflow:hidden;width:100%;"><iframe srcdoc="${safeHtml.replace(/"/g, '&quot;')}" style="width:100%;border:none;display:block;" sandbox="allow-scripts allow-popups" scrolling="no" onload="try{this.style.height=this.contentDocument.body.scrollHeight+'px'}catch(e){}"></iframe></div>`; }
 
   let tagsHtml = '';
-  if (e.tags && e.tags.length) tagsHtml = '<div class="post-tags-row" style="margin-top:8px;">' + e.tags.map(t => `<span class="post-tag" onclick="document.getElementById('searchInput').value='${escAttr(t)}';onSearch('${escAttr(t)}')"><i class="fas fa-tag"></i> ${esc(t)}</span>`).join('') + '</div>';
+  if (e.tags && e.tags.length) tagsHtml = '<div class="post-tags-row">' + e.tags.map(t => `<button class="post-tag" style="--tc:${tagColor(t)}" data-tag="${escAttr(t)}" onclick="setTagFilter(this.dataset.tag)"><i class="fas fa-tag"></i> ${esc(t)}</button>`).join('') + '</div>';
 
   let quoteHtml = '';
   if (e.quote) {
@@ -2104,7 +2705,7 @@ function watchViews() {
   document.querySelectorAll('#feedInner .msg-row:not([data-vw])').forEach(r => { r.dataset.vw = '1'; _viewObserver.observe(r); });
 }
 // כל שינוי בפיד (טעינה, טעינת הודעות ישנות, הודעה חדשה) מוסיף את השורות החדשות למעקב
-new MutationObserver(() => watchViews()).observe(document.getElementById('feedInner'), { childList: true });
+new MutationObserver(() => { watchViews(); if (_tagFilter) applyTagFilter(); }).observe(document.getElementById('feedInner'), { childList: true });
 
 function copyMsgLink(id, btn) {
   const el = document.querySelector(`.msg-row[data-id="${id}"]`); if (el) el.id = 'msg-link-' + id;
@@ -2221,14 +2822,23 @@ async function submitReport() {
   btn.disabled = false; btn.textContent = 'שלח דיווח';
 }
 
+let _repFilter = 'open';
+function setRepFilter(f) { _repFilter = f; openReportsModal(); }
 async function openReportsModal() {
+  document.querySelectorAll('#repTabs button').forEach(b => b.classList.toggle('on', b.dataset.f === _repFilter));
   const list = document.getElementById('reportsList');
   list.innerHTML = '<div class="ap-loading"><span class="lm-ring"></span> טוען דיווחים...</div>';
-  const d = await api('reports_get', {});
+  const d = await api('reports_get', { filter: _repFilter });
   const reports = d.reports || [];
-  if (d.status === 'ok') setReportsFrom(reports);
+  if (d.status === 'ok') {
+    document.getElementById('repOpenN').textContent = d.open || '';
+    document.getElementById('repDoneN').textContent = d.resolvedCount || '';
+    if (_repFilter === 'open') setReportsFrom(reports);
+  }
   if (!reports.length) {
-    list.innerHTML = '<div class="ap-empty"><i class="fas fa-circle-check"></i><div>אין דיווחים פתוחים</div><small>כשמישהו ידווח על הודעה, תופיע כאן נקודה אדומה.</small></div>';
+    list.innerHTML = _repFilter === 'open'
+      ? '<div class="ap-empty"><i class="fas fa-circle-check"></i><div>אין דיווחים פתוחים</div><small>כשמישהו ידווח על הודעה, תופיע נקודה אדומה על התמונה שלך.</small></div>'
+      : '<div class="ap-empty"><i class="fas fa-inbox"></i><div>אין דיווחים להצגה</div></div>';
     return;
   }
   list.innerHTML = reports.map(r => {
@@ -2236,21 +2846,21 @@ async function openReportsModal() {
     const preview = msg ? mdToPlain(msg.text || '').trim().slice(0, 140) : '';
     const when = r.ts ? `${fmtDate(r.ts)} · ${fmtTime(r.ts)}` : '';
     return `
-    <div class="ap-report">
+    <div class="ap-report${r.resolved ? ' done' : ''}">
       <div class="ap-report-top">
-        <span class="ap-report-ico"><i class="fas fa-flag"></i></span>
+        <span class="ap-report-ico"><i class="fas fa-${r.resolved ? 'check' : 'flag'}"></i></span>
         <div class="ap-report-who">
           <div class="ap-report-mail">${esc(r.reporterEmail || r.email || '')}</div>
-          <div class="ap-report-when">${when}</div>
+          <div class="ap-report-when">${when}${r.resolved ? ' · טופל' : ''}</div>
         </div>
         <a href="#" class="ap-chip-link" onclick="closeReportsModal(); scrollToReportedMsg('${escAttr(r.msgId)}'); return false;"><i class="fas fa-arrow-left"></i> להודעה</a>
       </div>
       <div class="ap-report-reason">${esc(r.reason)}</div>
       ${preview ? `<div class="ap-report-msg"><i class="fas fa-quote-right"></i> ${esc(preview)}${preview.length >= 140 ? '…' : ''}</div>` : ''}
-      <div class="ap-report-actions">
+      ${r.resolved ? '' : `<div class="ap-report-actions">
         <button onclick="dismissReport('${escAttr(r.id)}')" class="ap-btn ap-btn-soft"><i class="fas fa-check"></i> טופל</button>
         <button onclick="deleteReportedMsg('${escAttr(r.msgId)}','${escAttr(r.id)}')" class="ap-btn ap-btn-danger"><i class="fas fa-trash"></i> מחק את ההודעה</button>
-      </div>
+      </div>`}
     </div>`;
   }).join('');
 }
@@ -2274,6 +2884,7 @@ async function deleteReportedMsg(msgId, reportId) {
 async function loadFeed() {
   const d = await api('feed', { channel: CHANNEL, limit: 20 });
   document.getElementById('feedInitialSpinner').style.display = 'none';
+  if (d.locked) { showChannelPreview(true); return; }
   if (d.auth === false) { clearSavedUser(); me = null; applyGuestUI(); showChannelPreview(); return; }
   if (d.status !== 'ok') { console.error('שגיאה בטעינת הפיד'); return; }
   items = [...d.messages].reverse();
@@ -2483,7 +3094,7 @@ function updateAttachPreview() {
   prev.innerHTML = chips.join(''); prev.classList.toggle('show', chips.length > 0);
 }
 
-function clearCompose() { document.getElementById('composeEditor').innerHTML = ''; composeImgUrl = ''; composeVidUrl = ''; composeHtmlCode = ''; composeBtns = []; document.getElementById('composeEditor')._quoteData = null; updateAttachPreview(); }
+function clearCompose() { const _ti = document.getElementById('composeTagsInput'); if (_ti) { _ti.value = ''; renderComposeTags(); } document.getElementById('composeEditor').innerHTML = ''; composeImgUrl = ''; composeVidUrl = ''; composeHtmlCode = ''; composeBtns = []; document.getElementById('composeEditor')._quoteData = null; updateAttachPreview(); }
 function onComposeChange() { const ed = document.getElementById('composeEditor'); document.getElementById('composeCharCount').textContent = editorToMarkdown(ed).length; }
 function onComposeKeyDown(e) {}
 
@@ -2749,68 +3360,146 @@ async function deleteAd(type) {
 function showAdMsg(txt, color) { const el = document.getElementById('adMsg'); el.textContent = txt; el.style.color = color === 'green' ? '#16a34a' : '#dc2626'; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 2000); }
 
 /* ================= ניהול מורשי כתיבה ================= */
+/* ================= צוות והרשאות ================= */
 async function openManageAdmins() { document.getElementById('adminMsgResult').style.display = 'none'; await renderAdminsList(); }
-function closeManageAdmins() { closeAdminPanel(); }
 async function renderAdminsList() {
   const list = document.getElementById('adminsList'); if (!list) return;
   list.innerHTML = '<div class="ap-loading"><span class="lm-ring"></span> טוען...</div>';
   const d = await api('allowed_list', {});
-  const users = d.list || [];
-  if (!users.length) { list.innerHTML = '<div class="ap-empty">אין כותבים מורשים עדיין</div>'; return; }
-  list.innerHTML = users.map(u => {
-    const isMe = u.email === me?.email?.toLowerCase();
-    return `<div class="ap-row-card">
-      <span class="ap-person-av is-letter">${esc((u.name || u.email || '?')[0].toUpperCase())}</span>
-      <div style="flex:1;min-width:0;">
-        <div class="ap-person-name">${esc(u.name || u.email)}${isMe ? ' <span class="ap-hint">(אני)</span>' : ''}</div>
-        <div class="ap-person-mail">${esc(u.email)}</div>
-        <span class="ap-tag">כותב מורשה</span>
-      </div>
-      ${isSuperAdmin() ? `<button class="ap-icon-btn" onclick="removeAdmin('${escAttr(u.email)}')" title="הסר"><i class="fas fa-trash"></i></button>` : ''}
-    </div>`;
-  }).join('');
+  const av = n => `<span class="ap-person-av is-letter">${esc((n || '?')[0].toUpperCase())}</span>`;
+  const owners = (d.owners || []).map(o => `
+    <div class="ap-row-card">
+      ${av(o.name || o.email)}
+      <div class="ap-person"><div class="ap-person-name">${esc(o.name || o.email)}</div><div class="ap-person-mail">${esc(o.email)}</div></div>
+      <span class="ap-role-tag owner">בעלים</span>
+    </div>`).join('');
+  const staff = (d.list || []).map(u => `
+    <div class="ap-row-card">
+      ${av(u.name || u.email)}
+      <div class="ap-person"><div class="ap-person-name">${esc(u.name || u.email)}${u.email === me?.email ? ' <span class="ap-hint">(אני)</span>' : ''}</div><div class="ap-person-mail">${esc(u.email)}</div></div>
+      <select class="ap-field ap-role-sel" data-email="${escAttr(u.email)}" data-name="${escAttr(u.name || '')}" onchange="changeRole(this)">
+        <option value="admin"${u.role === 'admin' ? ' selected' : ''}>מנהל</option>
+        <option value="writer"${u.role !== 'admin' ? ' selected' : ''}>כותב</option>
+      </select>
+      <button class="ap-icon-btn" data-email="${escAttr(u.email)}" onclick="removeAdmin(this.dataset.email)" title="הסר מהצוות"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+  list.innerHTML = owners + (staff || '<div class="ap-hint" style="padding:6px 2px;">אין עדיין מנהלים או כותבים.</div>');
 }
 async function addAdmin() {
-  const email = document.getElementById('newAdminEmail')?.value.trim().toLowerCase();
-  const name = document.getElementById('newAdminName')?.value.trim();
-  if (!email || !name) { showAdminMsg('יש למלא אימייל ושם', 'red'); return; }
-  if (!email.includes('@')) { showAdminMsg('אימייל לא תקין', 'red'); return; }
-  const d = await api('allowed_add', { email: me.email, target: email, name }, 'POST');
+  const email = document.getElementById('newAdminEmail').value.trim().toLowerCase();
+  const name = document.getElementById('newAdminName').value.trim();
+  const role = document.getElementById('newAdminRole').value;
+  if (!email || !name) { showAdminMsg('יש למלא מייל ושם', 'red'); return; }
+  if (!email.includes('@')) { showAdminMsg('המייל לא תקין', 'red'); return; }
+  const d = await api('allowed_add', { target: email, name, role }, 'POST');
   if (d.status === 'ok') {
-    showAdminMsg('נוסף בהצלחה ✓', 'green');
+    showAdminMsg('נוסף לצוות ✓', 'green');
     document.getElementById('newAdminEmail').value = ''; document.getElementById('newAdminName').value = '';
     await loadWritersMap(); await renderAdminsList();
-  } else { showAdminMsg('שגיאה', 'red'); }
+  } else showAdminMsg(d.message || 'שגיאה', 'red');
+}
+async function changeRole(sel) {
+  const d = await api('allowed_add', { target: sel.dataset.email, name: sel.dataset.name, role: sel.value }, 'POST');
+  if (d.status === 'ok') showToast(`התפקיד עודכן ל${sel.value === 'admin' ? 'מנהל' : 'כותב'}`);
+  else { showToast(d.message || 'שגיאה', 'error'); renderAdminsList(); }
 }
 async function removeAdmin(targetEmail) {
-  if (!isSuperAdmin()) return;
   if (!confirm(`להסיר את ${targetEmail} מהצוות?`)) return;
-  const d = await api('allowed_remove', { email: me.email, target: targetEmail }, 'POST');
-  if (d.status === 'ok') { await loadWritersMap(); await renderAdminsList(); showAdminMsg('הוסר בהצלחה', 'green'); }
-  else { showAdminMsg('שגיאה', 'red'); }
+  const d = await api('allowed_remove', { target: targetEmail }, 'POST');
+  if (d.status === 'ok') { await loadWritersMap(); await renderAdminsList(); showAdminMsg('הוסר מהצוות', 'green'); }
+  else showAdminMsg('שגיאה', 'red');
 }
-function showAdminMsg(txt, color) { const el = document.getElementById('adminMsgResult'); if (!el) return; el.textContent = txt; el.style.color = color === 'green' ? '#3f9a6e' : '#c94b4b'; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
+function showAdminMsg(txt, color) { const el = document.getElementById('adminMsgResult'); if (!el) return; el.textContent = txt; el.style.color = color === 'green' ? 'var(--ok)' : 'var(--danger)'; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
 
 /* ================= סטטיסטיקות ================= */
-async function pingSitePresence() { if (!me) return; await api('presence_ping', { email: me.email, name: me.name, picture: me.picture }, 'POST'); }
+async function pingSitePresence() { if (!me) return; await api('presence_ping', {}, 'POST'); }
 async function triggerStats() {
   const d = await api('site_stats', {});
   if (d.status === 'ok') {
-    const map = { publicUserCount: d.followers, statOnline: d.online, statHour: d.hour, statDay: d.day, statWeek: d.week, statPeak: d.peak };
-    for (let id in map) { const el = document.getElementById(id); if (el) el.innerText = map[id]; }
+    const el = document.getElementById('publicUserCount'); if (el) el.innerText = d.followers;
+    if (document.getElementById('ap-sec-stats')?.style.display === 'block') fillStatCards(d);
   }
 }
+function fillStatCards(d) {
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('stParticipants', Number(d.followers || 0).toLocaleString('he-IL'));
+  set('statOnline', d.online || 0);
+  set('statPeak', d.peak || 0);
+  set('statPeakTs', d.peakTs ? `ב־${fmtDate(d.peakTs)} בשעה ${fmtTime(d.peakTs)}` : '');
+}
+let _statDays = 7, _statPts = [];
 async function openSiteStats() {
   const d = await api('site_stats', {});
-  if (d.status === 'ok') {
-    document.getElementById('statOnline').innerText = d.online || '0';
-    document.getElementById('statHour').innerText = d.hour || '0';
-    document.getElementById('statDay').innerText = d.day || '0';
-    document.getElementById('statWeek').innerText = d.week || '0';
-    document.getElementById('statPeak').innerText = d.peak || '0';
-  }
+  if (d.status === 'ok') fillStatCards(d);
+  loadStatsChart(_statDays);
 }
+async function loadStatsChart(days) {
+  _statDays = days;
+  document.querySelectorAll('#stRange button').forEach(b => b.classList.toggle('on', +b.dataset.days === days));
+  const box = document.getElementById('statChart');
+  box.innerHTML = '<div class="ap-loading"><span class="lm-ring"></span></div>';
+  const d = await api('stats_series', { days });
+  if (d.status !== 'ok') { box.innerHTML = `<div class="ap-hint">${esc(d.message || 'שגיאה בטעינה')}</div>`; return; }
+  _statPts = d.points || [];
+  drawStatsChart(); renderStatTable();
+}
+// קו אחד בצבע הערוץ, בלי מקרא (סדרה אחת). ציר זמן משמאל לימין, וריחוף מציג שעה וערך.
+function drawStatsChart() {
+  const box = document.getElementById('statChart'), pts = _statPts;
+  const W = Math.max(280, box.clientWidth || 600), H = 220, L = 34, R = 10, T = 12, B = 26;
+  const max = Math.max(...pts.map(p => p.users), 0);
+  const step = max <= 4 ? 1 : Math.ceil(max / 4 / (max > 40 ? 10 : 1)) * (max > 40 ? 10 : 1);
+  const yMax = Math.max(step * 4, 4);
+  const x = i => L + (pts.length < 2 ? 0 : i * (W - L - R) / (pts.length - 1));
+  const y = v => T + (H - T - B) * (1 - v / yMax);
+  let grid = '';
+  for (let v = 0; v <= yMax; v += yMax / 4) grid += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" class="g"/><text x="${L - 6}" y="${y(v) + 4}" class="yl">${Math.round(v)}</text>`;
+  let ticks = '';
+  const day = 24 * 3600000;
+  pts.forEach((p, i) => {
+    const dt = new Date(p.t);
+    const isMid = dt.getHours() === 0;
+    const label = _statDays === 1 ? (dt.getHours() % 6 === 0 ? `${String(dt.getHours()).padStart(2, '0')}:00` : '')
+      : isMid && (_statDays === 7 || dt.getDate() % 5 === 1) ? `${dt.getDate()}.${dt.getMonth() + 1}` : '';
+    if (label) ticks += `<text x="${x(i)}" y="${H - 7}" class="xl">${label}</text>`;
+  });
+  const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.users).toFixed(1)}`).join('');
+  const area = pts.length ? `${line}L${x(pts.length - 1)},${y(0)}L${x(0)},${y(0)}Z` : '';
+  const empty = !max ? `<text x="${W / 2}" y="${H / 2}" class="empty">אין עדיין נתונים. הם נאספים מרגע העדכון.</text>` : '';
+  box.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="משתמשים באתר לפי שעה">
+    ${grid}${ticks}<path d="${area}" class="a"/><path d="${line}" class="l"/>${empty}
+    <line class="cx" y1="${T}" y2="${H - B}" style="display:none"/><circle class="cd" r="4.5" style="display:none"/>
+    <rect x="${L}" y="0" width="${W - L - R}" height="${H}" fill="transparent" class="hit"/></svg><div class="ap-tip" style="display:none"></div>`;
+  const svg = box.querySelector('svg'), tip = box.querySelector('.ap-tip'), cx = svg.querySelector('.cx'), cd = svg.querySelector('.cd');
+  const move = ev => {
+    if (!pts.length) return;
+    const r = svg.getBoundingClientRect();
+    const i = Math.max(0, Math.min(pts.length - 1, Math.round((ev.clientX - r.left - L) / ((W - L - R) / Math.max(1, pts.length - 1)))));
+    const p = pts[i];
+    cx.setAttribute('x1', x(i)); cx.setAttribute('x2', x(i)); cx.style.display = '';
+    cd.setAttribute('cx', x(i)); cd.setAttribute('cy', y(p.users)); cd.style.display = '';
+    const dt = new Date(p.t);
+    tip.innerHTML = `<div>${dt.getDate()}.${dt.getMonth() + 1} · ${String(dt.getHours()).padStart(2, '0')}:00</div><b>${p.users}</b> משתמשים<div class="sub">שיא מחוברים יחד: ${p.online}</div>`;
+    tip.style.display = '';
+    tip.style.left = Math.min(W - tip.offsetWidth - 4, Math.max(4, x(i) - tip.offsetWidth / 2)) + 'px';
+  };
+  svg.addEventListener('mousemove', move);
+  svg.addEventListener('mouseleave', () => { tip.style.display = 'none'; cx.style.display = 'none'; cd.style.display = 'none'; });
+}
+function renderStatTable() {
+  const byDay = {};
+  _statPts.forEach(p => {
+    const k = fmtDate(p.t);
+    byDay[k] = byDay[k] || { users: 0, online: 0 };
+    byDay[k].users = Math.max(byDay[k].users, p.users);
+    byDay[k].online = Math.max(byDay[k].online, p.online);
+  });
+  document.getElementById('statTable').innerHTML = `<table class="ap-table"><thead><tr><th>תאריך</th><th>הכי הרבה משתמשים בשעה</th><th>שיא מחוברים יחד</th></tr></thead><tbody>${
+    Object.entries(byDay).reverse().map(([k, v]) => `<tr><td>${k}</td><td>${v.users}</td><td>${v.online}</td></tr>`).join('')}</tbody></table>`;
+}
+window.addEventListener('resize', () => { if (document.getElementById('ap-sec-stats')?.style.display === 'block' && _statPts.length) drawStatsChart(); });
 function closeSiteStats() { closeAdminPanel(); }
+/* ================= סטטיסטיקות ================= */
 
 /* ================= לייטבוקס, מצב כהה, התראות ================= */
 function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.getElementById('lbImg').src = ''; }
