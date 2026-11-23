@@ -1215,6 +1215,30 @@ body.no-rxn .rxn-add-btn{display:none!important;}
 .us-act{padding:7px 12px!important;font-size:12px!important;flex-shrink:0;}
 @media(max-width:600px){.us-dates{display:none;}}
 
+/* חלון "מי צפה ומי הגיב" */
+#insightsModal{display:none;position:fixed;inset:0;z-index:880;background:rgba(17,24,39,.28);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:16px;}
+#insightsModal.open{display:flex;animation:lbIn .15s ease;}
+.ins-box{width:100%;max-width:440px;max-height:min(80vh,620px);display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);
+  border-radius:22px;box-shadow:var(--sh-3);overflow:hidden;animation:apPop .22s cubic-bezier(.16,1,.3,1);}
+.ins-hdr{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 12px;}
+.ins-hdr > div{flex:1;min-width:0;}
+.ins-title{font-size:16px;font-weight:900;color:var(--ink);}
+.ins-sub{font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ins-x{width:32px;height:32px;border-radius:10px;border:none;background:var(--surface-2);color:var(--muted);cursor:pointer;flex-shrink:0;}
+.ins-x:hover{color:var(--ink);}
+.ins-tabs{margin:0 20px;}
+.ins-tabs button i{font-size:12px;}
+.ins-filter{display:flex;gap:6px;flex-wrap:wrap;padding:12px 20px 0;}
+.ins-filter:empty{display:none;}
+.ins-list{overflow-y:auto;padding:10px 12px 16px;scrollbar-width:thin;}
+.ins-row{display:flex;align-items:center;gap:12px;padding:9px 8px;border-radius:12px;}
+.ins-row:hover{background:var(--surface-2);}
+.ins-row .us-av{width:36px;height:36px;font-size:14px;}
+.ins-side{font-size:12px;color:var(--muted);white-space:nowrap;}
+.ins-emoji{font-size:20px;font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+.bubble-top-actions .msg-action-btn.info.info:hover{color:var(--ink)!important;background:#f4f5f7!important;}
+body.dark .bubble-top-actions .msg-action-btn.info.info:hover{color:#fff!important;background:var(--surface-2)!important;}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 
@@ -1833,6 +1857,21 @@ body.dark #composeEditor{background:transparent!important;}
     </div>
   </div>
 </div>
+<div id="insightsModal" onclick="if(event.target===this)closeMsgInsights()">
+  <div class="ins-box" role="dialog" aria-labelledby="insTitle">
+    <div class="ins-hdr">
+      <div><div class="ins-title" id="insTitle">מי צפה ומי הגיב</div><div class="ins-sub" id="insSub"></div></div>
+      <button class="ins-x" onclick="closeMsgInsights()" title="סגור"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="ap-seg wide ins-tabs">
+      <button data-t="views" class="on" onclick="setInsTab('views')"><i class="fas fa-eye"></i> צפו <b id="insViewsN"></b></button>
+      <button data-t="rx" onclick="setInsTab('rx')"><i class="far fa-face-smile"></i> הגיבו <b id="insRxN"></b></button>
+    </div>
+    <div class="ins-filter" id="insFilter"></div>
+    <div class="ins-list" id="insList"></div>
+  </div>
+</div>
+
 <div id="adminPanelModal" onclick="if(event.target===this)closeAdminPanel()">
   <div class="ap-box" onclick="event.stopPropagation()">
 
@@ -2891,8 +2930,9 @@ function scrollToQuotedMsg(id) {
 function buildMsg(e) {
   const id = e.id;
   const role = getRole();
-  const canDel = role === 'super' || (role === 'writer' && e.senderEmail === me?.email);
-  const canEdit = role === 'super' || (role === 'writer' && e.senderEmail === me?.email);
+  const canDel = role === 'super' || role === 'admin' || (role === 'writer' && e.senderEmail === me?.email);
+  const canEdit = canDel;
+  const canInsights = canDel;   // מי צפה ומי הגיב: בעלים ומנהלים, וכותב על ההודעות שלו
 
   let content = `<div class="bubble-text">${rich(e.text || '')}</div>`;
   let media = '';
@@ -2924,7 +2964,7 @@ function buildMsg(e) {
     </div>`;
   }
 
-  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><img class="msg-meta-av" src="${LOGO}" alt="" onerror="this.style.display='none'"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}<div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div>${viewsHtml(e)}</div></div></div></div></div>`;
+  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><img class="msg-meta-av" src="${LOGO}" alt="" onerror="this.style.display='none'"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canInsights ? `<button class="msg-action-btn info" onclick="openMsgInsights('${escAttr(id)}')" title="מי צפה ומי הגיב"><i class="fas fa-user-check"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}<div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div>${viewsHtml(e)}</div></div></div></div></div>`;
 }
 
 /* ================= צפיות בהודעות =================
@@ -2972,6 +3012,51 @@ function watchViews() {
 }
 // כל שינוי בפיד (טעינה, טעינת הודעות ישנות, הודעה חדשה) מוסיף את השורות החדשות למעקב
 new MutationObserver(() => { watchViews(); if (_tagFilter) applyTagFilter(); }).observe(document.getElementById('feedInner'), { childList: true });
+
+/* ================= מי צפה ומי הגיב (לצוות) ================= */
+let _ins = null, _insTab = 'views', _insEmoji = '';
+async function openMsgInsights(id) {
+  const m = items.find(e => e.id === id);
+  _ins = null; _insTab = 'views'; _insEmoji = '';
+  document.getElementById('insSub').textContent = m ? (m.seq ? `הודעה #${m.seq} · ` : '') + mdToPlain(m.text || '').trim().slice(0, 60) : '';
+  document.getElementById('insList').innerHTML = '<div class="ap-loading"><span class="lm-ring"></span> טוען...</div>';
+  document.getElementById('insFilter').innerHTML = '';
+  document.getElementById('insViewsN').textContent = ''; document.getElementById('insRxN').textContent = '';
+  document.querySelectorAll('.ins-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === 'views'));
+  document.getElementById('insightsModal').classList.add('open');
+  const d = await api('msg_insights', { id });
+  if (d.status !== 'ok') { document.getElementById('insList').innerHTML = `<div class="ap-empty"><div>${esc(d.message || 'שגיאה')}</div></div>`; return; }
+  _ins = d;
+  document.getElementById('insViewsN').textContent = d.views.length;
+  document.getElementById('insRxN').textContent = d.reactions.reduce((n, r) => n + r.users.length, 0);
+  renderInsights();
+}
+function closeMsgInsights() { document.getElementById('insightsModal').classList.remove('open'); }
+function setInsTab(t) { _insTab = t; _insEmoji = ''; document.querySelectorAll('.ins-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); renderInsights(); }
+function setInsEmoji(e) { _insEmoji = _insEmoji === e ? '' : e; renderInsights(); }
+function insPerson(u, side) {
+  return `<div class="ins-row">
+    <span class="us-av">${u.picture ? `<img src="${escAttr(u.picture)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<b>${esc((u.name || '?')[0].toUpperCase())}</b></span>
+    <div class="ap-person"><div class="ap-person-name">${esc(u.name)}</div>${u.email ? `<div class="ap-person-mail">${esc(u.email)}</div>` : ''}</div>
+    <span class="ins-side">${side || ''}</span>
+  </div>`;
+}
+function renderInsights() {
+  if (!_ins) return;
+  const list = document.getElementById('insList'), filter = document.getElementById('insFilter');
+  if (_insTab === 'views') {
+    filter.innerHTML = '';
+    list.innerHTML = _ins.views.length ? _ins.views.map(u => insPerson(u, relTime(u.ts))).join('')
+      : '<div class="ap-empty"><i class="far fa-eye"></i><div>עדיין אף אחד לא צפה</div><small>צפייה נספרת כשההודעה הייתה על המסך שנייה אחת.</small></div>';
+    return;
+  }
+  filter.innerHTML = _ins.reactions.length > 1 ? `<button class="tf-chip sm${_insEmoji ? '' : ' on'}" onclick="setInsEmoji('')">הכל</button>` +
+    _ins.reactions.map(r => `<button class="tf-chip sm${_insEmoji === r.emoji ? ' on' : ''}" onclick="setInsEmoji('${r.emoji}')">${r.emoji} ${r.users.length}</button>`).join('') : '';
+  const rows = [];
+  _ins.reactions.filter(r => !_insEmoji || r.emoji === _insEmoji).forEach(r => r.users.forEach(u => rows.push(insPerson(u, `<span class="ins-emoji">${r.emoji}</span>`))));
+  list.innerHTML = rows.length ? rows.join('') : '<div class="ap-empty"><i class="far fa-face-smile"></i><div>עדיין אין תגובות</div></div>';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('insightsModal')?.classList.contains('open')) closeMsgInsights(); });
 
 /* ================= קישור קצר להודעה: ...status/#12 ================= */
 function msgLink(id) {
