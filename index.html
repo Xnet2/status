@@ -1239,6 +1239,15 @@ body.no-rxn .rxn-add-btn{display:none!important;}
 .bubble-top-actions .msg-action-btn.info.info:hover{color:var(--ink)!important;background:#f4f5f7!important;}
 body.dark .bubble-top-actions .msg-action-btn.info.info:hover{color:#fff!important;background:var(--surface-2)!important;}
 
+/* בוחר האימוג'ים המלא בניהול */
+.em-picker-box{border-radius:16px;overflow:hidden;border:1px solid var(--line);}
+.em-picker-box emoji-picker{width:100%;height:380px;--border-size:0;--border-radius:0;--background:var(--surface);--input-border-color:var(--line);
+  --input-border-radius:10px;--input-font-color:var(--ink);--input-placeholder-color:var(--faint);--indicator-color:var(--ink);--outline-color:var(--accent-line);
+  --button-hover-background:var(--surface-2);--button-active-background:var(--line);--category-font-color:var(--muted);--emoji-size:1.6rem;--num-columns:10;
+  --emoji-font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;--category-font-size:.8rem;--input-font-size:.9rem;
+  font-family:'Assistant','Heebo',sans-serif;}
+@media(max-width:600px){.em-picker-box emoji-picker{--num-columns:8;--emoji-size:1.4rem;height:340px;}}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 
@@ -2108,9 +2117,10 @@ body.dark #composeEditor{background:transparent!important;}
             <div id="emList" class="em-list"></div>
           </div>
           <div class="ap-card">
-            <div class="ap-card-title"><i class="fas fa-plus"></i> הוספה</div>
-            <div id="emPalette" class="em-palette"></div>
-            <div class="ap-row" style="margin-top:12px;">
+            <div class="ap-card-title"><i class="fas fa-plus"></i> הוספה <span class="ap-opt">לוחצים על אימוג'י כדי להוסיף אותו לרשימה</span></div>
+            <div id="emPickerBox" class="em-picker-box"><div class="ap-loading"><span class="lm-ring"></span> טוען את כל האימוג'ים...</div></div>
+            <div id="emPalette" class="em-palette" style="display:none;"></div>
+            <div class="ap-row" id="emCustomRow" style="margin-top:12px;display:none;">
               <input id="emCustom" class="ap-field" placeholder="או הדביקו כאן אימוג'י אחר">
               <button class="ap-btn ap-btn-soft" onclick="emAddCustom()">הוספה</button>
             </div>
@@ -2799,7 +2809,46 @@ async function saveViewers(btn) {
 const EMOJI_PALETTE = ['❤️', '👍', '😂', '😭', '🔥', '🙏', '😍', '😮', '💯', '👎', '😊', '😢', '🤬', '💥', '🥳', '😕', '🍿', '💪', '🚀', '😉',
   '🥵', '🤑', '🎯', '🌀', '😌', '💔', '😨', '🤣', '📖', '👏', '🎉', '✅', '❌', '⭐', '💡', '🤔', '😎', '🙌', '👀', '💙', '🤝', '📌', '⚡', '🕯️', '📣'];
 let _emSel = [];
-function fillEmojis() { _emSel = [...((_apCh || CH || {}).emojis || [])]; renderEmojiEditor(); }
+function fillEmojis() { _emSel = [...((_apCh || CH || {}).emojis || [])]; renderEmojiEditor(); mountEmojiPicker(); }
+
+// בוחר אימוג'ים מלא (כמו במקלדת של גוגל): emoji-picker-element מ-jsDelivr, עם תוויות בעברית.
+// אם הספרייה לא נטענת, חוזרים לרשימה הקבועה ולשדה להדבקה.
+const EMOJI_PICKER_URL = 'https://cdn.jsdelivr.net/npm/emoji-picker-element@1.21.3/index.js';
+const EMOJI_DATA_URL = 'https://cdn.jsdelivr.net/npm/emoji-picker-element-data@1.6.1/en/emojibase/data.json';
+let _emPickerLoad = null;
+async function mountEmojiPicker() {
+  const box = document.getElementById('emPickerBox');
+  if (box.querySelector('emoji-picker')) return;
+  try {
+    _emPickerLoad = _emPickerLoad || import(EMOJI_PICKER_URL);
+    await _emPickerLoad;
+    const p = document.createElement('emoji-picker');
+    p.dataSource = EMOJI_DATA_URL;
+    p.i18n = {
+      categoriesLabel: 'קטגוריות', emojiUnsupportedMessage: 'הדפדפן לא תומך באימוג\'י צבעוני.', favoritesLabel: 'מועדפים',
+      loadingMessage: 'טוען…', networkErrorMessage: 'לא הצלחנו לטעון את האימוג\'ים.', regionLabel: 'בחירת אימוג\'י',
+      searchDescription: 'כשיש תוצאות, אפשר לעבור ביניהן עם החצים ולבחור באנטר.', searchLabel: 'חיפוש (באנגלית, למשל heart)',
+      searchResultsLabel: 'תוצאות החיפוש', skinToneDescription: 'כשפתוח, אפשר לעבור עם החצים ולבחור באנטר.',
+      skinToneLabel: 'גוון עור (%s)', skinTonesLabel: 'גווני עור',
+      skinTones: ['רגיל', 'בהיר', 'בהיר־בינוני', 'בינוני', 'כהה־בינוני', 'כהה'],
+      categories: { custom: 'מותאם', 'smileys-emotion': 'פרצופים ורגשות', 'people-body': 'אנשים וגוף', 'animals-nature': 'בעלי חיים וטבע',
+        'food-drink': 'אוכל ושתייה', 'travel-places': 'טיולים ומקומות', activities: 'פעילויות', objects: 'חפצים', symbols: 'סמלים', flags: 'דגלים' },
+    };
+    p.addEventListener('emoji-click', ev => {
+      const e = ev.detail.unicode;
+      if (!e) return;
+      if (_emSel.includes(e)) { showToast('האימוג\'י כבר ברשימה'); return; }
+      _emSel.push(e); renderEmojiEditor();
+    });
+    box.innerHTML = '';
+    box.appendChild(p);
+  } catch (err) {
+    console.warn('emoji picker', err);
+    box.style.display = 'none';
+    document.getElementById('emPalette').style.display = '';
+    document.getElementById('emCustomRow').style.display = '';
+  }
+}
 function renderEmojiEditor() {
   document.getElementById('emCount').textContent = _emSel.length ? `${_emSel.length}` : 'כבוי';
   document.getElementById('emList').innerHTML = _emSel.length
