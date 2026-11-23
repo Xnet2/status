@@ -1257,52 +1257,53 @@ header{height:68px!important;padding:0 18px!important;}
 #searchBar{border-radius:999px;border:1px solid var(--line);box-shadow:var(--sh-2);background:var(--surface);}
 .hdr-contact{background:var(--surface-2)!important;border:1px solid var(--line);}
 
-/* ---------- פיד: עמודה ממורכזת עם כרטיסים ---------- */
-#feedInner,#searchResultsInner{max-width:720px!important;margin:0 auto!important;padding:0 16px!important;gap:14px!important;}
-#feedWrap{padding-top:18px!important;}
-.msg-row{display:block!important;padding:0!important;}
-.msg-av{display:none!important;}
-.msg-col{position:relative;display:block!important;background:var(--surface);border:1px solid var(--line);border-radius:18px;
-  padding:14px 18px 10px;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:border-color .2s,box-shadow .2s;}
-.msg-row:hover .msg-col{border-color:color-mix(in srgb,var(--ink) 14%,var(--line));box-shadow:0 6px 22px -14px rgba(0,0,0,.25);}
-.msg-meta{display:flex!important;align-items:center!important;gap:8px!important;padding:0!important;margin-bottom:8px;}
-.msg-meta-av{width:28px;height:28px;border-radius:9px;object-fit:contain;background:#fff;box-shadow:0 0 0 1px var(--line);flex-shrink:0;}
-.msg-meta-name{font-size:13.5px!important;font-weight:800!important;color:var(--ink)!important;}
-.msg-meta-time{font-size:12px!important;color:var(--muted)!important;}
-.msg-meta-time::before{content:'·';margin-left:6px;color:var(--faint);}
-.bubble-wrap-outer{display:block!important;position:static!important;margin:0!important;}
-.bubble,body.dark .bubble,#searchResultsInner .bubble{background:none!important;border:none!important;box-shadow:none!important;padding:0!important;border-radius:0!important;display:block!important;}
-.bubble.is-red{border-right:3px solid #e02020!important;padding-right:12px!important;}
-.bubble-text{font-size:16.5px!important;line-height:1.75!important;color:var(--ink)!important;}
-body.dark .bubble-text{color:#e6e7ea!important;}
-.bubble-img img{max-height:420px!important;border-radius:14px;}
-.bubble-img,.bubble-vid,.bubble-html{border-radius:14px!important;}
-.bubble-foot{display:flex!important;align-items:center;gap:6px;margin-top:10px!important;padding:8px 0 0!important;border-top:1px solid var(--line-2);min-height:36px;}
-.rxn-chip{height:28px;border-radius:999px;background:var(--surface-2);border-color:var(--line);}
-.rxn-chip.mine{background:var(--accent-soft);border-color:var(--accent);}
-.rxn-chip.mine .rxn-count{color:var(--ink);}
-.rxn-add-btn{width:28px;height:28px;border-radius:50%;color:var(--muted);}
-.rxn-add-btn:hover{background:var(--surface-2);color:var(--ink);transform:none;}
-.msg-views{margin-right:auto;background:none!important;border:none!important;padding:0 4px!important;}
-.quote-block{background:var(--surface-2)!important;border-right:3px solid var(--ink)!important;border-radius:10px!important;}
+/* ---------- פיד: הבועות של קודם, חדות יותר ---------- */
+:root{--canvas:#f1f0ed;--bubble-line:#dad8d3;}
+body.dark{--bubble-line:#30323a;}
+#feedInner,#searchResultsInner{max-width:760px!important;margin:0 auto!important;padding:0 16px!important;gap:18px!important;}
+#feedWrap{padding-top:16px!important;}
+.msg-meta-av{display:none!important;}
+.msg-av{width:34px!important;height:34px!important;border-radius:10px!important;background:#fff!important;object-fit:contain;padding:3px;
+  box-shadow:0 0 0 1px var(--bubble-line);margin-top:21px!important;}
+.msg-meta{gap:7px!important;padding-right:2px!important;margin-bottom:3px;}
+.msg-meta-name{font-size:12.5px!important;font-weight:800!important;color:var(--ink)!important;}
+.msg-meta-time{font-size:11.5px!important;color:var(--muted)!important;font-variant-numeric:tabular-nums;}
+.bubble,#searchResultsInner .bubble{background:var(--surface)!important;border:1px solid var(--bubble-line)!important;border-radius:16px 4px 16px 16px!important;
+  padding:11px 16px 10px!important;box-shadow:0 1px 0 rgba(0,0,0,.035)!important;}
+body.dark .bubble{background:var(--surface)!important;border-color:var(--bubble-line)!important;}
+.bubble.is-red{border-right:3px solid #e02020!important;}
+.bubble-text{font-size:17.5px!important;line-height:1.65!important;color:#0c0e12!important;letter-spacing:-.003em;}
+body.dark .bubble-text{color:#eceef2!important;}
+.bubble-text strong{font-weight:800!important;color:inherit!important;}
+.bubble-img img{border-radius:10px!important;}
+.bubble-img,.bubble-vid,.bubble-html{border-radius:10px!important;}
+.quote-block{background:var(--surface-2)!important;border-right:3px solid var(--ink)!important;border-radius:8px!important;}
 .quote-block i,.quote-block span{color:var(--ink)!important;}
-.post-tags-row{margin-top:10px!important;}
+.bubble-foot{gap:5px!important;margin-top:5px!important;padding-right:6px!important;}
+.rxn-chip{height:26px;border-radius:8px;background:var(--surface);border:1px solid var(--bubble-line);}
+.rxn-chip:hover{border-color:color-mix(in srgb,var(--ink) 30%,var(--bubble-line));}
+.rxn-chip.mine{background:var(--accent-soft);border-color:var(--ink);}
+.rxn-chip.mine .rxn-count{color:var(--ink);}
+.rxn-add-btn{border-radius:8px;}
+.post-tag{border-radius:6px!important;}
+.msg-views{border-radius:8px;border:1px solid var(--bubble-line);background:var(--surface);padding:0 8px;height:26px;}
 .unread-sep span{background:var(--surface)!important;}
-.msg-flash .msg-col{box-shadow:0 0 0 3px rgba(229,72,77,.45)!important;}
-.tag-bar{max-width:720px;margin:0 auto 8px!important;border:none!important;background:transparent!important;backdrop-filter:none!important;padding:0 16px 8px!important;position:static!important;}
+.msg-flash .bubble{box-shadow:0 0 0 3px rgba(229,72,77,.45)!important;}
+.tag-bar{max-width:760px;margin:0 auto 6px!important;border:none!important;background:transparent!important;backdrop-filter:none!important;padding:0 16px 6px!important;position:static!important;}
+.tf-chip{border-radius:8px;}
 
-/* ---------- התפריט של כל הודעה: אייקונים קטנים בפינת הכרטיס ---------- */
-.bubble-top-actions{position:absolute!important;top:10px!important;left:12px!important;right:auto!important;display:flex!important;gap:2px!important;
-  padding:0!important;background:none!important;border:none!important;box-shadow:none!important;opacity:0;transform:translateY(-2px);
-  transition:opacity .15s,transform .15s;direction:ltr;}
-.msg-row:hover .bubble-top-actions,.bubble-top-actions:focus-within{opacity:1;transform:none;pointer-events:all;}
-.bubble-top-actions .link-btn,.bubble-top-actions .cmt-btn,.bubble-top-actions .msg-action-btn{width:30px!important;height:30px!important;border-radius:9px!important;
-  color:var(--muted)!important;font-size:12.5px!important;background:transparent!important;}
+/* ---------- התפריט של כל הודעה: ליד הבועה, בצד השמאלי, בריחוף ---------- */
+.bubble-wrap-outer{position:relative!important;}
+.bubble-top-actions{position:absolute!important;top:4px!important;right:calc(100% + 6px)!important;left:auto!important;display:flex!important;gap:1px!important;
+  padding:2px!important;background:var(--surface)!important;border:1px solid var(--bubble-line)!important;border-radius:10px!important;
+  box-shadow:0 4px 14px -6px rgba(0,0,0,.18)!important;opacity:0;pointer-events:none;transition:opacity .12s;direction:ltr;}
+.msg-row:hover .bubble-top-actions,.bubble-top-actions:focus-within{opacity:1;pointer-events:all;}
+.bubble-top-actions .link-btn,.bubble-top-actions .cmt-btn,.bubble-top-actions .msg-action-btn{width:28px!important;height:28px!important;border-radius:7px!important;
+  color:var(--muted)!important;font-size:12px!important;background:transparent!important;}
 .bubble-top-actions .link-btn:hover,.bubble-top-actions .msg-action-btn:hover{background:var(--surface-2)!important;color:var(--ink)!important;}
 .bubble-top-actions .msg-action-btn.del:hover,.bubble-top-actions .msg-action-btn:not(.edit):not(.quote):not(.del):hover{color:var(--danger)!important;background:var(--danger-soft)!important;}
 @media (hover:none){
-  .bubble-top-actions{opacity:.75;transform:none;}
-  .bubble-top-actions .link-btn,.bubble-top-actions .msg-action-btn{width:28px!important;height:28px!important;}
+  .bubble-top-actions{opacity:1;pointer-events:all;top:-13px!important;right:auto!important;left:8px!important;}
 }
 
 /* ---------- תיבת הכתיבה: בר צף קומפקטי ---------- */
