@@ -4151,22 +4151,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script>
-  // שמנו את זה כאן כדי שזה יעבוד תמיד, גם אם הקובץ השני קורס
-  window.closeReportModal = function() {
-    // מציאת חלון הרקע (ה-overlay) והסתרתו
-    const overlay = document.querySelector('[onclick*="closeReportModal"]');
-    if (overlay) overlay.style.display = 'none';
-    
-    // ניקוי תיבת הטקסט אם קיימת
-    const input = document.getElementById('reportModalInput');
-    if (input) input.value = '';
-    
-    // הסתרת הודעת שגיאה אם קיימת
-    const error = document.getElementById('reportModalError');
-    if (error) error.style.display = 'none';
-  };
-</script>
   <script src="https://xnet2.github.io/status/xnet-badge.js" defer></script>
 </body>
 </html>
