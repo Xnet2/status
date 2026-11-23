@@ -1319,6 +1319,50 @@ body.dark .bubble-top-actions .link-btn:hover,body.dark .bubble-top-actions .msg
   .bubble-top-actions{opacity:1;pointer-events:all;top:-13px!important;right:auto!important;left:8px!important;}
 }
 
+/* ---------- תגובות בתוך הבועה, מתחת לקו מפריד ---------- */
+.bubble .bubble-foot{display:flex!important;flex-wrap:wrap;align-items:center;gap:5px!important;margin:11px -17px -3px!important;padding:8px 14px 0!important;
+  border-top:1px solid rgba(17,24,39,.07);min-height:0;}
+body.dark .bubble .bubble-foot{border-top-color:rgba(255,255,255,.08);}
+.bubble .rxn-chip{height:26px;padding:0 8px;border-radius:8px;background:#fff;border:1px solid rgba(17,24,39,.08);}
+.bubble .rxn-chip:hover{background:#fff;border-color:rgba(17,24,39,.18);}
+.bubble .rxn-chip.mine{background:#fff;border-color:#9ca3af;}
+body.dark .bubble .rxn-chip{background:var(--surface);border-color:rgba(255,255,255,.1);}
+body.dark .bubble .rxn-chip.mine{border-color:#6b7280;}
+.bubble .rxn-add-btn{width:26px;height:26px;border-radius:8px;}
+.bubble .rxn-add-btn:hover{background:rgba(17,24,39,.05);}
+body.dark .bubble .rxn-add-btn:hover{background:rgba(255,255,255,.06);}
+.bubble .msg-views{margin-right:auto;height:26px;}
+body.no-rxn:not(:has(.msg-views)) .bubble .bubble-foot{display:none!important;}
+
+/* ---------- סרגל עליון: קטן ורגוע יותר ---------- */
+.hdr-user{padding:3px!important;position:relative;box-shadow:none!important;border-color:#eceef1!important;}
+body.dark .hdr-user{border-color:var(--line)!important;}
+#searchBtn,#darkBtn,#notifBtn,#loginHdrBtn{width:32px!important;height:32px!important;color:#6b7280!important;}
+#searchBtn i,#darkBtn i,#notifBtn i,#loginHdrBtn i{font-size:13px!important;}
+#searchBtn:hover,#darkBtn:hover,#notifBtn:hover,#loginHdrBtn:hover{background:#f3f4f6!important;color:#111827!important;}
+#darkBtn.active,#notifBtn.active{background:#f1f2f4!important;color:#111827!important;}
+#loginHdrBtn{background:transparent!important;color:#374151!important;}
+body.dark #searchBtn,body.dark #darkBtn,body.dark #notifBtn,body.dark #loginHdrBtn{color:#9ca3af!important;}
+body.dark #searchBtn:hover,body.dark #darkBtn:hover,body.dark #notifBtn:hover,body.dark #loginHdrBtn:hover,
+body.dark #darkBtn.active,body.dark #notifBtn.active{background:var(--surface-2)!important;color:#f3f4f6!important;}
+.hdr-me-av{width:32px!important;height:32px!important;font-size:13px!important;}
+#userAvatar:not(:empty){padding-inline-start:3px;}
+.rep-dot{min-width:17px;height:17px;font-size:10px;line-height:17px;top:-5px;left:-6px;}
+
+/* ---------- חיפוש: קפסולה מתחת לסרגל, באותו סגנון ---------- */
+.hdr-icon-group > div{position:static!important;}
+#searchBar{top:calc(100% + 8px)!important;left:0!important;right:auto!important;margin:0!important;transform:none!important;width:max(100%,300px)!important;
+  height:40px;padding:0 6px 0 4px!important;gap:4px!important;border-radius:999px!important;border:1px solid #eceef1!important;background:var(--surface)!important;
+  box-shadow:0 12px 30px -16px rgba(17,24,39,.3)!important;animation:srchIn .16s ease-out!important;}
+body.dark #searchBar{border-color:var(--line)!important;}
+@keyframes srchIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+#searchBar::before{content:'\f002';font-family:'Font Awesome 6 Free';font-weight:900;font-size:12px;color:#9ca3af;padding:0 10px 0 4px;}
+#searchInput{font-size:14px!important;padding:0!important;color:var(--ink)!important;}
+#searchInput::placeholder{color:#a3a8b3!important;}
+#searchClear{width:28px;height:28px;border-radius:50%;color:#9ca3af!important;display:none;align-items:center;justify-content:center;font-size:12px!important;}
+#searchClear.show{display:flex!important;}
+#searchClear:hover{background:#f3f4f6;color:#111827!important;}
+
 /* ---------- תיבת הכתיבה: בר צף קומפקטי ---------- */
 #adminComposeBar{left:0!important;right:0!important;bottom:14px!important;margin:0 auto;width:min(720px,calc(100% - 24px));
   border-radius:20px!important;border:1px solid var(--line);background:var(--surface)!important;
@@ -2843,7 +2887,7 @@ function buildMsg(e) {
     </div>`;
   }
 
-  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><img class="msg-meta-av" src="${LOGO}" alt="" onerror="this.style.display='none'"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}</div></div><div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div>${viewsHtml(e)}</div></div></div>`;
+  return `<div class="msg-row" data-id="${escAttr(id)}"><img class="msg-av" src="${LOGO}" onerror="this.style.display='none'"><div class="msg-col"><div class="msg-meta"><img class="msg-meta-av" src="${LOGO}" alt="" onerror="this.style.display='none'"><span class="msg-meta-name">${esc(SITE_TITLE)}</span><span class="msg-meta-time">${fmtTime(e.ts)}</span></div><div class="bubble-wrap-outer"><div class="bubble-top-actions"><button class="link-btn" onclick="copyMsgLink('${escAttr(id)}',this)" title="העתק קישור"><i class="fas fa-link"></i></button><button class="msg-action-btn" onclick="reportMsg('${escAttr(id)}')" title="דווח על תוכן פוגעני"><i class="fas fa-flag"></i></button>${canEdit ? `<button class="msg-action-btn edit" onclick="openEditMsg('${escAttr(id)}')"><i class="fas fa-pen"></i></button><button class="msg-action-btn quote" onclick="quoteFeedMsg('${escAttr(id)}')"><i class="fas fa-quote-right"></i></button>` : ''}${canDel ? `<button class="msg-action-btn del" onclick="deleteFeedMsg('${escAttr(id)}')"><i class="fas fa-trash"></i></button>` : ''}</div><div class="bubble">${quoteHtml}${content}${media}${btns}${tagsHtml}<div class="bubble-foot"><div class="rxn-row" id="rxn-${escAttr(id)}"><button class="rxn-add-btn" onclick="openPicker(event,'${escAttr(id)}')">${REACT_SVG}</button></div>${viewsHtml(e)}</div></div></div></div></div>`;
 }
 
 /* ================= צפיות בהודעות =================
