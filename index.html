@@ -479,10 +479,6 @@ body.dark .ss-section { border-color:#333; }
 body.dark .ss-input, body.dark .utd-time-inp { background:#0f0f15; color:#fff; border-color:#333; }
 
 /* MODALS VISIBILITY AND ANIMATIONS */
-#reportModalOverlay { display:flex !important; }
-#reportModalOverlay[style*="display:none"] { display:none !important; }
-#reportsModal { display:flex !important; }
-#reportsModal[style*="display:none"] { display:none !important; }
 @keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
 /* ===== DARK MODE FULL SCREEN FIX ===== */
@@ -1248,6 +1244,52 @@ body.dark .bubble-top-actions .msg-action-btn.info.info:hover{color:#fff!importa
   font-family:'Assistant','Heebo',sans-serif;}
 @media(max-width:600px){.em-picker-box emoji-picker{--num-columns:8;--emoji-size:1.4rem;height:340px;}}
 
+/* חלונית דיווח */
+#reportModalOverlay{display:none;position:fixed;inset:0;z-index:950;background:rgba(17,24,39,.28);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:16px;}
+#reportModalOverlay.open{display:flex;animation:lbIn .15s ease;}
+.rp-box{position:relative;width:100%;max-width:440px;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh-3);overflow:hidden;
+  animation:apPop .22s cubic-bezier(.16,1,.3,1);font-family:'Assistant','Heebo',sans-serif;}
+.rp-hdr{display:flex;align-items:center;gap:12px;padding:18px 20px 6px;}
+.rp-ico{width:38px;height:38px;border-radius:12px;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.rp-hdr-txt{flex:1;min-width:0;}
+.rp-title{font-size:16px;font-weight:900;color:var(--ink);}
+.rp-sub{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rp-body{padding:12px 20px 4px;}
+.rp-label{display:block;font-size:13px;font-weight:800;color:var(--ink-2);margin-bottom:7px;}
+#reportModalInput{width:100%;border:1.5px solid var(--line);background:var(--surface-2);border-radius:14px;padding:11px 13px;font:15px/1.6 'Assistant','Heebo',sans-serif;
+  color:var(--ink);outline:none;resize:vertical;min-height:96px;transition:border-color .15s,background .15s;}
+#reportModalInput:focus{border-color:var(--ink);background:var(--surface);}
+.rp-error{margin-top:8px;padding:8px 12px;border-radius:10px;background:var(--danger-soft);color:var(--danger);font-size:12.5px;font-weight:700;}
+.rp-actions{display:flex;gap:8px;padding:14px 20px 20px;}
+.rp-send{flex:1;height:44px;border:none;border-radius:13px;background:var(--accent);color:var(--on-accent);font:800 14.5px 'Assistant','Heebo',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;}
+.rp-send:hover{background:var(--accent-2);}
+.rp-send i{font-size:12px;}
+.rp-cancel{height:44px;padding:0 20px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink-2);font:800 14px 'Assistant','Heebo',sans-serif;cursor:pointer;}
+.rp-cancel:hover{background:var(--surface-2);}
+/* שכבת הסטטוס */
+.rp-status{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--surface);
+  opacity:0;pointer-events:none;transition:opacity .2s;}
+.rp-box.is-sending .rp-status,.rp-box.is-sent .rp-status{opacity:1;pointer-events:all;}
+.rp-box.is-sending .rp-hdr .ins-x,.rp-box.is-sent .rp-hdr .ins-x{position:relative;z-index:2;}
+.rp-ring,.rp-check{width:84px;height:84px;display:none;}
+.rp-ring circle{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-dasharray:150 214;transform-origin:center;}
+.rp-box.is-sending .rp-ring{display:block;animation:rpSpin 1s linear infinite;}
+.rp-ring .t{stroke:var(--line);stroke-dasharray:none!important;animation:none!important;}
+.rp-box.is-sending .rp-ring .a{animation:rpDash 1.4s ease-in-out infinite;}
+@keyframes rpSpin{to{transform:rotate(360deg)}}
+@keyframes rpDash{0%{stroke-dasharray:55 214;}50%{stroke-dasharray:160 214;}100%{stroke-dasharray:55 214;}}
+.rp-check .c{fill:none;stroke:var(--ok);stroke-width:2;stroke-dasharray:214;stroke-dashoffset:214;}
+.rp-check .v{fill:none;stroke:var(--ok);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:44;stroke-dashoffset:44;}
+.rp-box.is-sent .rp-check{display:block;}
+.rp-box.is-sent .rp-check .c{animation:rpDraw .5s ease-out forwards;}
+.rp-box.is-sent .rp-check .v{animation:rpDraw .35s .4s cubic-bezier(.65,0,.35,1) forwards;}
+@keyframes rpDraw{to{stroke-dashoffset:0}}
+.rp-box.is-sent .rp-check{animation:rpPop .45s .55s cubic-bezier(.34,1.56,.64,1);}
+@keyframes rpPop{50%{transform:scale(1.08)}}
+.rp-status-txt{font-size:15px;font-weight:800;color:var(--ink);}
+.rp-box.is-sending .rp-status-txt{color:var(--muted);font-weight:700;}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 
@@ -1831,38 +1873,30 @@ body.dark #composeEditor{background:transparent!important;}
   <img id="lbImg" src="" onclick="event.stopPropagation()">
 </div>
 
-<div id="reportModalOverlay" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:16px;" onclick="if(event.target===this)closeReportModal()">
-  <div style="background:#fff;border-radius:20px;max-width:440px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow:hidden;animation:pickerPop .2s ease-out;font-family:'Assistant','Heebo',sans-serif;direction:rtl;">
-    
-    <div style="padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="width:36px;height:36px;border-radius:10px;background:#fef2f2;display:flex;align-items:center;justify-content:center;">
-          <i class="fas fa-flag" style="color:#dc2626;font-size:14px;"></i>
-        </div>
-        <div>
-          <div style="font-size:15px;font-weight:900;color:#111;">דיווח על הודעה</div>
-          <div id="reportModalMsgId" style="font-size:11px;color:#9ca3af;font-weight:600;"></div>
-        </div>
+<div id="reportModalOverlay" onclick="if(event.target===this)closeReportModal()">
+  <div class="rp-box" id="reportBox" role="dialog" aria-labelledby="reportTitle">
+    <div class="rp-hdr">
+      <span class="rp-ico"><i class="fas fa-flag"></i></span>
+      <div class="rp-hdr-txt">
+        <div class="rp-title" id="reportTitle">דיווח על הודעה</div>
+        <div class="rp-sub" id="reportModalMsgId"></div>
       </div>
-      <button onclick="closeReportModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#aaa;padding:4px;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">✕</button>
+      <button class="ins-x" onclick="closeReportModal()" title="סגור"><i class="fas fa-times"></i></button>
     </div>
-    
-    <div style="padding:18px 20px;">
-      <div style="background:#fff8f0;border-right:3px solid #f97316;border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.6;">
-        <i class="fas fa-info-circle" style="color:#f97316;margin-left:5px;"></i>
-        <span>שימו לב! חובה לציין את הסיבה לדיווח בכדי שנוכל לטפל בבעיה בהקדם האפשרי.</span>
-      </div> <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px;">תיאור הבעיה</label>
-      <textarea id="reportModalInput" rows="4" placeholder="פרט במספר מילים מה הבעיה בהודעה זו..." style="width:100%;border:1.5px solid #e5e7eb;border-radius:12px;padding:10px 12px;font-size:14px;font-family:'Assistant','Heebo',sans-serif;outline:none;resize:vertical;direction:rtl;transition:border-color .15s;" onfocus="this.style.borderColor='#111827'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter'&&event.ctrlKey)submitReport()"></textarea>
-      <div id="reportModalError" style="display:none;font-size:12px;color:#dc2626;font-weight:700;margin-top:6px;padding:6px 10px;background:#fef2f2;border-radius:8px;"></div>
+    <div class="rp-body">
+      <label class="rp-label" for="reportModalInput">מה הבעיה בהודעה?</label>
+      <textarea id="reportModalInput" rows="4" placeholder="כמה מילים שיעזרו לנו להבין ולטפל" onkeydown="if(event.key==='Enter'&&event.ctrlKey)submitReport()"></textarea>
+      <div id="reportModalError" class="rp-error" style="display:none;"></div>
     </div>
-    
-    <div style="padding:0 20px 18px;display:flex;gap:10px;">
-      <button id="reportSubmitBtn" onclick="submitReport()" style="flex:1;background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Assistant','Heebo',sans-serif;transition:background .15s;" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
-        <i class="fas fa-paper-plane" style="font-size:12px;"></i> שלח דיווח
-      </button>
-<button onclick="closeReportModal()" style="background:#f3f4f6;color:#374151;border:none;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Assistant','Heebo',sans-serif;transition:background .15s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-        ביטול
-      </button>
+    <div class="rp-actions">
+      <button id="reportSubmitBtn" class="rp-send" onclick="submitReport()"><i class="fas fa-paper-plane"></i> שליחת דיווח</button>
+      <button class="rp-cancel" onclick="closeReportModal()">ביטול</button>
+    </div>
+    <!-- מצב שליחה והצלחה: עיגול דק וגדול, ואחריו וי שמצטייר -->
+    <div class="rp-status" aria-live="polite">
+      <svg class="rp-ring" viewBox="0 0 80 80" aria-hidden="true"><circle class="t" cx="40" cy="40" r="34"/><circle class="a" cx="40" cy="40" r="34"/></svg>
+      <svg class="rp-check" viewBox="0 0 80 80" aria-hidden="true"><circle class="c" cx="40" cy="40" r="34"/><path class="v" d="M26 41 l9 9 l19 -20"/></svg>
+      <div class="rp-status-txt" id="reportStatusTxt"></div>
     </div>
   </div>
 </div>
@@ -3234,23 +3268,43 @@ function cancelQuote() {
 function reportMsg(msgId) {
   if (!me) { showToast('יש להתחבר כדי לדווח', 'error'); openLoginModal(); return; }
   _reportTargetMsgId = msgId;
-  document.getElementById('reportModalMsgId').textContent = '#' + msgId;
+  const m = items.find(e => e.id === msgId);
+  document.getElementById('reportModalMsgId').textContent = m ? (m.seq ? `הודעה #${m.seq} · ` : '') + mdToPlain(m.text || '').trim().slice(0, 50) : '';
   document.getElementById('reportModalInput').value = '';
   document.getElementById('reportModalError').style.display = 'none';
-  document.getElementById('reportModalOverlay').style.display = 'flex';
+  document.getElementById('reportBox').className = 'rp-box';
+  document.getElementById('reportModalOverlay').classList.add('open');
   setTimeout(() => document.getElementById('reportModalInput').focus(), 80);
 }
-function closeReportModal() { document.getElementById('reportModalOverlay').style.display = 'none'; _reportTargetMsgId = null; }
+let _reportCloseTimer = null;
+function closeReportModal() {
+  clearTimeout(_reportCloseTimer);
+  document.getElementById('reportModalOverlay').classList.remove('open');
+  _reportTargetMsgId = null;
+}
 async function submitReport() {
   const reason = document.getElementById('reportModalInput').value.trim();
   const errEl = document.getElementById('reportModalError');
-  if (!reason) { errEl.style.display = 'block'; errEl.textContent = 'נא לפרט את סיבת הדיווח.'; return; }
-  const btn = document.getElementById('reportSubmitBtn'); btn.disabled = true; btn.textContent = 'שולח...';
-  const d = await api('feed_report', { email: me.email, msgId: _reportTargetMsgId, reason }, 'POST');
-  if (d.status === 'ok') { closeReportModal(); showToast('הדיווח נשלח בהצלחה. תודה!', 'success'); }
-  else { errEl.style.display = 'block'; errEl.textContent = 'שגיאה בשליחה, נסה שוב.'; }
-  btn.disabled = false; btn.textContent = 'שלח דיווח';
+  const box = document.getElementById('reportBox');
+  if (!reason) { errEl.style.display = 'block'; errEl.textContent = 'נא לכתוב בכמה מילים מה הבעיה.'; return; }
+  if (box.classList.contains('is-sending')) return;
+  errEl.style.display = 'none';
+  document.getElementById('reportStatusTxt').textContent = 'שולח את הדיווח...';
+  box.className = 'rp-box is-sending';
+  const started = Date.now();
+  const d = await api('feed_report', { msgId: _reportTargetMsgId, reason }, 'POST');
+  await new Promise(r => setTimeout(r, Math.max(0, 700 - (Date.now() - started))));   // שהעיגול ייראה רגע ולא יהבהב
+  if (!document.getElementById('reportModalOverlay').classList.contains('open')) return;
+  if (d.status === 'ok') {
+    document.getElementById('reportStatusTxt').textContent = 'הדיווח נשלח. תודה!';
+    box.className = 'rp-box is-sent';
+    _reportCloseTimer = setTimeout(closeReportModal, 1700);
+  } else {
+    box.className = 'rp-box';
+    errEl.style.display = 'block'; errEl.textContent = d.message ? 'השליחה נכשלה: ' + d.message : 'השליחה נכשלה, נסו שוב.';
+  }
 }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('reportModalOverlay')?.classList.contains('open')) closeReportModal(); });
 
 let _repFilter = 'open';
 function setRepFilter(f) { _repFilter = f; openReportsModal(); }
