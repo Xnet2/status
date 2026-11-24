@@ -1290,6 +1290,14 @@ body.dark .bubble-top-actions .msg-action-btn.info.info:hover{color:#fff!importa
 .rp-status-txt{font-size:15px;font-weight:800;color:var(--ink);}
 .rp-box.is-sending .rp-status-txt{color:var(--muted);font-weight:700;}
 
+/* תפקיד שותף: דף משתמשים חסום */
+.ap-roles{grid-template-columns:repeat(2,1fr)!important;}
+#ap-sec-users.is-denied .us-bar,#ap-sec-users.is-denied .us-count,#ap-sec-users.is-denied .ap-intro{display:none;}
+.us-denied{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:70px 20px;border:1px dashed var(--line);border-radius:20px;background:var(--surface);}
+.us-denied-ico{width:58px;height:58px;border-radius:50%;background:var(--surface-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:6px;}
+.us-denied-t{font-size:18px;font-weight:900;color:var(--ink);}
+.us-denied-s{font-size:13.5px;color:var(--muted);}
+
 /* הלוגו הצף של Xnet מסתיר את כפתור השליחה כשסרגל הכתיבה תופס את כל הרוחב */
 @media(max-width:900px){body:has(#adminComposeBar.show) .xnet-badge{display:none!important;}}
 
@@ -2058,6 +2066,7 @@ body.dark #composeEditor{background:transparent!important;}
           <p class="ap-intro">מוסיפים אנשים לפי המייל שאיתו הם מתחברים לגוגל. ההרשאה נכנסת לתוקף כשהם מתחברים לאתר עם אותו חשבון, אין צורך בהזמנה.</p>
           <div class="ap-roles">
             <div><b>בעלים</b><span>הכול: הגדרות, צוות, מי יכול לצפות ופרסומות.</span></div>
+            <div><b>שותף</b><span>כמו בעלים: הגדרות, צוות, מי יכול לצפות ופרסומות. בלי גישה לדף המשתמשים.</span></div>
             <div><b>מנהל</b><span>כל ההודעות, פרטי הערוץ, אימוג'ים, תגיות, סטטיסטיקות ודיווחים.</span></div>
             <div><b>כותב</b><span>פרסום הודעות, ועריכה ומחיקה של ההודעות שלו בלבד.</span></div>
           </div>
@@ -2069,7 +2078,7 @@ body.dark #composeEditor{background:transparent!important;}
               <input id="newAdminName" type="text" placeholder="שם תצוגה" class="ap-field">
             </div>
             <div class="ap-row" style="margin-top:10px;">
-              <select id="newAdminRole" class="ap-field"><option value="writer">כותב</option><option value="admin">מנהל</option></select>
+              <select id="newAdminRole" class="ap-field"><option value="writer">כותב</option><option value="admin">מנהל</option><option value="coowner">שותף</option></select>
               <button onclick="addAdmin()" class="ap-btn ap-btn-primary"><i class="fas fa-plus"></i> הוספה</button>
             </div>
             <div class="ap-hint">בעלי הערוץ מוגדרים בשרת (SUPER_ADMINS בקובץ app.py).</div>
@@ -2117,7 +2126,7 @@ body.dark #composeEditor{background:transparent!important;}
           </div>
           <div class="ap-divider">
             <div class="ap-label">ייצוא נתונים</div>
-            <button class="ap-btn ap-btn-soft" onclick="exportEmailsToGroups()"><i class="fas fa-download" style="font-size:11px;"></i> הורד רשימת אימיילים (TXT)</button>
+            <button class="ap-btn ap-btn-soft owner-only" onclick="exportEmailsToGroups()"><i class="fas fa-download" style="font-size:11px;"></i> הורד רשימת אימיילים (TXT)</button>
           </div>
           </div>
         </div>
@@ -2394,10 +2403,12 @@ async function api(action, params, method) {
   }
 }
 
-// 'super' = בעלים, 'admin' = מנהל, 'writer' = כותב. isAdmin = יכול לכתוב, isManager = רואה את ניהול הערוץ
+// 'super' = בעלים, 'coowner' = שותף (כמו בעלים, בלי דף המשתמשים), 'admin' = מנהל, 'writer' = כותב.
+// isAdmin = יכול לכתוב, isManager = רואה את ניהול הערוץ, isOwner = הרשאות בעלים
 function getRole() { return me ? (_role || 'user') : 'visitor'; }
-function isAdmin() { return ['super', 'admin', 'writer'].includes(getRole()); }
-function isManager() { return ['super', 'admin'].includes(getRole()); }
+function isAdmin() { return ['super', 'coowner', 'admin', 'writer'].includes(getRole()); }
+function isManager() { return ['super', 'coowner', 'admin'].includes(getRole()); }
+function isOwner() { return ['super', 'coowner'].includes(getRole()); }
 function isSuperAdmin() { return getRole() === 'super'; }
 
 function getDisplayName(email, fallback) {
@@ -2691,7 +2702,7 @@ const AP_SECTIONS = [
 ];
 let _apCh = null;   // הגדרות הערוץ כפי שנטענו לפאנל (לבעלים כולל השדות הסודיים)
 
-function roleLabel(r) { return r === 'super' ? 'בעלים' : r === 'admin' ? 'מנהל' : r === 'writer' ? 'כותב' : 'קורא'; }
+function roleLabel(r) { return r === 'super' ? 'בעלים' : r === 'coowner' ? 'שותף' : r === 'admin' ? 'מנהל' : r === 'writer' ? 'כותב' : 'קורא'; }
 
 function openAdminPanel(startSec) {
   if (!me || !isManager()) return;
@@ -2702,7 +2713,8 @@ function openAdminPanel(startSec) {
     : `<div class="ap-sidebar-avatar-fallback">${esc(me.name[0].toUpperCase())}</div>`;
   document.getElementById('apHdrName').innerText = me.name;
   document.getElementById('apHdrRole').innerText = roleLabel(role);
-  const visible = AP_SECTIONS.filter(s => s.perm === 'manager' || role === 'super');
+  const visible = AP_SECTIONS.filter(s => s.perm === 'manager' || isOwner());
+  document.querySelectorAll('.owner-only').forEach(el => { el.style.display = isSuperAdmin() ? '' : 'none'; });
   document.getElementById('apNav').innerHTML = visible.map(s => `
     <button class="ap-nav-item" data-sec="${s.key}" onclick="switchAdminSection('${s.key}')">
       <span class="ap-nav-icon"><i class="fas ${s.icon}"></i></span>
@@ -3013,7 +3025,7 @@ function scrollToQuotedMsg(id) {
 function buildMsg(e) {
   const id = e.id;
   const role = getRole();
-  const canDel = role === 'super' || role === 'admin' || (role === 'writer' && e.senderEmail === me?.email);
+  const canDel = role === 'super' || role === 'coowner' || role === 'admin' || (role === 'writer' && e.senderEmail === me?.email);
   const canEdit = canDel;
   const canInsights = canDel;   // מי צפה ומי הגיב: בעלים ומנהלים, וכותב על ההודעות שלו
 
@@ -3850,8 +3862,17 @@ function showAdMsg(txt, color) { const el = document.getElementById('adMsg'); el
 let _users = [], _usFilter = 'all';
 async function loadUsersList() {
   const list = document.getElementById('usList');
+  const sec = document.getElementById('ap-sec-users');
+  sec.classList.remove('is-denied');
   list.innerHTML = '<div class="ap-loading"><span class="lm-ring"></span> טוען משתמשים...</div>';
-  const d = await api('users_list', {});
+  const d = getRole() === 'coowner' ? { status: 'error', denied: true } : await api('users_list', {});
+  if (d.denied) {
+    // שותף: הדף קיים אבל הגישה לרשימה חסומה (גם בשרת)
+    sec.classList.add('is-denied');
+    document.getElementById('usCount').textContent = '';
+    list.innerHTML = '<div class="us-denied"><span class="us-denied-ico"><i class="fas fa-lock"></i></span><div class="us-denied-t">הגישה נחסמה</div><div class="us-denied-s">לשותפים אין גישה לרשימת המשתמשים של הערוץ.</div></div>';
+    return;
+  }
   if (d.status !== 'ok') { list.innerHTML = `<div class="ap-empty"><div>${esc(d.message || 'שגיאה בטעינה')}</div></div>`; return; }
   _users = d.users || [];
   renderUsersList();
@@ -3868,7 +3889,7 @@ function renderUsersList() {
     (!q || u.email.toLowerCase().includes(q) || (u.name || '').toLowerCase().includes(q)));
   const online = _users.filter(u => u.online).length;
   document.getElementById('usCount').textContent = `${_users.length.toLocaleString('he-IL')} משתמשים · ${online} מחוברים עכשיו` + (shown.length !== _users.length ? ` · מוצגים ${shown.length}` : '');
-  const owner = isSuperAdmin();
+  const owner = isOwner();
   document.getElementById('usList').innerHTML = shown.length ? shown.slice(0, 500).map(u => `
     <div class="ap-row-card us-row${u.blocked ? ' is-blocked' : ''}">
       <span class="us-av">${u.picture ? `<img src="${escAttr(u.picture)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<b>${esc((u.name || u.email)[0].toUpperCase())}</b>${u.online ? '<i class="us-on"></i>' : ''}</span>
@@ -3914,8 +3935,9 @@ async function renderAdminsList() {
       ${av(u.name || u.email)}
       <div class="ap-person"><div class="ap-person-name">${esc(u.name || u.email)}${u.email === me?.email ? ' <span class="ap-hint">(אני)</span>' : ''}</div><div class="ap-person-mail">${esc(u.email)}</div></div>
       <select class="ap-field ap-role-sel" data-email="${escAttr(u.email)}" data-name="${escAttr(u.name || '')}" onchange="changeRole(this)">
+        <option value="coowner"${u.role === 'coowner' ? ' selected' : ''}>שותף</option>
         <option value="admin"${u.role === 'admin' ? ' selected' : ''}>מנהל</option>
-        <option value="writer"${u.role !== 'admin' ? ' selected' : ''}>כותב</option>
+        <option value="writer"${u.role === 'writer' ? ' selected' : ''}>כותב</option>
       </select>
       <button class="ap-icon-btn" data-email="${escAttr(u.email)}" onclick="removeAdmin(this.dataset.email)" title="הסר מהצוות"><i class="fas fa-trash"></i></button>
     </div>`).join('');
@@ -3936,7 +3958,7 @@ async function addAdmin() {
 }
 async function changeRole(sel) {
   const d = await api('allowed_add', { target: sel.dataset.email, name: sel.dataset.name, role: sel.value }, 'POST');
-  if (d.status === 'ok') showToast(`התפקיד עודכן ל${sel.value === 'admin' ? 'מנהל' : 'כותב'}`);
+  if (d.status === 'ok') showToast(`התפקיד עודכן ל${roleLabel(sel.value)}`);
   else { showToast(d.message || 'שגיאה', 'error'); renderAdminsList(); }
 }
 async function removeAdmin(targetEmail) {
